@@ -1,5 +1,6 @@
 asgiref
 coverage
+dj-database-url
 Django
 djangorestframework
 gunicorn
