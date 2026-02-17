@@ -1,3 +1,23 @@
 from django.db import models
+from projects.models import ProjectIdea
+from django.contrib.auth.models import AbstractUser
 
 # Create your models here.
+
+class User(AbstractUser):
+    '''
+    Docstring for User class:
+    Custom User model extending and adding to the AbstractUser by Django.
+    Standard User fields plus(image, description, created_on, finsihed_projects(FK))
+    '''
+   
+    image = models.ImageField(upload_to='profile_images/', null=True, blank=True)
+    description = models.TextField(max_length=1000, null=True, blank=True)
+    # Automatically sets the field to the current date only when the model instance is first created.
+    created_on = models.DateTimeField(auto_now_add=True, editable=False)  
+    favorite_projects = models.ManyToManyField(ProjectIdea, related_name='user-favorite-project-idea', null=True)
+    interested_projects = models.ManyToManyField(ProjectIdea, related_name='user-interested-project-idea', null=True )    
+    
+    
+    def __str__(self):
+        return self.username
