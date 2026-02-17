@@ -1,7 +1,6 @@
 from django.test import TestCase
 from django.core.exceptions import ValidationError
-# from users.models import User
-from django.contrib.auth.models import User  # TODO remove this later and replace with line above
+from django.conf.settings import AUTH_USER_MODEL as User
 from projects.models import ProjectIdea
 from django.utils import timezone
 from datetime import timedelta
