@@ -1,5 +1,5 @@
 from django.test import TestCase
-from models import User
+from ...models import User
 from django.core.exceptions import ValidationError
 from django.db import IntegrityError
 
@@ -11,12 +11,12 @@ class UserModelTest(TestCase):
             email = 'something@ideacloud.com',
             password = 'idea123',
             description = 'some texts',
-            created_on = '1976-12-12',
+            created_on = '2026-02-19',
             
         )
         
         self.assertEqual(user.username, 'testusername')
-        self.assertEqual(user.email, 'something@gmail.com')
-        self.assertEqual(user.password, 'test123')
+        self.assertEqual(user.email, 'something@ideacloud.com')
+        self.assertEqual(user.password, 'idea123')
         self.assertEqual(user.description, 'some texts')
         self.assertEqual(user.created_on, '2026-02-19')

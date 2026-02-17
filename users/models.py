@@ -15,8 +15,8 @@ class User(AbstractUser):
     description = models.TextField(max_length=1000, null=True, blank=True)
     # Automatically sets the field to the current date only when the model instance is first created.
     created_on = models.DateTimeField(auto_now_add=True, editable=False)  
-    favorite_projects = models.ManyToManyField(ProjectIdea, related_name='user-favorite-project-idea', null=True)
-    interested_projects = models.ManyToManyField(ProjectIdea, related_name='user-interested-project-idea', null=True )    
+    favorite_projects = models.ManyToManyField(ProjectIdea, related_name='user_favorite_project_idea', null=True)
+    interested_projects = models.ManyToManyField(ProjectIdea, related_name='user_interested_project_idea', null=True )    
     
     
     def __str__(self):
