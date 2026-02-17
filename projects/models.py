@@ -1,5 +1,7 @@
 from django.db import models
-from django.conf.settings import AUTH_USER_MODEL as User
+from django.conf import settings
+
+User = settings.AUTH_USER_MODEL
 
 class ProjectIdea(models.Model):
     """This is the core Idea to a project. It is what eg. finished projects are based off"""

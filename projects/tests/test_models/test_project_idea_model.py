@@ -1,9 +1,11 @@
 from django.test import TestCase
 from django.core.exceptions import ValidationError
-from django.conf.settings import AUTH_USER_MODEL as User
+from django.conf import settings
 from projects.models import ProjectIdea
 from django.utils import timezone
 from datetime import timedelta
+
+User = settings.AUTH_USER_MODEL
 
 class ProjectIdeaModelTests(TestCase):
     def setUp(self):
