@@ -13,18 +13,18 @@ class ProjectIdea(models.Model):
 
     def __str__(self):
         author_name = self.author.username if self.author else "Deleted User"
-        return f"Project: '{self.title}'\nSubmitted by: '{author_name}'\nCreated on: {self.created_on}"
+        return f"Project: '{self.title}' Submitted by: '{author_name}' Created on: {self.created_on}"
 
 
 class ProjectGroup(models.Model):
     """
     This is a project group whuch was created under a project idea. It can be given a name and description
     """
-    name = models.CharField(max_length=255, null=False)
+    name = models.CharField(max_length=200, null=False)
     description = models.TextField()
-    #project_idea = models.ForeignKey(ProjectIdea, on_delete=models.CASCADE,  null=False, related_name='project_group-project_idea')
-    #owner = models.ForeignKey(User, on_delete=models.CASCADE,  null=False, related_name='project_group-owner')
-    members = models.ManyToManyField(User, blank=True, related_name='group-members')
+    project_idea = models.ForeignKey(ProjectIdea, on_delete=models.CASCADE, null=False, related_name='project_group_project_idea')
+    owner = models.ForeignKey(User, on_delete=models.CASCADE, null=False, related_name='project_group_owner')
+    members = models.ManyToManyField(User, blank=True, related_name='group_members')
     created_on = models.DateTimeField(null=False, editable=False, default=timezone.now)
     updated_on = models.DateTimeField(auto_now=True, editable=False)
 
@@ -34,5 +34,4 @@ class ProjectGroup(models.Model):
         ]
 
     def __str__(self):
-        return f"{self.name} under {self.project_idea.title}"
-
+        return f"Project Group: '{self.name}' Created under: '{self.project_idea.title}' Created on: {self.created_on}"
