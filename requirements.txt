@@ -5,7 +5,7 @@ Django
 djangorestframework
 gunicorn
 packaging
-psycopg2
+psycopg2-binary
 python-dotenv
 sqlparse
 whitenoise
