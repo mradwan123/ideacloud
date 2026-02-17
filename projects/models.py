@@ -1,10 +1,11 @@
 from django.db import models
-from django.conf import settings
+from django.contrib.auth import get_user_model
 
-User = settings.AUTH_USER_MODEL
 
 class ProjectIdea(models.Model):
     """This is the core Idea to a project. It is what eg. finished projects are based off"""
+    User = get_user_model()
+
     title = models.CharField(max_length=200)
     author = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, related_name='project_ideas')
     description = models.TextField()
