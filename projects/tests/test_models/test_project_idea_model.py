@@ -1,7 +1,7 @@
 from django.test import TestCase
 from django.core.exceptions import ValidationError
 from django.contrib.auth import get_user_model
-from projects.models import ProjectIdea
+from projects.models import ProjectIdea, Tag
 from django.utils import timezone
 from datetime import timedelta
 
@@ -80,3 +80,23 @@ class ProjectIdeaModelTests(TestCase):
         with self.assertRaises(ValidationError):
             # this triggers model constraint checks
             project_idea.full_clean()
+
+
+class ProjectIdeaModelTagTests(TestCase):
+    def setUp(self):
+        self.tag_one = Tag.objects.create(name="python")
+        self.tag_two = Tag.objects.create(name="automation")
+        self.project = ProjectIdea.onjects.create(
+            title="A python powered automation tool",
+            description="Automates mundane tasks with a python script"
+        )
+
+    ### VALID
+    def test_add_tag_to_project(self):
+        pass 
+
+    def test_add_additional_tag_to_project(self):
+        pass
+
+    def test_remove_tag_from_project(self):
+        pass
