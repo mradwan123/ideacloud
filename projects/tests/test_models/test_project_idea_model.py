@@ -1,13 +1,14 @@
 from django.test import TestCase
 from django.core.exceptions import ValidationError
-# from users.models import User
-from django.contrib.auth.models import User  # TODO remove this later and replace with line above
+from django.contrib.auth import get_user_model
 from projects.models import ProjectIdea
 from django.utils import timezone
 from datetime import timedelta
 
+
 class ProjectIdeaModelTests(TestCase):
     def setUp(self):
+        User = get_user_model()
         # create test user
         self.user = User.objects.create_user(username="author", password="password")
         # create test project_idea

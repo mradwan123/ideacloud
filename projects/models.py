@@ -1,11 +1,12 @@
 from django.db import models
-# from users.models import User
-from django.contrib.auth.models import User  # TODO remove this later and replace with line above
+from django.contrib.auth import get_user_model
 from django.utils import timezone
 
+User = get_user_model()
 
 class ProjectIdea(models.Model):
     """This is the core Idea to a project. It is what eg. finished projects are based off"""
+
     title = models.CharField(max_length=200)
     author = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, related_name='project_ideas')
     description = models.TextField()
@@ -20,6 +21,7 @@ class ProjectGroup(models.Model):
     """
     This is a project group whuch was created under a project idea. It can be given a name and description
     """
+
     name = models.CharField(max_length=200, null=False)
     description = models.TextField()
     project_idea = models.ForeignKey(ProjectIdea, on_delete=models.CASCADE, null=False, related_name='project_group_project_idea')
@@ -35,4 +37,3 @@ class ProjectGroup(models.Model):
 
     def __str__(self):
         return f"Project Group: '{self.name}' Created under: '{self.project_idea.title}' Created on: {self.created_on}"
-
