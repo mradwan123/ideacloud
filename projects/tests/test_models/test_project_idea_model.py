@@ -1,13 +1,14 @@
 from django.test import TestCase
 from django.core.exceptions import ValidationError
-# from users.models import User
-from django.contrib.auth.models import User  # TODO remove this later and replace with line above
+from django.contrib.auth import get_user_model
 from projects.models import ProjectIdea
 from django.utils import timezone
 from datetime import timedelta
 
+
 class ProjectIdeaModelTests(TestCase):
     def setUp(self):
+        User = get_user_model()
         # create test user
         self.user = User.objects.create_user(username="author", password="password")
         # create test project_idea
@@ -40,7 +41,7 @@ class ProjectIdeaModelTests(TestCase):
         # we don't test for the timestamp here. If the rest works, so should the timestamp and we would
         # have similar problems comparing as in the timestamp test itself
         self.assertIn(
-            f"Project: 'Test Idea'\nSubmitted by: '{self.user.username}'",
+            f"Project: 'Test Idea' Submitted by: '{self.user.username}'",
             str(self.project_idea))
 
     def test_project_idea_str_method_deleted_user(self):
@@ -53,7 +54,7 @@ class ProjectIdeaModelTests(TestCase):
         self.project_idea.refresh_from_db()
 
         self.assertIn(
-            "Project: 'Test Idea'\nSubmitted by: 'Deleted User'",
+            "Project: 'Test Idea' Submitted by: 'Deleted User'",
             str(self.project_idea))
 
     def test_post_updates_correctly_after_user_deletion(self):
