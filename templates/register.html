@@ -1,0 +1,28 @@
+{% extends 'default_template.html' %}
+{% load static %}
+
+{% block tab %} Register {% endblock %}
+
+{% block title %} Register {% endblock %}
+
+{% block content %}
+<!-- "<br>" after "}}" is only for aesthetic purposes:
+they can be styled with CSS/Bootstrap -->
+<form method="post">
+    <label>First Name *</label><br>
+    {{ form.first_name }}<br>
+    <label>Last Name *</label><br>
+    {{ form.last_name }}<br>
+    <label>Username</label><br>
+    {{ form.username }}<br>
+    <label>Email *</label><br>
+    {{ form.email }}<br>
+    <label>Password *</label><br>
+    {{ form.password }}<br>
+    <label>Description</label>
+    {{ form.description }}<br>
+    <button type="submit" class="form_button" id="confirm_button">Register</button>
+    <button type="reset" class="form_button" id="cancel_button">Cancel</button>
+    <p>* are required fields</p>
+</form>
+{% endblock %}
