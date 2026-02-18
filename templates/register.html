@@ -9,6 +9,7 @@
 <!-- "<br>" after "}}" is only for aesthetic purposes:
 they can be styled with CSS/Bootstrap -->
 <form method="post">
+    {% csrf_token %}
     <label>First Name *</label><br>
     {{ form.first_name }}<br>
     <label>Last Name *</label><br>
