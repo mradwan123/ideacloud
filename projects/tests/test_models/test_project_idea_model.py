@@ -41,7 +41,7 @@ class ProjectIdeaModelTests(TestCase):
         # we don't test for the timestamp here. If the rest works, so should the timestamp and we would
         # have similar problems comparing as in the timestamp test itself
         self.assertIn(
-            f"Project: 'Test Idea'\nSubmitted by: '{self.user.username}'",
+            f"Project: 'Test Idea' Submitted by: '{self.user.username}'",
             str(self.project_idea))
 
     def test_project_idea_str_method_deleted_user(self):
@@ -54,7 +54,7 @@ class ProjectIdeaModelTests(TestCase):
         self.project_idea.refresh_from_db()
 
         self.assertIn(
-            "Project: 'Test Idea'\nSubmitted by: 'Deleted User'",
+            "Project: 'Test Idea' Submitted by: 'Deleted User'",
             str(self.project_idea))
 
     def test_post_updates_correctly_after_user_deletion(self):
