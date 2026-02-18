@@ -1,0 +1,60 @@
+from django.test import TestCase
+from ...models import User
+from django.core.exceptions import ValidationError
+from django.db import IntegrityError
+from django.utils import timezone
+from datetime import timedelta
+
+class UserModelTest(TestCase):
+    
+    def setUp(self):
+        self.user = User.objects.create(
+            username = 'testusername',
+            email = 'something@ideacloud.com',
+            password = 'idea123',
+            description = 'some texts',
+            created_on = '2026-02-19',   
+            )
+    
+        
+    #---- VALIDATION --------------
+        self.assertEqual(self.user.username, 'testusername')
+        self.assertEqual(self.user.email, 'something@ideacloud.com')
+        self.assertEqual(self.user.password, 'idea123')
+        self.assertEqual(self.user.description, 'some texts')
+        
+    def test_User_created_on_correct_timestamp(self):
+        """Verify that timestamps are generated correctly"""
+        self.assertIsNotNone(self.user.created_on)
+        now = timezone.now()
+        # we use AlmostEqual, because we can't compare accurately on a detailed level because the code takes time to run
+        self.assertAlmostEqual(
+            self.user.created_on,
+            now,
+            delta=timedelta(minutes=1)
+        )
+        
+    def test__user_password_hashing(self):        
+        user = User.objects.create_user(username='bob', password='plain')
+        self.assertNotEqual(user.password, 'plain')
+        self.assertTrue(user.check_password('plain'))   
+        
+    def test_user_create_date_is_wrong_format(self):
+          with self.assertRaises(ValidationError):
+            user = User(created_on='12-12-12')
+            user.full_clean()
+            
+    def test_username_unique_constraint(self): #Abstractuser class includes by default unique username
+        User.objects.create_user(username='george', email='a@locospace.com', password='password')
+        with self.assertRaises(IntegrityError):
+            User.objects.create_user(username='george', email='g@locospace.com', password='password')
+            
+    # def test_email_unique_constraint(self): #Abstractuser class includes by default unique email
+    #     User.objects.create_user(username='george', email='george@gmail.com', password='password')
+    #     with self.assertRaises(IntegrityError):
+    #         User.objects.create_user(username='radwan', email='george@gmail.com', password='password')
+    
+    def test_user_email_blank(self): #Abstractuser class includes by default unique email
+        User.objects.create_user(username='george', password='p')
+        with self.assertRaises(IntegrityError):
+            User.objects.create_user(username='radwan', password='p')
