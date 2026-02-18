@@ -1,0 +1,32 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+    <title>{% block tab %}title tab{% endblock %}</title>
+</head>
+<body>
+    <header>
+    <h1>{% block title %}Title page{% endblock %}</h1>
+    <!-- url targets names to be defined -->
+    <nav class="navigation-bar">
+        <ul>
+            <li><a href="{% url 'projects:home' %}">HOME</a></li>
+            <li><a href="{% url 'projects:project-idea' %}">PROJECT IDEAS</a></li>
+            <!-- view to be modified (logged in / logged out) -->
+            <li><a href="{% url 'projects:profile' %}">PROFILE</a></li>
+            <li><a href="{% url 'projects:about' %}">ABOUT</a></li>
+            <li><a href="{% url 'projects:contact-us' %}">CONTACT US</a></li>
+        </ul>
+    </nav>
+    </header>
+    <main>
+        {% block content %}
+        {% endblock %}
+    </main>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
+</body>
+</html>
