@@ -1,9 +1,11 @@
 from django.db import models
-# from users.models import User
-from django.contrib.auth.models import User  # TODO remove this later and replace with line above
+from django.contrib.auth import get_user_model
+
 
 class ProjectIdea(models.Model):
     """This is the core Idea to a project. It is what eg. finished projects are based off"""
+    User = get_user_model()
+
     title = models.CharField(max_length=200)
     author = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, related_name='project_ideas')
     description = models.TextField()
