@@ -8,7 +8,7 @@ from django.db.utils import IntegrityError
 class TestProjectGroup(TestCase):
 
     def setUp(self):
-        User = get_user_model() 
+        User = get_user_model()
         self.group_name = "test_group"
         self.group_description = "test description"
         self.password = "TestPassword1,"
@@ -16,7 +16,7 @@ class TestProjectGroup(TestCase):
                                              password=self.password)
         self.project_idea = ProjectIdea.objects.create(title="test idea",
                                                        author=self.user,
-                                                       description="test description",)    
+                                                       description="test description",)
 
     def test_models_project_group_create_group(self):
         """
