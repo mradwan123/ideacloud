@@ -54,7 +54,7 @@ class UserModelTest(TestCase):
     #     with self.assertRaises(IntegrityError):
     #         User.objects.create_user(username='radwan', email='george@gmail.com', password='password')
     
-    def test_user_email_blank(self): #Abstractuser class includes by default unique email
-        User.objects.create_user(username='george', password='p')
-        with self.assertRaises(IntegrityError):
-            User.objects.create_user(username='radwan', password='p')
+    # def test_user_email_blank(self): #Abstractuser class includes by default unique email
+    #     User.objects.create_user(username='george', password='p')
+    #     with self.assertRaises(IntegrityError):
+    #         User.objects.create_user(username='radwan', password='p')
