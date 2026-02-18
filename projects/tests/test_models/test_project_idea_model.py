@@ -5,10 +5,10 @@ from projects.models import ProjectIdea, Tag
 from django.utils import timezone
 from datetime import timedelta
 
+User = get_user_model()
 
 class ProjectIdeaModelTests(TestCase):
     def setUp(self):
-        User = get_user_model()
         # create test user
         self.user = User.objects.create_user(username="author", password="password")
         # create test project_idea
@@ -84,19 +84,56 @@ class ProjectIdeaModelTests(TestCase):
 
 class ProjectIdeaModelTagTests(TestCase):
     def setUp(self):
-        self.tag_one = Tag.objects.create(name="python")
-        self.tag_two = Tag.objects.create(name="automation")
-        self.project = ProjectIdea.onjects.create(
+        self.tag_python = Tag.objects.create(name="python")
+        self.tag_automation = Tag.objects.create(name="automation")
+        self.project = ProjectIdea.objects.create(
             title="A python powered automation tool",
             description="Automates mundane tasks with a python script"
         )
 
     ### VALID
-    def test_add_tag_to_project(self):
-        pass 
+    def test_add_tags_to_project(self):
+        """Ensures that multiple tags can be added to a project"""
+        self.project.tags.add(self.tag_python, self.tag_automation)
 
-    def test_add_additional_tag_to_project(self):
-        pass
+        self.assertEqual(self.project.tags.count(), 2)
+        self.assertIn(self.tag_python, self.project.tags.all())
+        self.assertIn(self.tag_automation, self.project.tags.all())
 
     def test_remove_tag_from_project(self):
-        pass
+        """Ensures that a tag can be removed from a project and others persist"""
+        self.project.tags.add(self.tag_python, self.tag_automation)
+
+        self.project.tags.remove(self.tag_automation)
+
+        self.assertEqual(self.project.tags.count(), 1)
+        self.assertIn(self.tag_python, self.project.tags.all())
+        self.assertNotIn(self.tag_automation, self.project.tags.all())
+
+        # ensure the Tag object still exists in the db
+        self.assertTrue(Tag.objects.filter(name="automation").exists())
+
+
+class ProjectIdeaModelLikesTests(TestCase):
+    def setUp(self):
+        self.user = User.objects.create_user(username="user", password="password")
+        self.project = ProjectIdea.objects.create(
+            title="Universally liked project",
+            description="Everybody loves this!"
+        )
+
+    def test_user_likes_project(self):
+        """Ensure that adding a User to the likes works and increases the counter"""
+        self.project.likes.add(self.user)
+
+        self.assertEqual(self.project.likes.count(), 1)
+        self.assertIn(self.user, self.project.likes.all())
+
+    def test_user_likes_project_twice(self):
+        """
+        Checks that liking a post twice doesn't do anything
+        (Frontend should handle that but desync can do all sorts of stuff)
+        """
+        self.project.likes.add(self.user)
+        self.project.likes.add(self.user)
+        self.assertEqual(self.project.likes.count(), 1)
