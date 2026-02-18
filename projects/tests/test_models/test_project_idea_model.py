@@ -1,14 +1,14 @@
 from django.test import TestCase
 from django.core.exceptions import ValidationError
 from django.contrib.auth import get_user_model
-from projects.models import ProjectIdea
+from projects.models import ProjectIdea, Tag
 from django.utils import timezone
 from datetime import timedelta
 
+User = get_user_model()
 
 class ProjectIdeaModelTests(TestCase):
     def setUp(self):
-        User = get_user_model()
         # create test user
         self.user = User.objects.create_user(username="author", password="password")
         # create test project_idea
@@ -41,7 +41,7 @@ class ProjectIdeaModelTests(TestCase):
         # we don't test for the timestamp here. If the rest works, so should the timestamp and we would
         # have similar problems comparing as in the timestamp test itself
         self.assertIn(
-            f"Project: 'Test Idea'\nSubmitted by: '{self.user.username}'",
+            f"Project: 'Test Idea' Submitted by: '{self.user.username}'",
             str(self.project_idea))
 
     def test_project_idea_str_method_deleted_user(self):
@@ -54,7 +54,7 @@ class ProjectIdeaModelTests(TestCase):
         self.project_idea.refresh_from_db()
 
         self.assertIn(
-            "Project: 'Test Idea'\nSubmitted by: 'Deleted User'",
+            "Project: 'Test Idea' Submitted by: 'Deleted User'",
             str(self.project_idea))
 
     def test_post_updates_correctly_after_user_deletion(self):
@@ -80,3 +80,60 @@ class ProjectIdeaModelTests(TestCase):
         with self.assertRaises(ValidationError):
             # this triggers model constraint checks
             project_idea.full_clean()
+
+
+class ProjectIdeaModelTagTests(TestCase):
+    def setUp(self):
+        self.tag_python = Tag.objects.create(name="python")
+        self.tag_automation = Tag.objects.create(name="automation")
+        self.project = ProjectIdea.objects.create(
+            title="A python powered automation tool",
+            description="Automates mundane tasks with a python script"
+        )
+
+    ### VALID
+    def test_add_tags_to_project(self):
+        """Ensures that multiple tags can be added to a project"""
+        self.project.tags.add(self.tag_python, self.tag_automation)
+
+        self.assertEqual(self.project.tags.count(), 2)
+        self.assertIn(self.tag_python, self.project.tags.all())
+        self.assertIn(self.tag_automation, self.project.tags.all())
+
+    def test_remove_tag_from_project(self):
+        """Ensures that a tag can be removed from a project and others persist"""
+        self.project.tags.add(self.tag_python, self.tag_automation)
+
+        self.project.tags.remove(self.tag_automation)
+
+        self.assertEqual(self.project.tags.count(), 1)
+        self.assertIn(self.tag_python, self.project.tags.all())
+        self.assertNotIn(self.tag_automation, self.project.tags.all())
+
+        # ensure the Tag object still exists in the db
+        self.assertTrue(Tag.objects.filter(name="automation").exists())
+
+
+class ProjectIdeaModelLikesTests(TestCase):
+    def setUp(self):
+        self.user = User.objects.create_user(username="user", password="password")
+        self.project = ProjectIdea.objects.create(
+            title="Universally liked project",
+            description="Everybody loves this!"
+        )
+
+    def test_user_likes_project(self):
+        """Ensure that adding a User to the likes works and increases the counter"""
+        self.project.likes.add(self.user)
+
+        self.assertEqual(self.project.likes.count(), 1)
+        self.assertIn(self.user, self.project.likes.all())
+
+    def test_user_likes_project_twice(self):
+        """
+        Checks that liking a post twice doesn't do anything
+        (Frontend should handle that but desync can do all sorts of stuff)
+        """
+        self.project.likes.add(self.user)
+        self.project.likes.add(self.user)
+        self.assertEqual(self.project.likes.count(), 1)
