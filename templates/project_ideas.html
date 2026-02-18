@@ -1,0 +1,28 @@
+{% extends 'default_template.html' %}
+{% load static %}
+
+{% block tab %} Project Ideas {% endblock %}
+
+{% block title %} Project Ideas {% endblock %}
+
+{% block content %}
+
+<!-- display of the projects to be made -->
+
+<!-- "<br>" after "}}" is only for aesthetic purposes:
+they can be styled with CSS/Bootstrap -->
+
+<form method="post">
+    {% csrf_token %}
+    <label>Title *</label><br>
+    {{ form.title }}<br>
+    <label>Description</label>
+    {{ form.description }}<br>
+    <label>Tags</label>
+    {{ form.tags }}
+    <button type="submit">Create project</button>
+    <button type="reset">Cancel</button>
+    <p>* are required fields</p>
+</form>
+
+{% endblock %}
