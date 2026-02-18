@@ -1,14 +1,14 @@
 from django.test import TestCase
 from django.core.exceptions import ValidationError
-# from users.models import User
-from django.contrib.auth.models import User  # TODO remove this later and replace with line above
+from django.contrib.auth import get_user_model
 from ...models import ProjectGroup
 from ...models import ProjectIdea
 from django.db.utils import IntegrityError
 
-class TestProjectGroup(TestCase):  
+class TestProjectGroup(TestCase):
 
     def setUp(self):
+        User = get_user_model() 
         self.group_name = "test_group"
         self.group_description = "test description"
         self.password = "TestPassword1,"
@@ -22,12 +22,11 @@ class TestProjectGroup(TestCase):
         """
         Test for creating a project group and validating the data.
         """
-        
         group = ProjectGroup.objects.create(name=self.group_name,
                                             description=self.group_description,
                                             project_idea=self.project_idea,
                                             owner=self.user)
-        
+
         self.assertIn(group, ProjectGroup.objects.all())
         self.assertEqual(group.name, self.group_name)
         self.assertEqual(group.description, self.group_description)
@@ -42,7 +41,7 @@ class TestProjectGroup(TestCase):
                                     description=self.group_description,
                                     project_idea=self.project_idea,
                                     owner=self.user)
-        
+
         with self.assertRaises(IntegrityError):
             ProjectGroup.objects.create(name=self.group_name,
                                         description=self.group_description,
@@ -54,10 +53,10 @@ class TestProjectGroup(TestCase):
         Test the contraint for too long group names.
         """
 
-        group = ProjectGroup.objects.create(name="a" * 201,
-                                            description=self.group_description,
-                                            project_idea=self.project_idea,
-                                            owner=self.user)
+        group = ProjectGroup(name="a" * 201,
+                             description=self.group_description,
+                             project_idea=self.project_idea,
+                             owner=self.user)
         with self.assertRaises(ValidationError):
             group.full_clean()
 
