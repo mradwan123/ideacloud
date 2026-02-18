@@ -23,7 +23,7 @@ class UserModelTest(TestCase):
         self.assertEqual(self.user.password, 'idea123')
         self.assertEqual(self.user.description, 'some texts')
         
-    def test_created_on_correct_timestamp(self):
+    def test_User_created_on_correct_timestamp(self):
         """Verify that timestamps are generated correctly"""
         self.assertIsNotNone(self.user.created_on)
         now = timezone.now()
@@ -33,3 +33,28 @@ class UserModelTest(TestCase):
             now,
             delta=timedelta(minutes=1)
         )
+        
+    def test__user_password_hashing(self):        
+        user = User.objects.create_user(username='bob', password='plain')
+        self.assertNotEqual(user.password, 'plain')
+        self.assertTrue(user.check_password('plain'))   
+        
+    def test_user_create_date_is_wrong_format(self):
+          with self.assertRaises(ValidationError):
+            user = User(created_on='12-12-12')
+            user.full_clean()
+            
+    def test_username_unique_constraint(self): #Abstractuser class includes by default unique username
+        User.objects.create_user(username='george', email='a@locospace.com', password='password')
+        with self.assertRaises(IntegrityError):
+            User.objects.create_user(username='george', email='g@locospace.com', password='password')
+            
+    # def test_email_unique_constraint(self): #Abstractuser class includes by default unique email
+    #     User.objects.create_user(username='george', email='george@gmail.com', password='password')
+    #     with self.assertRaises(IntegrityError):
+    #         User.objects.create_user(username='radwan', email='george@gmail.com', password='password')
+    
+    def test_user_email_blank(self): #Abstractuser class includes by default unique email
+        User.objects.create_user(username='george', password='p')
+        with self.assertRaises(IntegrityError):
+            User.objects.create_user(username='radwan', password='p')
