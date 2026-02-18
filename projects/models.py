@@ -5,13 +5,25 @@ from django.utils import timezone
 User = get_user_model()
 
 
+class Tag(models.Model):
+    """These are the tags to categorize projects"""
+    name = models.CharField(max_length=100)
+
+    class Meta:
+        db_table = "tags"
+
+    def __str__(self):
+        return self.name
+
+
 class ProjectIdea(models.Model):
     """This is the core Idea to a project. It is what eg. finished projects are based off"""
 
     title = models.CharField(max_length=200)
-    author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, null=True, related_name='project_ideas')
+    author = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, related_name='author_project_ideas')
     description = models.TextField()
     created_on = models.DateTimeField(auto_now_add=True)
+    tags = models.ManyToManyField(Tag, related_name='tags_project_ideas')
 
     def __str__(self):
         author_name = self.author.username if self.author else "Deleted User"
@@ -38,12 +50,3 @@ class ProjectGroup(models.Model):
 
     def __str__(self):
         return f"Project Group: '{self.name}' Created under: '{self.project_idea.title}' Created on: {self.created_on}"
-
-    
-class Tag(models.Model):
-    name = models.CharField(max_length=100)
-    
-    class Meta:
-        db_table = "tags"
-    def __str__(self):
-        return self.name
