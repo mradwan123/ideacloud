@@ -1,0 +1,6 @@
+from django.test import TestCase
+from .models import Tag_
+class TagModelTest(TestCase):
+    def test_create_tag(self):
+        tag = Tag.objects.create(name="python")
+        delf.assertEqual
