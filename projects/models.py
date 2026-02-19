@@ -15,7 +15,6 @@ class Tag(models.Model):
     def __str__(self):
         return self.name
 
-
 class ProjectIdea(models.Model):
     """This is the core Idea to a project. It is what eg. finished projects are based off"""
 
@@ -39,7 +38,7 @@ class ProjectGroup(models.Model):
     name = models.CharField(max_length=200, null=False)
     description = models.TextField()
     project_idea = models.ForeignKey(ProjectIdea, on_delete=models.CASCADE, null=False, related_name='project_group_project_idea')
-    owner = models.ForeignKey(User, on_delete=models.CASCADE, null=False, related_name='project_group_owner')
+    owner = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, related_name='project_group_owner')
     members = models.ManyToManyField(User, blank=True, related_name='group_members')
     created_on = models.DateTimeField(null=False, editable=False, default=timezone.now)
     updated_on = models.DateTimeField(auto_now=True, editable=False)
@@ -67,3 +66,15 @@ class FinishedProject(models.Model):
     def __str__(self):
         group_name = self.project_group.name if self.project_group else "Deleted Group"
         return f"Project: '{self.title}' Submitted by: '{group_name}' Finished on on: {self.finished_on}"
+
+
+class ImageProject(models.Model):
+    """The authenticated user uploads for images for new/active projects"""
+    image = models.ImageField(upload_to='project_images/', null=False, blank=True)
+    project_idea = models.ForeignKey(ProjectIdea, on_delete=models.CASCADE, related_name='images_projects')
+
+    class Meta:
+        db_table = "image_project"
+
+    def __str__(self):
+        return self.image
