@@ -73,6 +73,17 @@ class ProjectGroup(models.Model):
         return f"Project Group: '{self.name}' Created under: '{self.project_idea.title}' Created on: {self.created_on}"
 
 
+class ProjectGroupComment(models.Model):
+    author = models.ForeignKey(User, on_delete=models.CASCADE, related_name='user_project_group_comments')
+    project_group = models.ForeignKey(ProjectGroup, on_delete=models.CASCADE, related_name='project_group_comments')
+    content = models.CharField(max_length=500)
+    created_on = models.DateTimeField(null=False, editable=False, default=timezone.now)
+    updated_on = models.DateTimeField(auto_now=True, editable=False)
+
+    def __str__(self):
+        return f"Comment by {self.author} on {self.project_group.name}"
+
+
 class FinishedProject(models.Model):
     """This is the finished project of a group, stemming from a ProjectIdea"""
 
