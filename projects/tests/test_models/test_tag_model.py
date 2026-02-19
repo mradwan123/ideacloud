@@ -4,7 +4,6 @@ from projects.models import Tag
 class TagModelTest(TestCase):
     def test_create_tag(self):
         tag = Tag.objects.create(name="python")
-        print(tag)
         self.assertEqual(tag.name, "python")
         
     def test_str_method(self):
