@@ -51,3 +51,4 @@ class ProjectGroup(models.Model):
 
     def __str__(self):
         return f"Project Group: '{self.name}' Created under: '{self.project_idea.title}' Created on: {self.created_on}"
+    
