@@ -65,5 +65,5 @@ class FinishedProject(models.Model):
     likes = models.ManyToManyField(User, related_name='likes_finished_projects')
 
     def __str__(self):
-        group = self.project_group if self.project_group else "Deleted Group"
-        return f"Project: '{self.title}' Submitted by: '{group.name}' Finished on on: {self.finished_on}"
+        group_name = self.project_group.name if self.project_group else "Deleted Group"
+        return f"Project: '{self.title}' Submitted by: '{group_name}' Finished on on: {self.finished_on}"

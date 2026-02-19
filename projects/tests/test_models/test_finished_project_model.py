@@ -57,28 +57,26 @@ class FinishedProjectModelTests(TestCase):
             str(self.finished_project)
         )
 
-#     def test_project_idea_str_method_deleted_user(self):
-#         """Verify that the __str__ method replaces the username of a deleted user correctly with 'Deleted User'"""
-#         # we don't test for the timestamp here. If the rest works, so should the timestamp and we would
-#         # have similar problems comparing as in the timestamp test itself
-#         self.user.delete()
+    def test_finished_project_str_method_deleted_group(self):
+        """Verify that the __str__ method replaces the username of a deleted user correctly with 'Deleted Group'"""
+        self.user.delete()
 
-#         # sync the object in memory with the database state (python object isn't updated after we delete from db)
-#         self.finished_project.refresh_from_db()
+        # sync the object in memory with the database state (python object isn't updated after we delete from db)
+        self.finished_project.refresh_from_db()
 
-#         self.assertIn(
-#             "Project: 'Test Idea' Submitted by: 'Deleted User'",
-#             str(self.finished_project))
+        self.assertIn(
+            "Project: 'Test finished project' Submitted by: 'Deleted Group'",
+            str(self.finished_project))
 
-#     def test_post_updates_correctly_after_user_deletion(self):
-#         """Verify that the author is deleted after user deletion but the post remains in db"""
-#         self.user.delete()
-#         # refresh the idea instance from the database
-#         self.finished_project.refresh_from_db()
+    def test_finished_project_updates_correctly_after_user_deletion(self):
+        """Verify that the author is deleted after user deletion but the post remains in db"""
+        self.user.delete()
+        # refresh the idea instance from the database
+        self.finished_project.refresh_from_db()
 
-#         # author should now be "Deleted User"
-#         self.assertIsNone(self.finished_project.author)
-#         self.assertTrue(ProjectIdea.objects.filter(id=self.finished_project.id).exists())
+        # author should now be "Deleted User"
+        self.assertIsNone(self.finished_project.author)
+        self.assertTrue(ProjectIdea.objects.filter(id=self.finished_project.id).exists())
 
 #     ### INVALID
 #     def test_create_project_idea_title_too_long(self):
