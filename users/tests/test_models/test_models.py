@@ -1,9 +1,13 @@
 from django.test import TestCase
 from ...models import User
+from django.contrib.auth import get_user_model
 from django.core.exceptions import ValidationError
 from django.db import IntegrityError
 from django.utils import timezone
 from datetime import timedelta
+from django.conf import settings
+
+
 
 class UserModelTest(TestCase):
     
@@ -43,18 +47,30 @@ class UserModelTest(TestCase):
           with self.assertRaises(ValidationError):
             user = User(created_on='12-12-12')
             user.full_clean()
+
+    def test_user_default_image_path(self):
+        default_path = str(settings.MEDIA_ROOT) + "/profile_images/default.jpg"
+        user_path = self.user.image.path
+        self.assertEqual(default_path, user_path)
             
     def test_username_unique_constraint(self): #Abstractuser class includes by default unique username
         User.objects.create_user(username='george', email='a@locospace.com', password='password')
         with self.assertRaises(IntegrityError):
             User.objects.create_user(username='george', email='g@locospace.com', password='password')
-            
-    # def test_email_unique_constraint(self): #Abstractuser class includes by default unique email
-    #     User.objects.create_user(username='george', email='george@gmail.com', password='password')
-    #     with self.assertRaises(IntegrityError):
-    #         User.objects.create_user(username='radwan', email='george@gmail.com', password='password')
+
     
-    def test_user_email_blank(self): #Abstractuser class includes by default unique email
-        User.objects.create_user(username='george', password='p')
-        with self.assertRaises(IntegrityError):
-            User.objects.create_user(username='radwan', password='p')
+    def test_email_not_unique_constraint(self): #Abstractuser class does NOT include by default unique email
+        '''Testing two users with same email. Test passes as per built in Abstract user constraints'''
+        User = get_user_model()
+        user1 = User.objects.create_user(username='george', email='george@gmail.com', password='password')
+        user2 = User.objects.create_user(username='radwan', email='george@gmail.com', password='password')
+        self.assertEqual(user1.email, user2.email)
+        
+    
+    def test_user_email_blank(self): #Abstractuser class includes by default unique email = blank
+        '''Shows how email can be blank. '''
+        User = get_user_model()
+        user = User.objects.create_user(username='george', password='p')
+        self.assertFalse(user.email, None)
+        
+        

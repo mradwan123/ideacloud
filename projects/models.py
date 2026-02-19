@@ -23,6 +23,7 @@ class ProjectIdea(models.Model):
     description = models.TextField()
     created_on = models.DateTimeField(auto_now_add=True)
     tags = models.ManyToManyField(Tag, related_name='tags_project_ideas')
+    likes = models.ManyToManyField(User, related_name='likes_project_ideas')
 
     def __str__(self):
         author_name = self.author.username if self.author else "Deleted User"
