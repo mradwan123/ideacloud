@@ -51,7 +51,7 @@ class ProjectGroupCommentTesting(TestCase):
         
     def test_project_group_comment_str_method(self):
         """Verify the correctness of the string returned by the __str__ method"""
-        # we don't test for the timestamp here. If the rest works, so should the timestamp and we would
+        # we don't test for the timestamp here. If rest works, so should the timestamp and we would
         # have similar problems comparing as in the timestamp test itself
         self.assertIn(
             f"Comment by {self.user.username} on {self.project_group.name}",
