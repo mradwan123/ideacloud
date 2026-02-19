@@ -57,13 +57,13 @@ class ProjectIdeaModelTests(TestCase):
             "Project: 'Test Idea' Submitted by: 'Deleted User'",
             str(self.project_idea))
 
-    def test_post_updates_correctly_after_user_deletion(self):
-        """Verify that the author is deleted after user deletion but the post remains in db"""
+    def test_project_idea_updates_correctly_after_user_deletion(self):
+        """Verify that the author is deleted after user deletion but the ProjectIdea remains in db"""
         self.user.delete()
         # refresh the idea instance from the database
         self.project_idea.refresh_from_db()
 
-        # author should now be "Deleted User"
+        # author should now be NULL
         self.assertIsNone(self.project_idea.author)
         self.assertTrue(ProjectIdea.objects.filter(id=self.project_idea.id).exists())
 
