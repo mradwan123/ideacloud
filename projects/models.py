@@ -38,7 +38,7 @@ class ProjectGroup(models.Model):
     name = models.CharField(max_length=200, null=False)
     description = models.TextField()
     project_idea = models.ForeignKey(ProjectIdea, on_delete=models.CASCADE, null=False, related_name='project_group_project_idea')
-    owner = models.ForeignKey(User, on_delete=models.CASCADE, null=False, related_name='project_group_owner')
+    owner = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, related_name='project_group_owner')
     members = models.ManyToManyField(User, blank=True, related_name='group_members')
     created_on = models.DateTimeField(null=False, editable=False, default=timezone.now)
     updated_on = models.DateTimeField(auto_now=True, editable=False)
