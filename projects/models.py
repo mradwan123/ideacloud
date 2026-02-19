@@ -51,12 +51,12 @@ class ProjectGroup(models.Model):
         return f"Project Group: '{self.name}' Created under: '{self.project_idea.title}' Created on: {self.created_on}"
 
 class ImageProject(models.Model):
-    """These authenticated user uploads for images for new/active projects"""
-    image_name = models.ImageField(upload_to='image_project')
-    project_idea = models.ForeignKey(ProjectIdea, on_delete=any, related_name='images_projects')
+    """The authenticated user uploads for images for new/active projects"""
+    image = models.ImageField(upload_to='project_images/', null=False, blank=True)
+    project_idea = models.ForeignKey(ProjectIdea, on_delete=models.CASCADE, related_name='images_projects')
 
     class Meta:
         db_table = "image_project"
 
     def __str__(self):
-        return self.image_name
+        return self.image
