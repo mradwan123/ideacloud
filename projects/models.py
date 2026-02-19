@@ -7,7 +7,7 @@ User = get_user_model()
 
 class Tag(models.Model):
     """These are the tags to categorize projects"""
-    name = models.CharField(max_length=100)
+    name = models.CharField(max_length=100, unique=True)
 
     class Meta:
         db_table = "tags"
