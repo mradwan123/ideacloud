@@ -69,3 +69,21 @@ class TestProjectGroup(TestCase):
                                             project_idea=self.project_idea,
                                             owner=self.user)
         self.assertIn(f"Project Group: '{group.name}'", str(group))
+
+
+    def test_models_project_group_updates_correctly_after_owner_deletion(self):
+        """Verify that the owner is set to null after owner deletion but the ProjectGroup remains in db"""
+        group = ProjectGroup.objects.create(name=self.group_name,
+                                            description=self.group_description,
+                                            project_idea=self.project_idea,
+                                            owner=self.user)
+        group_id = group.id
+        
+        group.owner.delete()
+        # refresh the ProjectGroup instance from the database
+        group.refresh_from_db()
+
+        # owner should now be NULL
+        self.assertIsNone(group.owner)
+        # ProjectGroup should still exist
+        self.assertTrue(ProjectGroup.objects.filter(id=group_id).exists())
