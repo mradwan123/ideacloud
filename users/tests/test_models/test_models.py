@@ -5,6 +5,7 @@ from django.core.exceptions import ValidationError
 from django.db import IntegrityError
 from django.utils import timezone
 from datetime import timedelta
+from django.conf import settings
 
 
 
@@ -46,6 +47,11 @@ class UserModelTest(TestCase):
           with self.assertRaises(ValidationError):
             user = User(created_on='12-12-12')
             user.full_clean()
+
+    def test_user_default_image_path(self):
+        default_path = str(settings.MEDIA_ROOT) + "/profile_images/default.jpg"
+        user_path = self.user.image.path
+        self.assertEqual(default_path, user_path)
             
     def test_username_unique_constraint(self): #Abstractuser class includes by default unique username
         User.objects.create_user(username='george', email='a@locospace.com', password='password')
