@@ -1,2 +1,7 @@
 The list in "profanity_words_list.json" contains SEVERAL very offensive and derogatory words.
 Read with caution or better not at all!
+
+If you need a word to test with, use "custom_test_profanity"
+
+A special thanks to zautumnz for providing a list of profane words on their github page:
+https://github.com/zautumnz/profane-words
