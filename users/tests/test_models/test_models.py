@@ -26,13 +26,13 @@ class UserModelTest(TestCase):
         if os.path.exists(TEMP_MEDIA_ROOT):
             shutil.rmtree(TEMP_MEDIA_ROOT, ignore_errors=True)
             
-    def _create_test_image(self):
+    def _create_test_image(self, filename):
         """Helper to create a temporary image file"""
         image = Image.new('RGB', (100, 100), color='red')
         buffer = BytesIO()
         image.save(buffer, format='JPEG')
         buffer.seek(0)
-        return SimpleUploadedFile('profile_test.jpg', buffer.read(), content_type='image/jpeg')
+        return SimpleUploadedFile(filename, buffer.read(), content_type='image/jpeg')
     
     #TODO change create to create user and make tests pass
     def setUp(self):
@@ -76,23 +76,54 @@ class UserModelTest(TestCase):
             user.full_clean()
 
     def test_user_default_image_path(self):
+        """Verify that the default image file is used when creating a new profile without specifying a profile image."""
         default_path = str(settings.MEDIA_ROOT) + "/profile_images/default.jpg"
         user_path = self.user.image.path
         self.assertEqual(default_path, user_path)
 
     def test_user_custom_image_path(self):
-        new_profile_image = self._create_test_image()
+        """Verify that a custom image can be saved in a profile."""
+        image_name = "path_test.jpg"
+        new_profile_image = self._create_test_image(image_name)
         new_user = User.objects.create_user(username='test_image_user',
-                                   email='test_image_user@ideacloud.com',
-                                   password='idea123',
-                                   image=new_profile_image,
-                                   description='some texts',
-                                   created_on='2026-02-19',
-                                   available=False)
-        default_path = str(settings.MEDIA_ROOT) + "/profile_images/profile_test"
+                                            email='test_image_user@ideacloud.com',
+                                            password='idea123',
+                                            image=new_profile_image,
+                                            description='some texts',
+                                            created_on='2026-02-19',
+                                            available=False)
+        default_path = str(settings.MEDIA_ROOT) + f"/profile_images/{image_name}"
         user_path = new_user.image.path
-        self.assertIn(default_path, user_path)
-            
+        self.assertEqual(default_path, user_path)
+
+    def test_user_custom_image_duplicate_name(self):
+        """Verify that custom image is not overwitten when saving an image with the same name.
+        Also make sure that the new image is also saved."""
+        image_name = "duplicate_test.jpg"
+        new_profile_image = self._create_test_image(image_name)
+        new_user = User.objects.create_user(username='test_image_user',
+                                            email='test_image_user@ideacloud.com',
+                                            password='idea123',
+                                            image=new_profile_image,
+                                            description='some texts',
+                                            created_on='2026-02-19',
+                                            available=False)
+        
+        new_user2 = User.objects.create_user(username='another_image_user',
+                                             email='another_image_user@ideacloud.com',
+                                             password='idea123',
+                                             image=new_profile_image,
+                                             description='some texts',
+                                             created_on='2026-02-19',
+                                             available=False)
+        default_path = str(settings.MEDIA_ROOT) + f"/profile_images/{image_name}"
+        user_path = new_user.image.path
+        user_path2 = new_user2.image.path
+        self.assertEqual(default_path, user_path)
+        self.assertNotEqual(user_path, user_path2)
+        self.assertIn("duplicate_test", user_path2)
+        self.assertIn(".jpg", user_path2)
+
     def test_username_unique_constraint(self): #Abstractuser class includes by default unique username
         User.objects.create_user(username='george', email='a@locospace.com', password='password')
         with self.assertRaises(IntegrityError):
