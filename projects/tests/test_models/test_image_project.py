@@ -3,8 +3,34 @@ from django.contrib.auth import get_user_model
 from django.core.files.uploadedfile import SimpleUploadedFile
 from ...models import ImageProject, ProjectIdea
 import os    
+from PIL import Image
+from io import BytesIO
+from django.core.files.uploadedfile import SimpleUploadedFile
+import shutil
+import tempfile
+from django.test import TestCase, override_settings
+from django.urls import reverse
 
+# Create a temporary media directory for tests
+TEMP_MEDIA_ROOT = tempfile.mkdtemp()
+
+@override_settings(MEDIA_ROOT=TEMP_MEDIA_ROOT)
 class ImageProjectTest(TestCase):
+
+    @classmethod
+    def tearDownClass(cls):
+        super().tearDownClass()
+        if os.path.exists(TEMP_MEDIA_ROOT):
+            shutil.rmtree(TEMP_MEDIA_ROOT, ignore_errors=True)
+            
+    def _create_test_image(self):
+        """Helper to create a temporary image file"""
+        image = Image.new('RGB', (100, 100), color='red')
+        buffer = BytesIO()
+        image.save(buffer, format='JPEG')
+        buffer.seek(0)
+        return SimpleUploadedFile('view_test.jpg', buffer.read(), content_type='image/jpeg')
+
     def setUp(self):
         User = get_user_model()
         # create test user
