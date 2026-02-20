@@ -89,6 +89,14 @@ WSGI_APPLICATION = 'config.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/6.0/ref/settings/#databases
 
+# SQLite as default. Gets replaced if either a URL or "local" is inside the .env variable DATABASE_URL
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
+    }
+}
+
 if os.environ.get('GITHUB_WORKFLOW'):
     DATABASES = {
         'default': {
@@ -103,7 +111,7 @@ if os.environ.get('GITHUB_WORKFLOW'):
 
 if 'DATABASE_URL' in os.environ:
     db_env = os.environ.get('DATABASE_URL')
-
+    print(db_env)
     if db_env == "local":
         DATABASES = {
             "default": {
@@ -120,14 +128,6 @@ if 'DATABASE_URL' in os.environ:
             conn_max_age=500,
             conn_health_checks=True,
         )
-else:
-    # SQLite as default. Gets replaced if either an URL or "local" is inside the .env variable DATABASE_URL
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.sqlite3',
-            'NAME': BASE_DIR / 'db.sqlite3',
-        }
-    }
 
 # Password validation
 # https://docs.djangoproject.com/en/6.0/ref/settings/#auth-password-validators
