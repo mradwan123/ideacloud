@@ -14,4 +14,15 @@
 * likes
 * comments-->
 
+<h1>Here are all the projects</h1>
+
+{% for idea in ideas %}
+<ul>
+    <li>{{ idea.title }}</li>
+    <li>{{ idea.author }}</li>
+    <li>{{ idea.description }}</li>
+    <li>{{ idea.tags }}</li>
+</ul>
+{% endfor %}
+
 {% endblock %}
