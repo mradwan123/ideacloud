@@ -12,6 +12,7 @@ class User(AbstractUser):
    
     image = models.ImageField(upload_to='profile_images/', default='profile_images/default.jpg')
     description = models.TextField(max_length=1000, null=True, blank=True)
+    available = models.BooleanField(default=False)
     # Automatically sets the field to the current date only when the model instance is first created.
     created_on = models.DateTimeField(auto_now_add=True, editable=False)  
     favorite_projects = models.ManyToManyField("projects.ProjectIdea", related_name='user_favorite_project_idea', blank=True)
