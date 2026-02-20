@@ -34,7 +34,6 @@ class UserModelTest(TestCase):
         buffer.seek(0)
         return SimpleUploadedFile(filename, buffer.read(), content_type='image/jpeg')
     
-    #TODO change create to create user and make tests pass
     def setUp(self):
         self.user = User.objects.create_user(
             username = 'testusername',
