@@ -36,7 +36,7 @@ class UserModelTest(TestCase):
     
     #TODO change create to create user and make tests pass
     def setUp(self):
-        self.user = User.objects.create(
+        self.user = User.objects.create_user(
             username = 'testusername',
             email = 'something@ideacloud.com',
             password = 'idea123',
@@ -47,9 +47,10 @@ class UserModelTest(TestCase):
     
         
     #---- VALIDATION --------------
+    def test_user_created_sucessfully(self):    
         self.assertEqual(self.user.username, 'testusername')
         self.assertEqual(self.user.email, 'something@ideacloud.com')
-        self.assertEqual(self.user.password, 'idea123')
+        self.assertTrue(self.user.check_password('idea123'))
         self.assertEqual(self.user.description, 'some texts')
         self.assertEqual(self.user.available, False)
         
