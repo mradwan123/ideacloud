@@ -51,6 +51,15 @@ class Migration(migrations.Migration):
             ],
         ),
         migrations.CreateModel(
+            name='ProjectIdeaComment',
+            fields=[
+                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('content', models.TextField()),
+                ('created_on', models.DateTimeField(default=django.utils.timezone.now, editable=False)),
+                ('updated_on', models.DateTimeField(auto_now=True)),
+            ],
+        ),
+        migrations.CreateModel(
             name='Tag',
             fields=[
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),

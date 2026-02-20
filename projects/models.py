@@ -14,6 +14,9 @@ class Tag(models.Model):
 
     def __str__(self):
         return self.name
+    
+
+    
 
 class ProjectIdea(models.Model):
     """This is the core Idea to a project. It is what eg. finished projects are based off"""
@@ -28,6 +31,24 @@ class ProjectIdea(models.Model):
     def __str__(self):
         author_name = self.author.username if self.author else "Deleted User"
         return f"Project: '{self.title}' Submitted by: '{author_name}' Created on: {self.created_on}"
+ 
+class ProjectIdeaComment(models.Model):
+    user = models.ForeignKey(
+        User,on_delete=models.CASCADE,
+        related_name='user_project_idea_comments'
+    )
+    project_idea = models.ForeignKey(
+        ProjectIdea, 
+        on_delete=models.CASCADE,
+        related_name='project_idea_comments'
+        )
+    content = models.CharField(max_length=500)
+    created_on = models.DateTimeField(null=False, editable=False, default=timezone.now)
+    updated_on = models.DateTimeField(auto_now=True, editable=False)
+
+    def __str__(self):
+        return f"Comment by {self.user} on {self.project_idea}"
+              
 
 
 class ProjectGroup(models.Model):

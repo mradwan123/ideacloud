@@ -56,6 +56,16 @@ class Migration(migrations.Migration):
             field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='images_projects', to='projects.projectidea'),
         ),
         migrations.AddField(
+            model_name='projectideacomment',
+            name='project_idea',
+            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='project_idea_comments', to='projects.projectidea'),
+        ),
+        migrations.AddField(
+            model_name='projectideacomment',
+            name='user',
+            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='user_project_idea_comments', to=settings.AUTH_USER_MODEL),
+        ),
+        migrations.AddField(
             model_name='projectidea',
             name='tags',
             field=models.ManyToManyField(related_name='tags_project_ideas', to='projects.tag'),
