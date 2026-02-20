@@ -17,7 +17,8 @@ class UserModelTest(TestCase):
             email = 'something@ideacloud.com',
             password = 'idea123',
             description = 'some texts',
-            created_on = '2026-02-19',   
+            created_on = '2026-02-19',
+            available = False
             )
     
         
@@ -26,6 +27,7 @@ class UserModelTest(TestCase):
         self.assertEqual(self.user.email, 'something@ideacloud.com')
         self.assertEqual(self.user.password, 'idea123')
         self.assertEqual(self.user.description, 'some texts')
+        self.assertEqual(self.user.available, False)
         
     def test_User_created_on_correct_timestamp(self):
         """Verify that timestamps are generated correctly"""
