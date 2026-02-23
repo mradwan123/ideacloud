@@ -1,9 +1,20 @@
-{% extends 'default_template.html' %}
+{% extends 'base.html' %}
 {% load static %}
+
+<!-- block title and block tab to be modified to display the name of the project -->
 
 {% block tab %} Project Details {% endblock %}
 
 {% block title %} project Details {% endblock %}
+
+<!--
+  * title
+  * picture of the owner
+  * name of the onwer with link to their profile
+  * description
+  * likes
+  * comments
+  * participants to the project-->
 
 {% block content %}
 <p>
