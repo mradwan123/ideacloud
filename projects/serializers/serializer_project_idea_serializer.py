@@ -1,18 +1,17 @@
 from rest_framework import serializers
 from projects.models import ProjectIdea
 from projects.serializers.serializer_profanity_validator import ProfanityValidator
-from 
+from projects.serializers.serializer_image_project import ImageProjectSerializer
+# TODO import comment serializer
 
 
 class ProjectIdeaSerializer(serializers.ModelSerializer):
-    # we define this here because it's a reverse relation (pointing back from ImageProject)
-    # if we didn't do this, we wouldn't be able to return the images to the frontend, when they call for a ProjectIdea
-    images_projects = serializers.PrimaryKeyRelatedField(many=True, read_only=True)
-    # images_projects = serializers.SlugRelatedField(
-    #     many=True,
-    #     read_only=True,
-    #     slug_field='image'
-    # )
+    # we're nesting the serializers here; the variale names HAVE to be the related_name of the model
+    # read_only set to true because we wouldn't change anything from here
+    images_projects = ImageProjectSerializer(many=True, read_only=True)
+    # TODO import comment serializer, uncomment next line
+    # project_idea_comments = ProjectIdeaCommentSerializer(many=True, read_only=True)
+
     # this displays the author as a human-readable name rather than an ID; source can't be added via extra_kwargs
     author = serializers.ReadOnlyField(source='author.username')
 
@@ -26,7 +25,8 @@ class ProjectIdeaSerializer(serializers.ModelSerializer):
             'created_on',
             'tags',
             'likes',
-            'images_projects'
+            'images_projects',
+            'project_idea_comments'
         ]
         # The following code tells the serializer to not expect it in the POST data, and get the info from the view.
         # created_on is auto_now_add, so it must be read-only, IDs should never be changed
