@@ -1,12 +1,18 @@
 from rest_framework import serializers
 from projects.models import ProjectIdea
 from projects.serializers.serializer_profanity_validator import ProfanityValidator
+from 
 
 
 class ProjectIdeaSerializer(serializers.ModelSerializer):
     # we define this here because it's a reverse relation (pointing back from ImageProject)
-    # if we didn't do this, we wouldn't be able to return the images to the frontend, when they cacll for a ProjectIdea
+    # if we didn't do this, we wouldn't be able to return the images to the frontend, when they call for a ProjectIdea
     images_projects = serializers.PrimaryKeyRelatedField(many=True, read_only=True)
+    # images_projects = serializers.SlugRelatedField(
+    #     many=True,
+    #     read_only=True,
+    #     slug_field='image'
+    # )
     # this displays the author as a human-readable name rather than an ID; source can't be added via extra_kwargs
     author = serializers.ReadOnlyField(source='author.username')
 
