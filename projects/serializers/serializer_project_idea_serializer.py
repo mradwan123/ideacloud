@@ -1,9 +1,11 @@
 from rest_framework import serializers
-from projects.models import ProjectIdea
+from projects.models import ProjectIdea, Tag
+from django.contrib.auth import get_user_model
 from projects.serializers.serializer_profanity_validator import ProfanityValidator
 from projects.serializers.serializer_image_project import ImageProjectSerializer
 # TODO import comment serializer
 
+User = get_user_model()
 
 class ProjectIdeaSerializer(serializers.ModelSerializer):
     # we're nesting the serializers here; the variale names HAVE to be the related_name of the model
@@ -36,6 +38,9 @@ class ProjectIdeaSerializer(serializers.ModelSerializer):
         extra_kwargs = {
             'title': {'validators': [ProfanityValidator()]},
             'description': {'validators': [ProfanityValidator()]},
+            # We must provide querysets for M2M fields so the serializer can find real objects
+            'tags': {'queryset': Tag.objects.all()},
+            'likes': {'queryset': User.objects.all()}
         }
 
     def to_internal_value(self, data):
