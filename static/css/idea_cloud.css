@@ -98,11 +98,11 @@ footer {
 
 /*  -- forms -- */
 
-.form-description {
+.page-description {
     text-align: center;
 }
 
-.form-title {
+.page-title {
     margin-bottom: 3rem;
 }
 
@@ -127,4 +127,50 @@ label {
 
 .form-button {
     margin-top: 1rem;
+}
+
+.about-us {
+    text-align: left;
+}
+
+#meet-our-team {
+    margin-top: 5rem;
+    margin-bottom: 3rem;
+}
+
+/* -- team boxes -- */
+
+#team-description {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.team-box {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    margin-bottom: 4rem;
+    max-width: 30rem;
+    margin: 0 auto 2rem auto;
+}
+
+.team-box img {
+    width: 7rem;
+    height: 7rem;
+    object-fit: cover;
+}
+
+.name-and-description {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.name-and-description h4 {
+    font-size: 1.25rem;
+}
+
+.name-and-description h5 {
+    font-size: 1rem;
+    opacity: 0.7;
 }
