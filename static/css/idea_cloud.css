@@ -1,0 +1,96 @@
+/* colour palette https://coolors.co/12202b-647d76-f9f4f5-788192-767179 */
+
+
+/*  -- header -- */
+
+@font-face {
+    font-family: 'Amoera';
+    src: url('../fonts/amoera-Regular.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'Nexa';
+    src: url('../fonts/nexa/Nexa-ExtraLight.ttf') format('truetype');
+}
+
+.header {
+    background-color: #647D76;
+    color: black;
+    padding-top: 2%;
+    text-align: center;
+    padding-bottom: 1%;
+}
+
+h1 {
+    color: #F9F4F5;
+    font-size: 3rem;
+    margin-bottom: 1rem;
+    font-family: 'Nexa', serif;
+    font-weight: bold;
+}
+
+h2 {
+    font-size: 1.9rem;
+    font-family: 'Amoera', serif;
+    color: #F9F4F5;
+}
+
+a {
+    color: #788192;
+    text-decoration: none;
+}
+
+a:visited, a:hover {
+    color: black;
+    text-decoration: none;
+}
+
+.nav-bar {
+    align-items: center;
+    background-color: #767179;
+    color: black;
+    display: flex;
+    font-size: 1rem;
+    font-family: 'Merriweather', serif;
+    justify-content: center;
+    width: auto;
+    border-radius: 0 0 0.625rem 0.625rem;
+}
+
+.nav-tag {
+    padding-top: 1rem;
+    padding-left: 2rem;
+    padding-right: 2rem;
+    padding-bottom: 1rem;
+}
+
+/*  -- body -- */
+
+@font-face {
+    font-family: 'Merriweather';
+    src: url('../fonts/merriweather/Merriweather-Light.otf') format('opentype');
+}
+
+body {
+    background-color: #12202B;
+    color: #F9F4F5;
+    font-family: 'Merriweather', serif;
+}
+
+main {
+    margin: 5rem 10rem;
+}
+
+footer {
+    align-items: center;
+    color: #F9F4F5;
+    display: flex;
+    font-size: 1rem;
+    font-family: 'Merriweather', serif;
+    justify-content: center;
+    width: auto;
+}
+
+.footer-tag {
+    padding: 1rem;
+}
