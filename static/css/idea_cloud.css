@@ -1,7 +1,7 @@
 /* colour palette https://coolors.co/12202b-647d76-f9f4f5-788192-767179 */
 
 
-/*  -- header -- */
+/* -- fonts -- */
 
 @font-face {
     font-family: 'Amoera';
@@ -12,6 +12,27 @@
     font-family: 'Nexa';
     src: url('../fonts/nexa/Nexa-ExtraLight.ttf') format('truetype');
 }
+
+@font-face {
+    font-family: 'Merriweather';
+    src: url('../fonts/merriweather/Merriweather-Light.otf') format('opentype');
+}
+
+
+/* -- links -- */
+
+a {
+    color: #F9F4F5;
+    text-decoration: none;
+}
+
+a:visited, a:hover {
+    color: #F9F4F5;
+    text-decoration: none;
+}
+
+
+/*  -- header -- */
 
 .header {
     background-color: #647D76;
@@ -35,16 +56,6 @@ h2 {
     color: #F9F4F5;
 }
 
-a {
-    color: #F9F4F5;
-    text-decoration: none;
-}
-
-a:visited, a:hover {
-    color: #F9F4F5;
-    text-decoration: none;
-}
-
 .nav-bar {
     align-items: center;
     background-color: #767179;
@@ -64,17 +75,21 @@ a:visited, a:hover {
     padding-bottom: 1rem;
 }
 
-/*  -- body -- */
 
-@font-face {
-    font-family: 'Merriweather';
-    src: url('../fonts/merriweather/Merriweather-Light.otf') format('opentype');
-}
+/*  -- body -- */
 
 body {
     background-color: #12202B;
     color: #F9F4F5;
     font-family: 'Merriweather', serif;
+}
+
+.page-description {
+    text-align: center;
+}
+
+.page-title {
+    margin-bottom: 3rem;
 }
 
 main {
@@ -96,15 +111,8 @@ footer {
     padding: 1rem;
 }
 
+
 /*  -- forms -- */
-
-.page-description {
-    text-align: center;
-}
-
-.page-title {
-    margin-bottom: 3rem;
-}
 
 form {
     margin: 0 43%;
@@ -128,6 +136,9 @@ label {
 .form-button {
     margin-top: 1rem;
 }
+
+
+/* -- about us -- */
 
 .about-us {
     text-align: left;
