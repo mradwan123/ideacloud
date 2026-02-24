@@ -36,12 +36,12 @@ h2 {
 }
 
 a {
-    color: #788192;
+    color: #F9F4F5;
     text-decoration: none;
 }
 
 a:visited, a:hover {
-    color: black;
+    color: #F9F4F5;
     text-decoration: none;
 }
 
@@ -89,8 +89,42 @@ footer {
     font-family: 'Merriweather', serif;
     justify-content: center;
     width: auto;
+    margin-top: 10rem;
 }
 
 .footer-tag {
     padding: 1rem;
+}
+
+/*  -- forms -- */
+
+.form-description {
+    text-align: center;
+}
+
+.form-title {
+    margin-bottom: 3rem;
+}
+
+form {
+    margin: 0 43%;
+}
+
+label {
+    margin-bottom: 0.3rem;
+    margin-top: 0.8rem;
+}
+
+.disclaimer {
+    margin-top: 0.5rem;
+}
+
+.register-buttons {
+    display: flex;
+    gap: 2rem;
+    justify-content: center;
+}
+
+.form-button {
+    margin-top: 1rem;
 }

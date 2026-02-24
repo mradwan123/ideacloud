@@ -6,8 +6,7 @@
 {% block title %} Register {% endblock %}
 
 {% block content %}
-<!-- "<br>" after "}}" is only for aesthetic purposes:
-they can be styled with CSS/Bootstrap -->
+<!-- 
 <form method="post">
     {% csrf_token %}
     <label>First Name *</label><br>
@@ -26,4 +25,66 @@ they can be styled with CSS/Bootstrap -->
     <button type="reset" class="form_button" id="cancel_button">Cancel</button>
     <p>* are required fields</p>
 </form>
+-->
+
+<div class="form-description">
+    <h3 class="form-title">Registration Form</h3>
+
+    <p>
+        To take advantage of all our cool features (groups, comments, save favourite etc.) register to the webapp.
+    </p>
+    <p>
+        Already registered? <a href="{% url 'front-end:login' %}">Sign in!</a>
+    </p>
+
+</div>
+
+<form>
+
+    {% csrf_token %}
+
+    <!-- first name -->
+    <label for="first_name">First Name *</label></br>
+    <input type="text" id="first_name" name="first_name" placeholder="first name" required></br>
+    
+    <!-- last name -->
+    <label for="last_name">Last Name *</label></br>
+    <input type="text" id="last_name" name="last_name" placeholder="last name" required></br>
+    
+    <!-- username name -->
+    <label for="username">Username</label></br>
+    <input type="text" id="username" name="username" placeholder="username"></br>
+    
+    <!-- email -->
+    <label for="email">Email *</label></br>
+    <input type="email" id="email" name="email" placeholder="email" required></br>
+    
+    <!-- password -->
+    <label for="password">Password *</label></br>
+    <input type="password" id="password" name="password" placeholder="password" required></br>
+    
+    <!-- confirm password -->
+    <label for="confirm-password">Confirm Password *</label></br>
+    <input type="password" id="confirm-password" name="confirm-password" placeholder="confirm password" required></br>
+    
+    <!-- description -->
+    <label for="description">Description</label></br>
+    <textarea id="description" name="description" rows="4" placeholder="Tell us about yourself"></textarea></br>
+
+    <!-- upload picture -->
+    <label for="profile-pic">Upload profile picture</label></br>
+    <input type="file" id="profile-pic" name="profile-pic" accept="image/*"></br>
+
+    <!-- disclaimer -->
+    <p class="disclaimer">
+        * are required fields
+    </p>
+
+    <!-- buttons -->
+    <div class="register-buttons">
+        <button type="submit" class="form-button" id="confirm-button">Register</button>
+        <button type="reset" class="form-button" id="cancel-button">Cancel</button>
+    </div>
+</form>
+
 {% endblock %}
