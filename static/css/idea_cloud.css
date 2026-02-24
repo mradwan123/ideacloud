@@ -61,7 +61,7 @@ h2 {
     background-color: #767179;
     color: black;
     display: flex;
-    font-size: 1rem;
+    font-size: 1.1rem;
     font-family: 'Merriweather', serif;
     justify-content: center;
     width: auto;
@@ -93,7 +93,13 @@ body {
 }
 
 main {
-    margin: 5rem 10rem;
+    max-width: 60rem;
+    margin: 5rem auto;
+}
+
+p {
+    line-height: 1.8;
+    margin-bottom: 1.5rem;
 }
 
 footer {
@@ -115,7 +121,7 @@ footer {
 /*  -- forms -- */
 
 form {
-    margin: 0 43%;
+    margin: 0 39%;
 }
 
 label {
@@ -145,7 +151,7 @@ label {
 }
 
 #meet-our-team {
-    margin-top: 5rem;
+    margin-top: 6rem;
     margin-bottom: 3rem;
 }
 
