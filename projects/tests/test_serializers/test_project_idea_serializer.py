@@ -73,3 +73,5 @@ class ProjectIdeaSerializerTests(TestCase):
 
         self.assertFalse(serializer.is_valid())
         self.assertIn('title', serializer.errors)
+
+    # TODO check if the author representation works
