@@ -6,25 +6,41 @@
 {% block title %} Log In {% endblock %}
 
 {% block content %}
-{% if error %}
-  <p style="color:red;">{{ error }}</p>
-{% endif %}
 
 <!-- form to be modified (no HTML) to connect front-end and back-end -->
 
-<form method="post">
+<div class="form-description">
+    
+    <h3 class="form-title">Login Form</h3>
+
+    <p>
+        To take advantage of all our cool features (groups, comments, save favourite etc.) sign up to the webapp.
+    </p>
+    <p>
+        Not part of our community yet? <a href="{% url 'front-end:register' %}">Register!</a>
+    </p>
+
+</div>
+
+<form>
+  
   {% csrf_token %}
 
-  <p>
-    <label>Username</label><br>
-    <input type="text" name="username" required>
+  <label for="username">Username *</label><br>
+  <input type="text" id="username" name="username" placeholder="username" required>
+
+  <label for="password">Password *</label><br>
+  <input type="password" id="password" name="password" placeholder="password" required>
+
+  <!-- disclaimer -->
+  <p class="disclaimer">
+      * are required fields
   </p>
 
-  <p>
-    <label>Password</label><br>
-    <input type="password" name="password" required>
-  </p>
+  <div class="register-buttons">
+      <button type="submit" class="form-button" id="confirm-button">Login</button>
+      <button type="reset" class="form-button" id="cancel-button">Cancel</button>
+  </div>
 
-  <button type="submit">Login</button>
 </form>
 {% endblock %}
