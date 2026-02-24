@@ -1,4 +1,4 @@
-from django.contrib.auth.models import User
+from django.contrib.auth import get_user_model
 from projects.models import ProjectIdea
 from rest_framework import serializers
 from django.core.validators import EmailValidator
@@ -7,6 +7,8 @@ from rest_framework.exceptions import ValidationError
 from datetime import date
 from projects.serializers.serializer_profanity_validator import ProfanityValidator
 from django.contrib.auth.password_validation import validate_password as django_validate_password
+
+User = get_user_model()
 
 class PastDateValidator:
     """Ensuring date is not in the future"""
@@ -19,6 +21,10 @@ class PastDateValidator:
         if value > date.today():
             raise ValidationError('Error: Date should be in the past')
 
+class ProjectUsersRepresentationSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ProjectIdea
+        fields = ['id', 'title']
 
 class UserSerializer(serializers.ModelSerializer):
     
@@ -29,14 +35,16 @@ class UserSerializer(serializers.ModelSerializer):
     first_name = serializers.CharField(required=False, allow_blank=True, max_length=30)
     last_name = serializers.CharField(required=False, allow_blank=True, max_length=100)
         
-    # Image validator: TODO: check this validator
+    # Image validator: TODO: check this validator, with base64 library, change when working with views
     image = serializers.ImageField(required=False, allow_null=True)
     
     description = serializers.CharField(max_length=1000, trim_whitespace=True)
     available = serializers.BooleanField(default=False)
-    created_on = serializers.DateTimeField(required=True, validators=[PastDateValidator()])
+    
    
-    #many-to-many relations not necessary serailizers here
+    #many-to-many relations 
+    favorite_projects = ProjectUsersRepresentationSerializer(many=True, read_only=True)
+    interested_projects = ProjectUsersRepresentationSerializer(many=True, read_only=True)
    
     def to_internal_value(self, data):
         if 'username' in data:
@@ -56,23 +64,29 @@ class UserSerializer(serializers.ModelSerializer):
     
     def validate_password(self, value):
         """Changed name of built in and checking here"""
-        if not django_validate_password(value):
-            raise serializers.ValidationError("Error")
+        try:
+            django_validate_password(value)
+        except ValidationError as error:
+            raise serializers.ValidationError(error.message)
         return value
     
-    def to_representation(self, instance):
-        #favorite_projects =
-        #interested_projects = 
-        return super().to_representation(instance)
+    
+    # def to_representation(self, instance):
+    #     '''This will be used by Front End to represent the project by ID'''
+    #     representation = super().to_representation(instance)
+        
+    #     representation['favorite_projects'] = instance.favorite_projects.project_idea.title()
+    #     representation['interested_projects'] = instance.interested_projects.project_idea.title() 
+    #     return representation
     
     class Meta:
         model = User
-        fields = ['id', 'username','email', 'first_name', 'last_name', 'available', 
+        fields = ['id', 'username','email', 'password', 'first_name', 'last_name', 'available', 
                   'image', 'description', 'created_on', 'favorite_projects', 'interested_projects']
         read_only_fields = ['id', 'created_on']
    
     def create(self, validated_data):
-        user = User.objects.create_user(validated_data)
+        user = User.objects.create_user(**validated_data)
         return user
             
         # this appends logic to the fields without overwriting default model behaviour
