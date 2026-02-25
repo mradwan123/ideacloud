@@ -21,6 +21,7 @@ def test_image_view(request):
 
             return HttpResponse(f'<img src="{image_instance.image.url}" alt="test image">')
     
+    
     user.delete()
     project_idea.delete()
 
