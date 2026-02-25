@@ -3,8 +3,6 @@
 
 {% block tab %} Project Ideas {% endblock %}
 
-{% block title %} Project Ideas {% endblock %}
-
 {% block content %}
 
 <!-- display of the projects to be made -->
@@ -24,6 +22,111 @@ they can be styled with CSS/Bootstrap -->
   * name of the owner
   Each element will have a link to the project description
   -->
+
+<div class="page-description">
+    <h3 class="page-title">All Projects</h3>
+</div>
+
+<div class="new-project-button">
+  <button>New Project +</button>
+</div>
+
+<div class="all-projects-row">
+    <div class="image-card">
+        <img src="../static/images/image_placeholder.jpg">
+        <div class="caption">
+            <p class="project-title">
+                Project Title
+            </p>
+            <p class="project-owner-thumbnail">
+                By [Name of the Owner]
+            </p>
+            <p class="project-description-thumbnail">
+                Project Description
+            </p>
+        </div>
+    </div>
+    <div class="image-card">
+        <img src="../static/images/image_placeholder.jpg">
+        <div class="caption">
+            <p class="project-title">
+                Project Title
+            </p>
+            <p class="project-owner-thumbnail">
+                By [Name of the Owner]
+            </p>
+            <p class="project-description-thumbnail">
+                Project Description
+            </p>
+        </div>
+    </div>
+    <div class="image-card">
+        <img src="../static/images/image_placeholder.jpg">
+        <div class="caption">
+            <p class="project-title">
+                Project Title
+            </p>
+            <p class="project-owner-thumbnail">
+                By [Name of the Owner]
+            </p>
+            <p class="project-description-thumbnail">
+                Project Description
+            </p>
+        </div>
+    </div>
+</div>
+
+<div class="all-projects-row">
+    <div class="image-card">
+        <img src="../static/images/image_placeholder.jpg">
+        <div class="caption">
+            <p class="project-title">
+                Project Title
+            </p>
+            <p class="project-owner-thumbnail">
+                By [Name of the Owner]
+            </p>
+            <p class="project-description-thumbnail">
+                Project Description
+            </p>
+        </div>
+    </div>
+    <div class="image-card">
+        <img src="../static/images/image_placeholder.jpg">
+        <div class="caption">
+            <p class="project-title">
+                Project Title
+            </p>
+            <p class="project-owner-thumbnail">
+                By [Name of the Owner]
+            </p>
+            <p class="project-description-thumbnail">
+                Project Description
+            </p>
+        </div>
+    </div>
+    <div class="image-card">
+        <img src="../static/images/image_placeholder.jpg">
+        <div class="caption">
+            <p class="project-title">
+                Project Title
+            </p>
+            <p class="project-owner-thumbnail">
+                By [Name of the Owner]
+            </p>
+            <p class="project-description-thumbnail">
+                Project Description
+            </p>
+        </div>
+    </div>
+</div>
+
+<!-- maybe more button? -->
+<p class="more-projects">
+    More Projects
+</p>
+
+<!-- form to move in "create_project.html"
 <form method="post">
     {% csrf_token %}
     <label>Title *</label><br>
@@ -36,5 +139,6 @@ they can be styled with CSS/Bootstrap -->
     <button type="reset">Cancel</button>
     <p>* are required fields</p>
 </form>
+-->
 
 {% endblock %}

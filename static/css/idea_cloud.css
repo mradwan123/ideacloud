@@ -112,6 +112,7 @@ footer {
     justify-content: center;
     width: auto;
     margin-top: 10rem;
+    margin-bottom: 2rem;
 }
 
 .footer-tag {
@@ -193,6 +194,7 @@ label {
     font-size: 1rem;
     opacity: 0.7;
 }
+
 
 /* --- user profile --- */
 
@@ -287,4 +289,49 @@ label {
     justify-content: flex-end;
     margin-bottom: 1rem;
     margin-right: 1rem;
+}
+
+
+/* -- all project ideas -- */
+
+.new-project-button {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 1.5rem;
+    margin-right: 1rem;
+}
+
+.all-projects-row {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+}
+
+.image-card img {
+    width: 100%;
+    height: 20rem;
+    object-fit: cover;
+    border-radius: 0.5rem;
+    display: block;
+    margin-bottom: 0.3rem;
+}
+
+.caption {
+    margin-top: 0.5rem;
+    padding: 0.5rem;
+    border-radius: 0.4rem;
+    font-size: 0.9rem;
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.caption p {
+    margin: 0;
+}
+
+.more-projects {
+    display: flex;
+    justify-content: flex-end;
+    font-size: 0.9rem;
+    padding-right: 1rem;
 }
