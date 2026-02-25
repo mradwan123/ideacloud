@@ -55,9 +55,15 @@ class UserTestAPIView(TestCase):
         
         return base64_image
 
-    def test_users_get_list_as_admin(self):
-        """Admin can retrieve the full user list."""
+    def test_users_get_list_as_admin_successful(self):
+        """Admin can retrieve the full user list with all details."""
         self.client.credentials(HTTP_AUTHORIZATION=f"Token {self.admin_token.key}")
+        response = self.client.get(self.url)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        
+    def test_users_get_list_as_user_fail(self):
+        """Users cannot retrieve the full user list with all details."""
+        self.client.credentials(HTTP_AUTHORIZATION=f"Token {self.token1.key}")
         response = self.client.get(self.url)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         

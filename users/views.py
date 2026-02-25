@@ -1,6 +1,7 @@
 from django.contrib.auth import get_user_model
 from django.contrib.auth import authenticate
 from .models import User
+from rest_framework import status
 from .serializers import UserSerializer
 from .permissions import CanUpdateUser, IsAdminOrUser
 from rest_framework.views import APIView
@@ -21,14 +22,20 @@ class UserAPIView(APIView):
     - POST request used for new user registration.
     """
     
-    def get(self, request):
-        '''GET list of all users. Only admin can see list of all user details'''
+    def get(self, request, user_id):
+        '''GET list of all users. Only admin can see list of all user details. Admin verified through user_id'''
+          # Check if user is authenticated
+        if not request.user.is_authenticated:
+            return Response(
+                {'error': 'Authentication required.'}, 
+                status=status.HTTP_401_UNAUTHORIZED
+            )
         permission = IsAdminUser()
-        if not permission.has_object_permission(request, self):
-            return Response({'error': 'User does not have permission.'}, status=403)
+        if not permission.has_object_permission(request, self, user_id):
+            return Response({'error': 'User does not have permission.'}, status.HTTP_403_FORBIDDEN)
         users = User.objects.all()
         serializer = UserSerializer(users, many=True)
-        return Response(serializer.data, status=200)
+        return Response(serializer.data, status.HTTP_200_OK)
     
     def post(self, request):
         '''New user registration. No authentication or permissions.'''
