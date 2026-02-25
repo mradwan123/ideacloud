@@ -1,8 +1,16 @@
-<h2>Login</h2>
+{% extends 'base.html' %}
+{% load static %}
 
+{% block tab %} Log In {% endblock %}
+
+{% block title %} Log In {% endblock %}
+
+{% block content %}
 {% if error %}
   <p style="color:red;">{{ error }}</p>
 {% endif %}
+
+<!-- form to be modified (no HTML) to connect front-end and back-end -->
 
 <form method="post">
   {% csrf_token %}
@@ -19,3 +27,4 @@
 
   <button type="submit">Login</button>
 </form>
+{% endblock %}
