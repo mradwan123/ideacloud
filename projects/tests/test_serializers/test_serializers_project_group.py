@@ -28,6 +28,10 @@ class TestProjectGroupSerializer(TestCase):
         self.request = type('Request', (), {'user': self.user})()
         
     def test_serializer_project_group_valid(self):
+        """
+        Checks if a valid project group entry can be created
+        and that all of the stored data is intact.
+        """
         serializer = ProjectGroupSerializer(data=self.project_group_data)
         serializer.context['request'] = self.request
         self.assertTrue(serializer.is_valid())
@@ -37,22 +41,57 @@ class TestProjectGroupSerializer(TestCase):
         self.assertEqual(project_group.description, self.project_group_data.get("description"))
         self.assertEqual(project_group.project_idea, self.project_idea)
         self.assertEqual(project_group.owner, self.user)
-        #print(project_group.created_at, timezone.now())
         self.assertAlmostEqual(project_group.created_on, timezone.now(), delta=timedelta(minutes=1))
 
     def test_serializer_project_group_name_missing(self):
+        """
+        Check if the serializer throws the correct error while validating data
+        when the group name is missing.
+        """
         del self.project_group_data["name"]
         serializer = ProjectGroupSerializer(data=self.project_group_data)
         serializer.context['request'] = self.request
         self.assertFalse(serializer.is_valid())
+        self.assertIn('name', serializer.errors.keys())
 
     def test_serializer_project_group_description_missing(self):
+        """
+        Check if the serializer throws the correct error while validating data
+        when the group description is missing.
+        """
         del self.project_group_data["description"]
         serializer = ProjectGroupSerializer(data=self.project_group_data)
         serializer.context['request'] = self.request
         self.assertFalse(serializer.is_valid())
+        self.assertIn('description', serializer.errors.keys())
+
+    def test_serializer_project_group_name_blank(self):
+        """
+        Check if the serializer throws the correct error while validating data
+        when the group name is blank.
+        """
+        self.project_group_data["name"] = ""
+        serializer = ProjectGroupSerializer(data=self.project_group_data)
+        serializer.context['request'] = self.request
+        self.assertFalse(serializer.is_valid())
+        self.assertIn('name', serializer.errors.keys())
+
+    def test_serializer_project_group_description_blank(self):
+        """
+        Check if the serializer throws the correct error while validating data
+        when the group description is blank.
+        """
+        self.project_group_data["description"] = ""
+        serializer = ProjectGroupSerializer(data=self.project_group_data)
+        serializer.context['request'] = self.request
+        self.assertFalse(serializer.is_valid())
+        self.assertIn('description', serializer.errors.keys())
 
     def test_serializer_project_group_name_duplicate(self):
+        """
+        Check if the serializer throws the correct error while validating data
+        when the group name already exists under that project idea.
+        """
         serializer1 = ProjectGroupSerializer(data=self.project_group_data)
         serializer1.context['request'] = self.request
         self.assertTrue(serializer1.is_valid())
@@ -61,8 +100,13 @@ class TestProjectGroupSerializer(TestCase):
         serializer2 = ProjectGroupSerializer(data=self.project_group_data)
         serializer2.context['request'] = self.request
         self.assertFalse(serializer2.is_valid())
+        self.assertIn('non_field_errors', serializer2.errors.keys())
 
     def test_serializer_project_group_to_reprentation(self):
+        """
+        Check if the serializer returns the correct reprensentation
+        for the group owner and group members.
+        """
         project_group = ProjectGroup.objects.create(name="group name",
                                                     description="some description",
                                                     project_idea=self.project_idea,
