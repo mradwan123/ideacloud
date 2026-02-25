@@ -7,6 +7,7 @@ from rest_framework.exceptions import ValidationError
 from datetime import date
 from projects.serializers.serializer_profanity_validator import ProfanityValidator
 from django.contrib.auth.password_validation import validate_password as django_validate_password
+from config.image_helper.base64_image_conversion import base64_to_image
 
 
 User = get_user_model()
@@ -48,6 +49,10 @@ class UserSerializer(serializers.ModelSerializer):
     interested_projects = ProjectUsersRepresentationSerializer(many=True, read_only=True)
    
     def to_internal_value(self, data):
+        # Make a mutable copy
+        if hasattr(data, 'copy'):
+            data = data.copy() 
+            
         if 'username' in data:
             data['username'] = strip_tags(data['username']).strip()
         if 'first_name' in data:
@@ -56,6 +61,12 @@ class UserSerializer(serializers.ModelSerializer):
             data['last_name'] = strip_tags(data['last_name']).strip()
         if 'description' in data:
             data['description'] = strip_tags(data['description']).strip()
+            
+        
+        # Handle base64 image if present. 
+        if data.get("image"):
+            data['image'] = base64_to_image(data['image'])
+                
         return super().to_internal_value(data)
     
     def validate_email(self, value):
@@ -96,34 +107,3 @@ class UserSerializer(serializers.ModelSerializer):
         'description': {'validators': [ProfanityValidator()]}
     }
         
-        
-        
-        
-# class UserRegisterSerializer(serializers.ModelSerializer):
-    
-#     email = serializers.EmailField(validators=[EmailValidator()])
-#     username = serializers.CharField(required=True, max_length=30, trim_whitespace=True)
-    
-#     def to_internal_value(self, data):
-#         if 'username' in data:
-#             data['username'] = strip_tags(data['username'].strip())
-#         return super().to_internal_value(data)
-    
-#     def validate_email(self, value):
-#         if User.objects.filter(email=value).exists():
-#             raise serializers.ValidationError('Error: Duplicate email.')
-#         return value
-    
-#     class Meta :
-#         model = User 
-#         fields = ("id", "username","email","password")
-#         extra_kwargs = {'password': {'write_only': True}}
-
-#     #  override custom create so that we an check if user is None in view.py LoginView()
-#     def create (self, validated_data):
-#         user = User.objects.create_user(
-#             validated_data["username"],
-#             validated_data["email"],
-#             validated_data["password"]
-#         )
-#         return user

@@ -6,7 +6,7 @@ from .permissions import CanUpdateUser, IsAdminOrUser
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.authentication import TokenAuthentication
-from rest_framework.permissions import IsAuthenticatedOrReadOnly, IsAuthenticated
+from rest_framework.permissions import IsAuthenticatedOrReadOnly, IsAuthenticated, IsAdminUser
 from rest_framework.decorators import api_view, authentication_classes, permission_classes
 from rest_framework.authtoken.models import Token
 from django.shortcuts import get_object_or_404
@@ -17,17 +17,21 @@ User = get_user_model()
 class UserAPIView(APIView):
     """
     GET/POST requests with no authentication required.
-    POST request used for new user registration.
+    - GET request only IsAdminUser() gets list of users with all details.
+    - POST request used for new user registration.
     """
     
     def get(self, request):
-        '''GET list of all users'''
+        '''GET list of all users. Only admin can see list of all user details'''
+        permission = IsAdminUser()
+        if not permission.has_object_permission(request, self):
+            return Response({'error': 'User does not have permission.'}, status=403)
         users = User.objects.all()
         serializer = UserSerializer(users, many=True)
-        return Response(serializer.data)
+        return Response(serializer.data, status=200)
     
     def post(self, request):
-        '''New user registration'''
+        '''New user registration. No authentication or permissions.'''
         serializer = UserSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
@@ -37,9 +41,9 @@ class UserAPIView(APIView):
 class LoginView(APIView):
     """
     LoginView uses username/password.
-    Checks if username/password provided by user.
-    Authenticated username/password.
-    Token provided upon login, deletes old token if exists.
+    - Checks if username/password provided by user.
+    - Authenticated username/password.
+    - Token provided upon login, deletes old token if exists.
     """
     def post(self, request):
         username = request.data.get("username")
