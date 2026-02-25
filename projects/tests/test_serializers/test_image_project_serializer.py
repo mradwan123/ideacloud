@@ -97,7 +97,3 @@ class ImageProjectSerializerTests(TestCase):
         disk_path = os.path.join(TEMP_MEDIA_ROOT, image_instance.image.name)
         # second value is the error, if assesment is not true
         self.assertTrue(os.path.exists(disk_path), f"File was not found at {disk_path}")
-
-
-
-
