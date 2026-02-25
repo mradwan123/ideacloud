@@ -175,6 +175,7 @@ label {
     width: 7rem;
     height: 7rem;
     object-fit: cover;
+    border-radius: 0.5rem;
 }
 
 .name-and-description {
@@ -190,4 +191,36 @@ label {
 .name-and-description h5 {
     font-size: 1rem;
     opacity: 0.7;
+}
+
+/* --- user profile --- */
+
+.user-profile {
+    text-align: center;
+}
+
+.columns {
+    display: flex;
+    gap: 2rem;
+    align-items: flex-start;
+}
+
+.column-left {
+    flex: 2;
+}
+
+.column-right {
+    flex: 1;
+}
+
+.column-right img {
+    width: 100%;
+    height: auto;
+    display: block;
+    border-radius: 0.5rem;
+    margin-bottom: 2rem;
+}
+
+.user-info {
+    margin-bottom: 1rem;
 }
