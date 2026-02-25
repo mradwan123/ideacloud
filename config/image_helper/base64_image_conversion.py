@@ -1,6 +1,6 @@
 import base64
 import uuid
-import io
+from django.core.files.base import ContentFile
 
 def base64_to_image(b64: bytes):
 
@@ -13,10 +13,7 @@ def base64_to_image(b64: bytes):
     # Generate unique filename
     filename = f"image_{uuid.uuid4().hex[:10]}.{format}"
 
-    file_like = io.BytesIO(decoded)
-    file_like.name = filename
-
-    return file_like
+    return ContentFile(decoded, name=filename)
 
 
 def image_to_base64(file: bytes):

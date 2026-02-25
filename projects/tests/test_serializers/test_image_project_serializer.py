@@ -8,6 +8,8 @@ from PIL import Image
 from io import BytesIO
 from projects.models import ProjectIdea, ImageProject
 from projects.serializers.serializer_image_project import ImageProjectSerializer
+from config.settings import MEDIA_ROOT
+from config.image_helper.base64_image_conversion import image_to_base64
 
 User = get_user_model()
 
@@ -39,31 +41,34 @@ class ImageProjectSerializerTests(TestCase):
     def _create_test_image(self):
         """Helper to create an image in memory"""
         # we create a 100x100px image in RAM
-        image = Image.new("RGB", (100, 100))
-        buffer = BytesIO()
-
-        image.save(buffer, format="JPEG")
-        buffer.seek(0)
-        return SimpleUploadedFile("test.jpg", buffer.read(), content_type="image/jpeg")
+        image_path = MEDIA_ROOT / "profile_images" / "default.jpg"
+        print(image_path)
+        with open(image_path, "rb") as img:
+            base64_image = image_to_base64(img.read())
+        
+        return base64_image
 
     def test_image_serialization_output(self):
         """Verify the serializer outputs the correct URL and ID"""
         image_file = self._create_test_image()
-        image_instance = ImageProject.objects.create(
-            project_idea=self.project_idea,
-            image=image_file
-        )
+        # image_instance = ImageProject.objects.create(
+        #     project_idea=self.project_idea,
+        #     image=image_file
+        # )
+        data = {"image": image_file,
+                "project_idea": self.project_idea.id}
 
         # pass the database object into the serializer
-        serializer = ImageProjectSerializer(instance=image_instance)
+        serializer = ImageProjectSerializer(data=data)
+        self.assertTrue(serializer.is_valid())
+        image_instance = serializer.save()
 
         # verify that the id in the JSON matches the id in the database
         self.assertEqual(serializer.data["id"], image_instance.id)
 
         # check if the string "test.jpg" exists in the "image" field so we know the path is correct
         self.assertTrue(serializer.data["image"].endswith(".jpg"))
-        self.assertIn("project_images/test", serializer.data["image"])
-
+        self.assertIn("/media/project_images/image_", serializer.data["image"])
         # verify the project_idea is returned as its ID (the primary key)
         self.assertEqual(serializer.data["project_idea"], self.project_idea.id)
 
