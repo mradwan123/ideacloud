@@ -42,7 +42,7 @@ class ImageProjectSerializerTests(TestCase):
         """Helper to create an image in memory"""
         # we create a 100x100px image in RAM
         image_path = MEDIA_ROOT / "profile_images" / "default.jpg"
-        print(image_path)
+        # print(image_path)
         with open(image_path, "rb") as img:
             base64_image = image_to_base64(img.read())
         
