@@ -8,6 +8,7 @@ from datetime import date
 from projects.serializers.serializer_profanity_validator import ProfanityValidator
 from django.contrib.auth.password_validation import validate_password as django_validate_password
 
+
 User = get_user_model()
 
 class PastDateValidator:
