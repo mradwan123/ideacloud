@@ -4,7 +4,6 @@ from django.utils import timezone
 
 User = get_user_model()
 
-
 class Tag(models.Model):
     """These are the tags to categorize projects"""
     name = models.CharField(max_length=100, unique=True)
@@ -14,9 +13,7 @@ class Tag(models.Model):
 
     def __str__(self):
         return self.name
-    
 
-    
 
 class ProjectIdea(models.Model):
     """This is the core Idea to a project. It is what eg. finished projects are based off"""
@@ -31,10 +28,10 @@ class ProjectIdea(models.Model):
     def __str__(self):
         author_name = self.author.username if self.author else "Deleted User"
         return f"Project: '{self.title}' Submitted by: '{author_name}' Created on: {self.created_on}"
- 
+
 class ProjectIdeaComment(models.Model):
     user = models.ForeignKey(
-        User,on_delete=models.CASCADE,
+        User, on_delete=models.CASCADE,
         related_name='user_project_idea_comments'
     )
     project_idea = models.ForeignKey(
@@ -48,7 +45,7 @@ class ProjectIdeaComment(models.Model):
 
     def __str__(self):
         return f"Comment by {self.user} on {self.project_idea}"
-              
+
 
 
 class ProjectGroup(models.Model):

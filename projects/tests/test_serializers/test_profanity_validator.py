@@ -4,8 +4,6 @@ from projects.serializers.serializer_profanity_validator import ProfanityValidat
 from rest_framework.exceptions import ValidationError
 from unittest.mock import patch
 
-# custom_test_profanity
-
 class ProfanityValidatorTests(TestCase):
     def setUp(self):
         self.validator = ProfanityValidator()
