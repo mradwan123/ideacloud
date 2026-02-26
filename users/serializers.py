@@ -63,16 +63,13 @@ class UserSerializer(serializers.ModelSerializer):
             data['description'] = strip_tags(data['description']).strip()
             
         
-        # Handle base64 image if present. 
-        if data.get("image"):
+        # Handle base64 image if present. Check to see if image is URL. 
+        # If so, then we remove because we want file. If bytes, then we decode and send
+        if data.get("image") and "/media/" not in data.get('image'):
             data['image'] = base64_to_image(data['image'])
-                
+        elif data.get("image") and "/media/" in data.get('image'):
+            data.pop('image') 
         return super().to_internal_value(data)
-    
-    def validate_email(self, value):
-        if User.objects.filter(email=value).exists():
-            raise serializers.ValidationError('Error: Duplicate email.')
-        return value
     
     def validate_password(self, value):
         """Changed name of built in and checking here"""

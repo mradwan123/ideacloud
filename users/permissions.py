@@ -23,7 +23,8 @@ class IsAdminOrUser(BasePermission):
         
 class CanUpdateUser(BasePermission):
     """
-    Docstring for CanUpdateUser: Custom permission for user details.
+    Docstring for CanUpdateUser: Custom permission for user details. 
+    has_object_ermission & check_object_permission() used in views for more custom designs.
     """
     def has_object_permission(self, request, view, object):
         if request.method in ['GET', 'PUT', 'PATCH', 'DELETE']:  

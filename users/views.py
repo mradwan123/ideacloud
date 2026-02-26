@@ -68,19 +68,19 @@ class LoginView(APIView):
         password = request.data.get("password")
         
         if not username or not password:
-            return Response({'error':'Username and password required.'}, status=400)
+            return Response({'error':'Username and password required.'}, status.HTTP_400_BAD_REQUEST)
         
         user = authenticate(username=username, password=password)
         
         if user is None:
-            return Response({'Error': 'Invalid username and password'}, status=401)
+            return Response({'Error': 'Invalid username and password'}, status.HTTP_401_UNAUTHORIZED)
         
         token = Token.objects.filter(user=user)
         if token:
             token[0].delete()
         token = Token.objects.create(user=user)
         
-        return Response({'token': token.key, 'user_id': user.id}, status=200)
+        return Response({'token': token.key, 'user_id': user.id}, status.HTTP_200_OK)
 
 class LogoutView(APIView):
     """
@@ -95,8 +95,8 @@ class LogoutView(APIView):
             token = Token.objects.filter(user=request.user)
             if token:
                 token[0].delete()
-                return Response({'detail':'Token Deleted. User logged out.'}, status=204)
-        return Response({'error': 'User not authenticated'}, status=401)
+                return Response({'detail':'Token Deleted. User logged out.'}, status.HTTP_204_NO_CONTENT)
+        return Response({'error': 'User not authenticated'}, status.HTTP_401_UNAUTHORIZED)
     
 class UserDetailView(APIView):
     """
@@ -106,7 +106,7 @@ class UserDetailView(APIView):
     """
     
     authentication_classes = [TokenAuthentication,]
-    permission_classes = [CanUpdateUser,]
+    permission_classes = [IsAdminOrUser, CanUpdateUser,]
     
     def get_user(self, user_id):
         '''Helper method to get user or return None'''
@@ -121,26 +121,28 @@ class UserDetailView(APIView):
         return Response(serializer.data, status.HTTP_200_OK)
     
     def patch(self, request, user_id):
-        '''User can Edit partially own user details'''
+        '''User can Edit partially own user details. check_object_permissions().'''
         user = self.get_user(user_id)
         self.check_object_permissions(request, user)
 
         serializer = UserSerializer(user, data=request.data, partial=True)
         if serializer.is_valid():
             serializer.save()
-            return Response(serializer.data, status=200)
-        return Response(serializer.errors, status=400)
+            return Response(serializer.data, status.HTTP_200_OK)
+        return Response(serializer.errors, status.HTTP_400_BAD_REQUEST)
         
     def put(self, request, user_id):
-        '''Edit user's details'''
+        '''User can Edit user's details. check_object_permission()'''
         user = self.get_user(user_id) 
         self.check_object_permissions(request, user)
    
         serializer = UserSerializer(user, data=request.data)
         if serializer.is_valid():
+            
             serializer.save()
-            return Response(serializer.data, status=200)
-        return Response(serializer.errors, status=400)
+            return Response(serializer.data, status.HTTP_200_OK)
+        print(serializer.errors)
+        return Response(serializer.errors, status.HTTP_400_BAD_REQUEST)
         
     def delete(self, request, user_id):
         '''Delete user. Either by Admin or User.'''
@@ -148,5 +150,5 @@ class UserDetailView(APIView):
         self.check_object_permissions(request, user)
 
         user.delete()
-        return Response({'detail': 'User deleted successfully'}, status=204)
+        return Response({'detail': 'User deleted successfully'}, status.HTTP_204_NO_CONTENT)
         

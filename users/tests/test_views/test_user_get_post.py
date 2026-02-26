@@ -65,7 +65,7 @@ class UserTestAPIView(TestCase):
         """Users cannot retrieve the full user list with all details."""
         self.client.credentials(HTTP_AUTHORIZATION=f"Token {self.token1.key}")
         response = self.client.get(self.url)
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
         
     def test_post_request_create_user_successful(self):
         data = {
