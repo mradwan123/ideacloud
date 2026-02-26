@@ -29,7 +29,6 @@ class CanUpdateUser(BasePermission):
     def has_object_permission(self, request, view, object):
         if request.method in ['GET', 'PUT', 'PATCH', 'DELETE']:  
             # owner can update
-            print(request.user, object)
             return request.user == object
         return False
             
