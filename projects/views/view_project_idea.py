@@ -2,9 +2,29 @@ from django.shortcuts import get_object_or_404
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status, permissions
+from django.db.models import Value, BooleanField, Count, Exists, OuterRef
 
 from projects.models import ProjectIdea, ProjectGroup
 from projects.serializers.serializer_project_idea_serializer import ProjectIdeaSerializer
+
+def _get_queryset_with_like_data(user):
+    """
+    Returns a queryset of ProjectIdeas with likes_count and has_liked status
+    Accepts a 'user' object to determine the has_liked status
+    """
+    # .annotate() adds a virtual column to our result set
+    queryset = ProjectIdea.objects.all().annotate(likes_count=Count('likes'))
+
+    if user.is_authenticated:
+        # create a subquery that looks for a link between the current project (OuterRef) and the logged-in user
+        user_has_liked = ProjectIdea.objects.filter(pk=OuterRef('pk'), likes=user)
+        # annotate with a boolean. True if the subquery finds a match, False if not
+        queryset = queryset.annotate(has_liked=Exists(user_has_liked))
+    else:
+        # false for guests; if the user isn't logged in, we must still provide the 'has_liked' field so the serializer doesn't crash
+        queryset = queryset.annotate(has_liked=Value(False, output_field=BooleanField()))
+
+    return queryset
 
 
 class ProjectIdeaList(APIView):
@@ -18,7 +38,7 @@ class ProjectIdeaList(APIView):
 
     def get(self, request):
         """
-        Return a list of all ideas with optional  filtering
+        Return a list of all ideas with optional filtering. Also includes the number of likes on an idea and if the current user already has liked it.
         query_params:   sort - how the return data should be sorted (e.g., ?sort=title or ?sort=-created_on); "-" makes it descending
                         tag  - filter for multiple tags (e.g., ?tags=python,django)
         """
@@ -28,8 +48,8 @@ class ProjectIdeaList(APIView):
         # .getlist() gets multiple values like ?tag=python&tag=automation
         tags = request.query_params.getlist('tag')
 
-        # get all project ideas from the db and sort the data as dictated by sort_by
-        queryset = ProjectIdea.objects.all().order_by(sort_by)
+        queryset = _get_queryset_with_like_data(request.user)
+
         if tags:
             # get all project ideas from the db that match certain tags
             # .distinct() ensures we don't get the same project twice if it matches multiple tags
@@ -37,6 +57,9 @@ class ProjectIdeaList(APIView):
             #               __name    : checks the name field of the Tag model (through the relationship)
             #                 __in    : field lookup; checks if the name is found anywhere inside the tags list we provide
             queryset = queryset.filter(tags__name__in=tags).distinct()
+
+        # order the queryset as dictated by sort_by
+        queryset = queryset.order_by(sort_by)
 
         # serialization (object -> json)
         serializer = ProjectIdeaSerializer(queryset, many=True)
@@ -66,10 +89,17 @@ class ProjectIdeaDetail(APIView):
     """
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
 
-    def _get_object(self, pk):
-        """Helper to find the project idea or return 404"""
+    def _get_object(self, request, idea_pk):
+        """Helper to find the project idea or return 404. On GET method, annotate with like data"""
         # we could do this in each method but having it centralized here makes easier changes in the long run
-        return get_object_or_404(ProjectIdea, pk=pk)
+        if request.method == 'GET':
+            # use the helper that includes all the extra likes data
+            queryset = _get_queryset_with_like_data(request.user)
+        else:
+            # simple fetch for PATCH/DELETE
+            queryset = ProjectIdea.objects.all()
+
+        return get_object_or_404(queryset, pk=idea_pk)
 
     def _is_protected(self, instance):
         """
@@ -79,15 +109,15 @@ class ProjectIdeaDetail(APIView):
         # .exists() is an efficient way to check for relationships without loading all data
         return instance.project_group_project_idea.exists() or instance.likes.exists()
 
-    def get(self, request, pk):
+    def get(self, request, idea_pk):
         """Return a single project idea via its id"""
-        project_idea = self._get_object(pk)
+        project_idea = self._get_object(request, idea_pk)
         serializer = ProjectIdeaSerializer(project_idea)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
-    def patch(self, request, pk):
+    def patch(self, request, idea_pk):
         """Update certain fields of the project idea"""
-        project_idea = self._get_object(pk)
+        project_idea = self._get_object(request, idea_pk)
 
         if request.user != project_idea.author:
             return Response(
@@ -107,9 +137,9 @@ class ProjectIdeaDetail(APIView):
         serializer.save()
         return Response(serializer.data, status=status.HTTP_200_OK)
 
-    def delete(self, request, pk):
+    def delete(self, request, idea_pk):
         """Delete a single project idea via its id"""
-        project_idea = self._get_object(pk)
+        project_idea = self._get_object(request, idea_pk)
 
         if request.user != project_idea.author:
             return Response(
