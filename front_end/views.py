@@ -33,3 +33,6 @@ def favourite_projects(request):
 
 def saved_projects(request):
     return render(request, "saved_projects.html")
+
+def completed_projects(request):
+    return render(request, "completed_projects.html")
