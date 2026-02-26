@@ -39,3 +39,6 @@ def completed_projects(request):
 
 def project_groups(request):
     return render(request, "project_groups.html")
+
+def interested_users(request):
+    return render(request, "interested_users.html")

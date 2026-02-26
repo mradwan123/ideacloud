@@ -13,7 +13,8 @@ from .views import (
     favourite_projects,
     saved_projects,
     completed_projects,
-    project_groups
+    project_groups,
+    interested_users
 )
 
 app_name = "front-end"
@@ -30,5 +31,6 @@ urlpatterns = [
     path("favourite_projects/", favourite_projects, name="favourite-projects"),
     path("saved_projects/", saved_projects, name="saved-projects"),
     path("completed_projects/", completed_projects, name="completed-projects"),
-    path("project_groups/", project_groups, name="project-groups")
+    path("project_groups/", project_groups, name="project-groups"),
+    path("interested_users/", interested_users, name="interested-users")
 ]
