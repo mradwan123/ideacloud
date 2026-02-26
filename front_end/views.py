@@ -42,3 +42,6 @@ def project_groups(request):
 
 def interested_users(request):
     return render(request, "interested_users.html")
+
+def comments(request):
+    return render(request, "comments.html")
