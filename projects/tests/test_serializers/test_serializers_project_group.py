@@ -22,18 +22,17 @@ class TestProjectGroupSerializer(TestCase):
                                                        author=self.user,
                                                        description="test description",)
         self.project_group_data = {"name": "test group",
-                                   "description": "test description",
-                                   "project_idea": self.project_idea.id,
-                                   "owner": self.user.id}
-        self.request = type('Request', (), {'user': self.user})()
+                                   "description": "test description"}
+        request = type('Request', (), {'user': self.user})()
+        self.context = {"request": request,
+                        "project_idea": self.project_idea}
         
     def test_serializer_project_group_valid(self):
         """
         Checks if a valid project group entry can be created
         and that all of the stored data is intact.
         """
-        serializer = ProjectGroupSerializer(data=self.project_group_data)
-        serializer.context['request'] = self.request
+        serializer = ProjectGroupSerializer(data=self.project_group_data, context=self.context)
         self.assertTrue(serializer.is_valid())
 
         project_group = serializer.save()
@@ -49,8 +48,7 @@ class TestProjectGroupSerializer(TestCase):
         when the group name is missing.
         """
         del self.project_group_data["name"]
-        serializer = ProjectGroupSerializer(data=self.project_group_data)
-        serializer.context['request'] = self.request
+        serializer = ProjectGroupSerializer(data=self.project_group_data, context=self.context)
         self.assertFalse(serializer.is_valid())
         self.assertIn('name', serializer.errors.keys())
 
@@ -60,8 +58,7 @@ class TestProjectGroupSerializer(TestCase):
         when the group description is missing.
         """
         del self.project_group_data["description"]
-        serializer = ProjectGroupSerializer(data=self.project_group_data)
-        serializer.context['request'] = self.request
+        serializer = ProjectGroupSerializer(data=self.project_group_data, context=self.context)
         self.assertFalse(serializer.is_valid())
         self.assertIn('description', serializer.errors.keys())
 
@@ -71,8 +68,7 @@ class TestProjectGroupSerializer(TestCase):
         when the group name is blank.
         """
         self.project_group_data["name"] = ""
-        serializer = ProjectGroupSerializer(data=self.project_group_data)
-        serializer.context['request'] = self.request
+        serializer = ProjectGroupSerializer(data=self.project_group_data, context=self.context)
         self.assertFalse(serializer.is_valid())
         self.assertIn('name', serializer.errors.keys())
 
@@ -82,8 +78,7 @@ class TestProjectGroupSerializer(TestCase):
         when the group description is blank.
         """
         self.project_group_data["description"] = ""
-        serializer = ProjectGroupSerializer(data=self.project_group_data)
-        serializer.context['request'] = self.request
+        serializer = ProjectGroupSerializer(data=self.project_group_data, context=self.context)
         self.assertFalse(serializer.is_valid())
         self.assertIn('description', serializer.errors.keys())
 
@@ -92,15 +87,13 @@ class TestProjectGroupSerializer(TestCase):
         Check if the serializer throws the correct error while validating data
         when the group name already exists under that project idea.
         """
-        serializer1 = ProjectGroupSerializer(data=self.project_group_data)
-        serializer1.context['request'] = self.request
+        serializer1 = ProjectGroupSerializer(data=self.project_group_data, context=self.context)
         self.assertTrue(serializer1.is_valid())
         serializer1.save()
 
-        serializer2 = ProjectGroupSerializer(data=self.project_group_data)
-        serializer2.context['request'] = self.request
+        serializer2 = ProjectGroupSerializer(data=self.project_group_data, context=self.context)
         self.assertFalse(serializer2.is_valid())
-        self.assertIn('non_field_errors', serializer2.errors.keys())
+        self.assertIn('name', serializer2.errors.keys())
 
     def test_serializer_project_group_to_reprentation(self):
         """
