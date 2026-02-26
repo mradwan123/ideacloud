@@ -36,3 +36,6 @@ def saved_projects(request):
 
 def completed_projects(request):
     return render(request, "completed_projects.html")
+
+def project_groups(request):
+    return render(request, "project_groups.html")
