@@ -25,5 +25,5 @@ def user_profile(request):
 def about(request):
     return render(request, "about.html")
 
-def contact_us(request):
-    return render(request, "contact_us.html")
+def create_project(request):
+    return render(request, "create_project.html")
