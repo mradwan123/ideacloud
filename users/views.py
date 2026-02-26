@@ -7,7 +7,7 @@ from .permissions import CanUpdateUser, IsAdminOrUser
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.authentication import TokenAuthentication
-from rest_framework.permissions import IsAuthenticatedOrReadOnly, IsAuthenticated, IsAdminUser
+from rest_framework.permissions import IsAuthenticatedOrReadOnly, IsAuthenticated, IsAdminUser, AllowAny
 from rest_framework.decorators import api_view, authentication_classes, permission_classes
 from rest_framework.authtoken.models import Token
 from django.shortcuts import get_object_or_404
@@ -22,17 +22,28 @@ class UserAPIView(APIView):
     - POST request used for new user registration.
     """
     
-    def get(self, request, user_id):
-        '''GET list of all users. Only admin can see list of all user details. Admin verified through user_id'''
-          # Check if user is authenticated
+    authentication_classes = [TokenAuthentication,]
+    
+    def get_permissions(self):
+        if self.request.method == "GET":
+            return [IsAdminUser()] # only admin can list users
+        if self.request.method == "POST":
+            return [AllowAny()] # anyone can create user
+        return super().get_permissions()
+    
+    def get(self, request):
+        """
+        GET list of all users. Only admin can see list of all user details. 
+        - Checks for authentication.
+        - Admin verified through user_id
+        """
+        # Check if user is authenticated
         if not request.user.is_authenticated:
             return Response(
                 {'error': 'Authentication required.'}, 
                 status=status.HTTP_401_UNAUTHORIZED
             )
-        permission = IsAdminUser()
-        if not permission.has_object_permission(request, self, user_id):
-            return Response({'error': 'User does not have permission.'}, status.HTTP_403_FORBIDDEN)
+        
         users = User.objects.all()
         serializer = UserSerializer(users, many=True)
         return Response(serializer.data, status.HTTP_200_OK)
@@ -95,30 +106,25 @@ class UserDetailView(APIView):
     """
     
     authentication_classes = [TokenAuthentication,]
-    permission_classes = [IsAuthenticated, IsAuthenticatedOrReadOnly]
+    permission_classes = [CanUpdateUser,]
     
     def get_user(self, user_id):
         '''Helper method to get user or return None'''
         return get_object_or_404(User, pk=user_id)
     
     def get(self, request, user_id):
-        '''GET single user's details from user_id'''
+        '''User can GET own user's details from user_id'''
+        
         user = self.get_user(user_id)
+        self.check_object_permissions(request, user)
         serializer = UserSerializer(user)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=200)
-        return Response({'error': 'User does not exist'}, status=404)
+        return Response(serializer.data, status.HTTP_200_OK)
     
     def patch(self, request, user_id):
-        '''Edit partially user details'''
+        '''User can Edit partially own user details'''
         user = self.get_user(user_id)
-        if not permission_classes.has_permission(request, None):
-            return Response({'error': 'Authentication required'}, status=401)
-        permission = CanUpdateUser()
-        if not permission.has_object_permission(request, self, user):
-            return Response({'error': 'User does not have permission.'}, status=403)
-        
+        self.check_object_permissions(request, user)
+
         serializer = UserSerializer(user, data=request.data, partial=True)
         if serializer.is_valid():
             serializer.save()
@@ -127,13 +133,9 @@ class UserDetailView(APIView):
         
     def put(self, request, user_id):
         '''Edit user's details'''
-        user = self.get_user(user_id)
-        if not permission_classes.has_permission(request, None):
-            return Response({'error': 'Authentication required'}, status=401)
-        permission = CanUpdateUser()
-        if not permission.has_object_permission(request, self, user):
-            return Response({'error': 'User does not have permission.'}, status=403)
-        
+        user = self.get_user(user_id) 
+        self.check_object_permissions(request, user)
+   
         serializer = UserSerializer(user, data=request.data)
         if serializer.is_valid():
             serializer.save()
@@ -143,9 +145,8 @@ class UserDetailView(APIView):
     def delete(self, request, user_id):
         '''Delete user. Either by Admin or User.'''
         user = self.get_user(user_id)
-        if not permission_classes.has_permission(request, None):
-            return Response({'error': 'Authentication required'}, status=401)
-        permission = IsAdminOrUser()
+        self.check_object_permissions(request, user)
+
         user.delete()
         return Response({'detail': 'User deleted successfully'}, status=204)
         

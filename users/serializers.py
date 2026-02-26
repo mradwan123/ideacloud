@@ -103,6 +103,7 @@ class UserSerializer(serializers.ModelSerializer):
             
         # this appends logic to the fields without overwriting default model behaviour
     extra_kwargs = {
+        'password': {'write_only': True},
         'title': {'validators': [ProfanityValidator()]},
         'description': {'validators': [ProfanityValidator()]}
     }

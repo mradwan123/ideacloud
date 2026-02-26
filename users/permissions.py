@@ -25,9 +25,10 @@ class CanUpdateUser(BasePermission):
     """
     Docstring for CanUpdateUser: Custom permission for user details.
     """
-    def has_object_permission(self, request, user):
-        if request.method in ['PUT', 'PATCH']:  
+    def has_object_permission(self, request, view, object):
+        if request.method in ['GET', 'PUT', 'PATCH', 'DELETE']:  
             # owner can update
-            return user == request.user
-        return True
+            print(request.user, object)
+            return request.user == object
+        return False
             

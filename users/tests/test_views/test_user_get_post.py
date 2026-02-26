@@ -119,7 +119,6 @@ class UserTestAPIView(TestCase):
             msg=f"Expected 400, got {response.status_code}: {response.content}",
         )
    
-        print(response.data)
         
     def test_failed_user_register_with_post_request_authentication_no_email(self):
         'User to add account with post request with no authentication but no email. Should fail with 400.'
