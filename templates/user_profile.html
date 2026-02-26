@@ -7,14 +7,34 @@
 
 {% block content %}
 
-<!-- user name profile will contain
- * user picture
- * description
- * availability
- * favourite projects
- * project the user is interested in
- * completed projects -->
-<p>
-    Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.
-</p>
+<div class="user-profile">
+    <h3 class="page-title">User Name</h3>
+    <div class="columns">
+        <div class="column-left">
+            <!-- user description will be replaced by value-->
+            <!-- if none saved...? -->
+            <p>
+                Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.
+            </p>
+            <p>
+                Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.
+            </p>
+        </div>    
+        <div class="column-right">
+            <div class="profile-img">
+                <img src="../static/images/profile-pic.avif">
+            </div>
+            <div class="profile-links">
+                <!-- availability takes a boolean to display "Free" or "Busy"-->
+                <div class="user-info">Availability:</div>
+                <!-- probably the permissions will determine which user sees what-->
+                <!-- maybe create a page for each of the three following links-->
+                <div class="user-info"><a>Favourite Projects</a></div>
+                <div class="user-info"><a>Saved Projects</a></div>
+                <div class="user-info"><a>Completed Projects</a></div>
+            </div>
+        </div>
+    </div>
+</div>
+
 {% endblock %}

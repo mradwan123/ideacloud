@@ -14,7 +14,7 @@ def load_profane_words():
     except (FileNotFoundError, json.JSONDecodeError) as e:
         # fallback to an empty list if file is missing or broken
         banned_words = []
-        print(f"\n[ProfanityValidator] Error loading file at {file_path}: {e}")  # DEBUG statement. Keep out of prod!
+        # print(f"\n[ProfanityValidator] Error loading file at {file_path}: {e}")  # DEBUG statement. Keep out of prod!
     return banned_words
 
 

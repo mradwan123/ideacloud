@@ -17,7 +17,43 @@
   * participants to the project-->
 
 {% block content %}
-<p>
+
+<div class="project-details-general-info">
+  <h3>Name of the Project</h3>
+  <h4>By <a>[Name of the owner]</a></h4>
+</div>
+
+<!-- info of the project section -->
+<!-- images are only a placeholder -->
+<div class="images-row">
+  <img src="../static/images/image_placeholder.jpg">
+  <img src="../static/images/image_placeholder.jpg">
+  <img src="../static/images/image_placeholder.jpg">
+</div>
+
+<!-- where the likes will go -->
+<div class="likes-button">
+  <button>1234 Likes</button>
+</div>
+<div>
+  <p>
     Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.
+  </p>
+</div>
+
+<!-- link to the pages of the project comments (if any)-->
+<p class="comments">
+  <a>Comments</a>
 </p>
+
+<!-- section with buttons for opening the page with interested users and groups -->
+<div class="project-details-buttons">
+  <div class="button-left">
+    <div class="project-details-button-tag"><a>INTERESTED USERS</a></div>
+  </div>
+  <div class="button-right">
+    <div class="project-details-button-tag"><a>GROUPS WORKING ON IT</a></div>
+  </div>
+</div>
+
 {% endblock %}
