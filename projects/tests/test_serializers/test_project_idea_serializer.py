@@ -44,13 +44,14 @@ class ProjectIdeaSerializerTests(TestCase):
             "title": "Title",
             "description": "Description",
             "tags": ["python"],
-            "likes": [self.user.id]
         }
         serializer = ProjectIdeaSerializer(data=data)
 
         self.assertTrue(serializer.is_valid())
         # author is read-only so we pass it here
         project = serializer.save(author=self.user)
+        # add like here
+        project.likes.add(self.user.id)
         # fetch from DB to ensure the save actually was done
         project.refresh_from_db()
 
@@ -77,7 +78,6 @@ class ProjectIdeaSerializerTests(TestCase):
             "title": "   Spaced Title   ",
             "description": "   Spaced description   ",
             "tags": ["python"],
-            "likes": [self.user.id]
         }
 
         serializer = ProjectIdeaSerializer(data=data)
@@ -93,7 +93,6 @@ class ProjectIdeaSerializerTests(TestCase):
             "title": "Fuck",
             "description": "description",
             "tags": [self.tag.id],
-            "likes": [self.user.id]
         }
 
         serializer = ProjectIdeaSerializer(data=data)
