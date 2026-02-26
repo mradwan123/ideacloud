@@ -43,7 +43,7 @@ class ProjectIdeaSerializerTests(TestCase):
         data = {
             "title": "Title",
             "description": "Description",
-            "tags": [self.tag.id],
+            "tags": ["python"],
             "likes": [self.user.id]
         }
         serializer = ProjectIdeaSerializer(data=data)
@@ -76,7 +76,7 @@ class ProjectIdeaSerializerTests(TestCase):
         data = {
             "title": "   Spaced Title   ",
             "description": "   Spaced description   ",
-            "tags": [self.tag.id],
+            "tags": ["python"],
             "likes": [self.user.id]
         }
 
