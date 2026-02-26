@@ -65,10 +65,10 @@ class UserSerializer(serializers.ModelSerializer):
         
         # Handle base64 image if present. Check to see if image is URL. 
         # If so, then we remove because we want file. If bytes, then we decode and send
-        if data.get("image") and "/media/" not in data.get('image'):
-            data['image'] = base64_to_image(data['image'])
-        elif data.get("image") and "/media/" in data.get('image'):
-            data.pop('image') 
+        if data.get("image") and "/media/" not in str(data.get("image")):
+            data["image"] = base64_to_image(data['image'])
+        elif data.get("image") and "/media/" in str(data.get("image")):
+            data.pop("image") 
         return super().to_internal_value(data)
     
     def validate_password(self, value):
