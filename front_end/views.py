@@ -30,3 +30,6 @@ def create_project(request):
 
 def favourite_projects(request):
     return render(request, "favourite_projects.html")
+
+def saved_projects(request):
+    return render(request, "saved_projects.html")
