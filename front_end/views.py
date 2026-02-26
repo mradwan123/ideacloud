@@ -27,3 +27,6 @@ def about(request):
 
 def create_project(request):
     return render(request, "create_project.html")
+
+def favourite_projects(request):
+    return render(request, "favourite_projects.html")
