@@ -14,7 +14,6 @@ def base64_to_image(b64: bytes):
     filename = f"image_{uuid.uuid4().hex[:10]}.{format}"
 
     return ContentFile(decoded, name=filename)
-    
 
 
 def image_to_base64(file: bytes):

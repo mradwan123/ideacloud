@@ -15,6 +15,10 @@ class ProjectIdeaSerializer(serializers.ModelSerializer):
 
     # this displays the author as a human-readable name rather than an ID; source can't be added via extra_kwargs
     author = serializers.ReadOnlyField(source='author.username')
+    # his field handles both GET (display name) and POST (accept name), so we don't have to POST the IDs of the tags but can use the names
+    # the tags HAVE to exist already in the DB!
+    tags = serializers.SlugRelatedField(many=True, slug_field='name', queryset=Tag.objects.all())
+    likes = serializers.PrimaryKeyRelatedField(many=True, read_only=True)
 
     class Meta:
         model = ProjectIdea
