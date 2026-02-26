@@ -33,6 +33,6 @@ class ProjectIdeaCommentTest(TestCase):
         if serializer.is_valid():
             comment = serializer.save()
             # Verify the saved comment data
-            self.assertEqual(comment.comment_text, self.comment_data["comment_text"])
+            self.assertEqual(comment.content, self.comment_data["content"])
             self.assertEqual(comment.user, self.user)
             self.assertEqual(comment.project_idea, self.project_idea)
