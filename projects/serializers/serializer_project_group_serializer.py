@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from projects.models import ProjectGroup
+from projects.models import ProjectGroup, ProjectIdea
 from projects.serializers.serializer_profanity_validator import ProfanityValidator
 from rest_framework.serializers import ValidationError
 from django.contrib.auth import get_user_model
@@ -26,6 +26,7 @@ class ProjectGroupSerializer(serializers.ModelSerializer):
         read_only_fields = ['id',
                             'members',
                             'owner',
+                            'project_idea',
                             'created_on',
                             'updated_on']
         
@@ -68,5 +69,15 @@ class ProjectGroupSerializer(serializers.ModelSerializer):
         request = self.context.get('request')
         if request and hasattr(request, 'user'):
             validated_data['owner'] = request.user
+        project_idea = self.context.get("project_idea")
+        if project_idea:
+            validated_data['project_idea'] = project_idea
         return super().create(validated_data)
+    
+    def validate_name(self, value):
+        project_idea = self.context.get("project_idea")
         
+        if ProjectGroup.objects.filter(name=value, project_idea=project_idea).exists():
+            raise ValidationError(f"Project group '{value}' under the project idea ’{project_idea.title}’.")
+
+        return value
