@@ -29,9 +29,9 @@
                 <div class="user-info">Availability:</div>
                 <!-- probably the permissions will determine which user sees what-->
                 <!-- maybe create a page for each of the three following links-->
-                <div class="user-info"><a>Favourite Projects</a></div>
-                <div class="user-info"><a>Saved Projects</a></div>
-                <div class="user-info"><a>Completed Projects</a></div>
+                <div class="user-info"><a href="{% url 'front-end:favourite-projects' %}">Favourite Projects</a></div>
+                <div class="user-info"><a href="{% url 'front-end:saved-projects' %}">Saved Projects</a></div>
+                <div class="user-info"><a href="{% url 'front-end:completed-projects' %}">Completed Projects</a></div>
             </div>
         </div>
     </div>

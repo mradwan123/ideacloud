@@ -32,6 +32,26 @@ a:visited, a:hover {
 }
 
 
+/* -- buttons -- */
+
+.button {
+    display: inline-block;
+    padding: 0.13rem 0.38rem;
+    font: inherit;
+    color: black;
+    background-color: #788192;
+    text-decoration: none;
+    border: 0.125rem solid #788192;
+    border-radius: 0.19rem;
+    cursor: pointer;
+    line-height: normal;
+}
+
+.button:active {
+    border-style: inset;
+}
+
+
 /*  -- header -- */
 
 .header {
@@ -139,10 +159,6 @@ label {
     display: flex;
     gap: 2rem;
     justify-content: center;
-}
-
-.form-button {
-    margin-top: 1rem;
 }
 
 
@@ -284,6 +300,10 @@ label {
     align-items: center;
 }
 
+.project-details-button-tag a {
+    color: black;
+}
+
 .likes-button {
     display: flex;
     justify-content: flex-end;
@@ -299,6 +319,10 @@ label {
     justify-content: flex-end;
     margin-bottom: 1.5rem;
     margin-right: 1rem;
+}
+
+.new-project-button a {
+    color: black;
 }
 
 .all-projects-row {
@@ -334,4 +358,42 @@ label {
     justify-content: flex-end;
     font-size: 0.9rem;
     padding-right: 1rem;
+}
+
+
+/* -- project groups -- */
+
+.group-box p {
+    opacity: 0.7;
+    padding-left: 1rem;
+    margin-bottom: 0.5rem;
+}
+
+/* -- comments -- */
+
+.comment-box {
+    display: flex;
+    align-items: flex-start;
+    gap: 1.5rem;
+    margin-bottom: 4rem;
+    max-width: 100%;
+    margin: 0 auto 2rem auto;
+}
+
+.comment-box img {
+    width: 7rem;
+    height: 7rem;
+    object-fit: cover;
+    border-radius: 0.5rem;
+}
+
+.name-and-comment {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.name-and-comment h4 {
+    font-size: 1rem;
+    opacity: 0.7;
 }

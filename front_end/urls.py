@@ -9,7 +9,13 @@ from .views import (
     register,
     user_profile,
     about,
-    contact_us,
+    create_project,
+    favourite_projects,
+    saved_projects,
+    completed_projects,
+    project_groups,
+    interested_users,
+    comments
 )
 
 app_name = "front-end"
@@ -22,5 +28,11 @@ urlpatterns = [
     path("register/", register, name="register"),
     path("user_profile/", user_profile, name="user-profile"),
     path("about/", about, name="about"),
-    path("contact_us", contact_us, name="contact-us")
+    path("create_project/", create_project, name="create-project"),
+    path("favourite_projects/", favourite_projects, name="favourite-projects"),
+    path("saved_projects/", saved_projects, name="saved-projects"),
+    path("completed_projects/", completed_projects, name="completed-projects"),
+    path("project_groups/", project_groups, name="project-groups"),
+    path("interested_users/", interested_users, name="interested-users"),
+    path("comments/", comments, name="comments")
 ]
