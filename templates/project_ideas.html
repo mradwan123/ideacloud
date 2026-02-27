@@ -28,7 +28,7 @@ they can be styled with CSS/Bootstrap -->
 </div>
 
 <div class="new-project-button">
-  <button>New Project +</button>
+  <a href="{% url 'front-end:create-project' %}" class="button">New Project +</a>
 </div>
 
 <div class="all-projects-row">
@@ -125,20 +125,5 @@ they can be styled with CSS/Bootstrap -->
 <p class="more-projects">
     More Projects
 </p>
-
-<!-- form to move in "create_project.html"
-<form method="post">
-    {% csrf_token %}
-    <label>Title *</label><br>
-    {{ form.title }}<br>
-    <label>Description</label>
-    {{ form.description }}<br>
-    <label>Tags</label>
-    {{ form.tags }}
-    <button type="submit">Create project</button>
-    <button type="reset">Cancel</button>
-    <p>* are required fields</p>
-</form>
--->
 
 {% endblock %}
