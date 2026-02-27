@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block tab %} Create New Project {% endblock %}
+
+{% block content %}
+
+<div class="page-description">
+
+    <h3 class="page-title">Create a New Project</h3>
+
+</div>
+
+<form>
+
+    {% csrf_token %}
+
+    <!-- title -->
+    <label for="title">Title *</label>
+    <input type="text" id="title" name="title" placeholder="title of the project" required>
+
+    <!-- description -->
+    <label for="project-description">Description</label>
+    <textarea id="project-description" rows="4" placeholder="Tell us about your project"></textarea>
+    
+    <!-- tags to add -->
+
+    <!-- picure uploading to add -->
+
+    <!-- disclaimer -->
+    <p class="disclaimer">
+        * are required fields
+    </p>
+
+    <!-- buttons -->
+    <div class="register-buttons">
+        <button type="submit" class="button" id="confirm-button">Create</button>
+        <button type="reset" class="button" id="cancel-button">Cancel</button>
+    </div>
+
+</form>
+
+{% endblock %}

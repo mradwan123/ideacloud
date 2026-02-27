@@ -33,7 +33,7 @@
 
 <!-- where the likes will go -->
 <div class="likes-button">
-  <button>1234 Likes</button>
+  <div class="button">1234 Likes</div>
 </div>
 <div>
   <p>
@@ -43,16 +43,16 @@
 
 <!-- link to the pages of the project comments (if any)-->
 <p class="comments">
-  <a>Comments</a>
+  <a href="{% url 'front-end:comments' %}">Comments</a>
 </p>
 
 <!-- section with buttons for opening the page with interested users and groups -->
 <div class="project-details-buttons">
   <div class="button-left">
-    <div class="project-details-button-tag"><a>INTERESTED USERS</a></div>
+    <div class="project-details-button-tag"><a href="{% url 'front-end:interested-users' %}">INTERESTED USERS</a></div>
   </div>
   <div class="button-right">
-    <div class="project-details-button-tag"><a>GROUPS WORKING ON IT</a></div>
+    <div class="project-details-button-tag"><a href="{% url 'front-end:project-groups' %}">GROUPS WORKING ON IT</a></div>
   </div>
 </div>
 
