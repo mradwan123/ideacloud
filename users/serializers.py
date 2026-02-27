@@ -37,7 +37,7 @@ class UserSerializer(serializers.ModelSerializer):
     first_name = serializers.CharField(required=False, allow_blank=True, max_length=30)
     last_name = serializers.CharField(required=False, allow_blank=True, max_length=100)
         
-    # Image validator: TODO: check this validator, with base64 library, change when working with views
+    # Image validator: see to_internal_value below
     image = serializers.ImageField(required=False, allow_null=True)
     
     description = serializers.CharField(max_length=1000, trim_whitespace=True)
@@ -64,7 +64,7 @@ class UserSerializer(serializers.ModelSerializer):
             
         
         # Handle base64 image if present. Check to see if image is URL. 
-        # If so, then we remove because we want file. If bytes, then we decode and send
+        # If URL, then we remove because we want file. If bytes file, then we decode and send
         if data.get("image") and "/media/" not in str(data.get("image")):
             data["image"] = base64_to_image(data['image'])
         elif data.get("image") and "/media/" in str(data.get("image")):
