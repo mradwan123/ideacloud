@@ -133,8 +133,9 @@ class UserModelTest(TestCase):
         '''Testing two users with same email. Test passes as per built in Abstract user constraints'''
         User = get_user_model()
         user1 = User.objects.create_user(username='george', email='george@gmail.com', password='password')
-        user2 = User.objects.create_user(username='radwan', email='george@gmail.com', password='password')
-        self.assertEqual(user1.email, user2.email)
+        with self.assertRaises(IntegrityError):
+            user2 = User.objects.create_user(username='radwan', email='george@gmail.com', password='password')
+        
         
     
     def test_user_email_blank(self): #Abstractuser class includes by default unique email = blank

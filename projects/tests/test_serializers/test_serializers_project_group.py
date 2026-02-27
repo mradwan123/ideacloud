@@ -15,9 +15,11 @@ class TestProjectGroupSerializer(TestCase):
         self.group_description = "test description"
         self.password = "TestPassword1,"
         self.user = User.objects.create_user(username="test_user",
-                                             password=self.password)
+                                             password=self.password,
+                                             email='test@test.com')
         self.user2 = User.objects.create_user(username="test_user2",
-                                              password=self.password)
+                                              password=self.password,
+                                              email='test2@test.com')
         self.project_idea = ProjectIdea.objects.create(title="test idea",
                                                        author=self.user,
                                                        description="test description",)

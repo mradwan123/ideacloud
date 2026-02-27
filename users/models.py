@@ -9,7 +9,7 @@ class User(AbstractUser):
     Custom User model extending and adding to the AbstractUser by Django.
     Standard User fields plus(image, description, created_on, finsihed_projects)
     '''
-   
+    email = models.EmailField(unique=True)
     image = models.ImageField(upload_to='profile_images/', default='profile_images/default.jpg')
     description = models.TextField(max_length=1000, null=True, blank=True)
     available = models.BooleanField(default=False)
