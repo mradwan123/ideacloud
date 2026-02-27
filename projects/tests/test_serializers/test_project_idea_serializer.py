@@ -29,13 +29,19 @@ class ProjectIdeaSerializerTests(TestCase):
             project_idea=self.project_idea,
             content="Nice Idea!"
         )
+        # add annotations that the view normally provides
+        self.project_idea.likes_count = 0
+        self.project_idea.has_liked = False
 
     def test_serializer_contains_all_fields(self):
         """Verify that all fields are returned correctly"""
         serializer = ProjectIdeaSerializer(instance=self.project_idea)
         data = serializer.data
 
-        expected_fields = {"id", "title", "author", "description", "created_on", "tags", "likes", "images_projects", "project_idea_comments"}
+        expected_fields = {
+            "id", "title", "author", "description", "created_on", "tags",
+            "likes_count", "has_liked", "images_projects", "project_idea_comments"
+        }
         self.assertEqual(set(data.keys()), expected_fields)
 
     def test_tags_and_likes_are_saved(self):
@@ -65,6 +71,28 @@ class ProjectIdeaSerializerTests(TestCase):
         # we only care that the keys exist and are the right type (list)
         self.assertIsInstance(serializer.data['images_projects'], list)
         self.assertIsInstance(serializer.data['project_idea_comments'], list)
+
+    def test_serializer_with_annotations(self):
+        """Verify that annotated fields (from our view logic) are present"""
+        from django.db.models import Count, Value, BooleanField
+
+        # add one like so count is 1
+        self.project_idea.likes.add(self.user)
+
+        # simulate the annotated queryset the view normally provides
+        queryset = ProjectIdea.objects.annotate(
+            likes_count=Count('likes'),
+            has_liked=Value(True, output_field=BooleanField())
+        )
+
+        # fetch a NEW instance from the DB result
+        # this instance has the database-calculated attributes NOT the ones from setUp
+        db_instance = queryset.get(id=self.project_idea.id)
+
+        serializer = ProjectIdeaSerializer(instance=db_instance)
+
+        self.assertEqual(serializer.data['likes_count'], 1)
+        self.assertEqual(serializer.data['has_liked'], True)
 
     def test_to_representation_titles_the_title(self):
         """Verify that title is converted to a titled version in representation"""
