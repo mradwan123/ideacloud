@@ -114,7 +114,6 @@ if os.environ.get('GITHUB_WORKFLOW'):
 
 if 'DATABASE_URL' in os.environ:
     db_env = os.environ.get('DATABASE_URL')
-    print(db_env)
     if db_env == "local":
         DATABASES = {
             "default": {
