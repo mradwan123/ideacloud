@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% load static %}
+{% load widget_tweaks %}
 
 {% block tab %} Register {% endblock %}
 
@@ -7,7 +8,20 @@
 
 {% block content %}
 
-<form method="post">
+<div class="page-description">
+    
+    <h3 class="page-title">Registration Form</h3>
+
+    <p>
+        To take advantage of all our cool features (groups, comments, save favourite etc.) register to the webapp.
+    </p>
+    <p>
+        Already registered? <a href="{% url 'front-end:login' %}">Sign in!</a>
+    </p>
+
+</div>
+
+<form method="POST" enctype="multipart/form-data">
     {% csrf_token %}
     <label>First Name *</label><br>
     {{ form.first_name }}<br>
@@ -25,67 +39,55 @@
     <button type="reset" class="form_button" id="cancel_button">Cancel</button>
     <p>* are required fields</p>
 </form>
--->
 
-<div class="page-description">
-    
-    <h3 class="page-title">Registration Form</h3>
-
-    <p>
-        To take advantage of all our cool features (groups, comments, save favourite etc.) register to the webapp.
-    </p>
-    <p>
-        Already registered? <a href="{% url 'front-end:login' %}">Sign in!</a>
-    </p>
-
-</div>
-
+<!-- HTML only form
 <form>
 
     {% csrf_token %}
 
-    <!-- first name -->
+    first name
     <label for="first_name">First Name *</label></br>
     <input type="text" id="first_name" name="first_name" placeholder="first name" required></br>
     
-    <!-- last name -->
+    last name
     <label for="last_name">Last Name *</label></br>
     <input type="text" id="last_name" name="last_name" placeholder="last name" required></br>
     
-    <!-- username name -->
+    username name
     <label for="username">Username</label></br>
     <input type="text" id="username" name="username" placeholder="username"></br>
     
-    <!-- email -->
+    email
     <label for="email">Email *</label></br>
     <input type="email" id="email" name="email" placeholder="email" required></br>
     
-    <!-- password -->
+    password
     <label for="password">Password *</label></br>
     <input type="password" id="password" name="password" placeholder="password" required></br>
     
-    <!-- confirm password -->
+    confirm password
     <label for="confirm-password">Confirm Password *</label></br>
     <input type="password" id="confirm-password" name="confirm-password" placeholder="confirm password" required></br>
     
-    <!-- description -->
+    description
     <label for="description">Description</label></br>
     <textarea id="description" name="description" rows="4" placeholder="Tell us about yourself"></textarea></br>
 
-    <!-- upload picture -->
+    upload picture
     <label for="profile-pic">Upload profile picture</label></br>
     <input type="file" id="profile-pic" name="profile-pic" accept="image/*"></br>
 
-    <!-- disclaimer -->
+    disclaimer
     <p class="disclaimer">
         * are required fields
     </p>
 
-    <!-- buttons -->
+    buttons
     <div class="register-buttons">
         <button type="submit" class="button" id="confirm-button">Register</button>
         <button type="reset" class="button" id="cancel-button">Cancel</button>
     </div>
 </form>
+-->
 
 {% endblock %}
