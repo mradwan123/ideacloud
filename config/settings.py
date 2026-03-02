@@ -21,7 +21,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media') 
 
-env_path = load_dotenv(os.path.join(BASE_DIR, '.env'))
+env_path = os.path.join(BASE_DIR, '.env')
 load_dotenv(env_path)
 
 # Quick-start development settings - unsuitable for production
@@ -114,7 +114,6 @@ if os.environ.get('GITHUB_WORKFLOW'):
 
 if 'DATABASE_URL' in os.environ:
     db_env = os.environ.get('DATABASE_URL')
-    print(db_env)
     if db_env == "local":
         DATABASES = {
             "default": {
