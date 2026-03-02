@@ -168,7 +168,7 @@ class ProjectIdeaDetailTests(APITestCase):
         """Test that an author can edit their project idea before it has likes or groups attached"""
         self.client.force_authenticate(user=self.user_author)
 
-        url_non_existing_idea = reverse('projects:project-idea-detail', kwargs={'pk': 999999})
+        url_non_existing_idea = reverse('projects:project-idea-detail', kwargs={'idea_pk': 999999})
         data = {"title": "Non Existing Project Idea"}
         response = self.client.patch(url_non_existing_idea, data, format="json")
 
