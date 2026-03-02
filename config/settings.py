@@ -54,6 +54,7 @@ INSTALLED_APPS = [
     'projects.apps.ProjectsConfig',
     'users.apps.UsersConfig',
     'front_end.apps.FrontEndConfig',
+    'widget_tweaks',
 ]
 
 MIDDLEWARE = [
