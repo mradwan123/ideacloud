@@ -9,8 +9,8 @@ User = get_user_model()
 class ProjectIdeaListTests(APITestCase):
     def setUp(self):
         # create users
-        self.user_author = User.objects.create_user(username="author", password="password")
-        self.user_other = User.objects.create_user(username="other", password="password")
+        self.user_author = User.objects.create_user(username="author", password="password", email="author@email.com")
+        self.user_other = User.objects.create_user(username="other", password="password", email="other@email.com")
         # create tags
         self.tag_python = Tag.objects.create(name="python")
         self.tag_automation = Tag.objects.create(name="automation")
@@ -110,8 +110,8 @@ class ProjectIdeaListTests(APITestCase):
 class ProjectIdeaDetailTests(APITestCase):
     def setUp(self):
         # create users
-        self.user_author = User.objects.create_user(username="author", password="password")
-        self.user_other = User.objects.create_user(username="other", password="password")
+        self.user_author = User.objects.create_user(username="author", password="password", email="author@email.com")
+        self.user_other = User.objects.create_user(username="other", password="password", email="other@email.com")
         # create tags
         self.tag_python = Tag.objects.create(name="python")
         self.tag_automation = Tag.objects.create(name="automation")
