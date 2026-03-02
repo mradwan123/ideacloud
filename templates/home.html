@@ -3,19 +3,15 @@
 
 {% block tab %} Home {% endblock %}
 
-{% block title %} Home {% endblock %}
-
 {% block content %}
 
 <!-- recent and famous projects go here 
-* profile picture of the owner
-* name of the owner with link to their profile
-* description of the project
-* likes
-* comments-->
+- it will be a view like in the 'project_ideas.html'
+-->
 
 <h1>Here are all the projects</h1>
 
+<!-- first look of how back- and front-end will communicate -->
 {% for idea in ideas %}
 <ul>
     <li>{{ idea.title }}</li>
