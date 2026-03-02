@@ -1,4 +1,4 @@
-from django.test import TestCase
+from django.test import TestCase, override_settings
 from django.contrib.auth import get_user_model
 from rest_framework import status
 from rest_framework.authtoken.models import Token
@@ -6,15 +6,33 @@ from rest_framework.test import APIClient
 from django.urls import reverse
 from config.settings import MEDIA_ROOT
 from config.image_helper.base64_image_conversion import image_to_base64
+import os
+import shutil
+import tempfile
 
 User = get_user_model()
 
+# Create a temporary directory for media files
+TEMP_MEDIA_ROOT = tempfile.mkdtemp()
+
+# we use @override_settings to overwrite the default MEDIA_ROOT
+# this ensures that any files saved during testing go to our set TEMP_MEDIA_ROOT
+@override_settings(MEDIA_ROOT=TEMP_MEDIA_ROOT)
 class UserTestAPIView(TestCase):
     """
     Docstring for UserTestAPIView:
     Creates setup with several users, admin, tokens, client, url.
     Test for GET/POST requests.
     """
+    @classmethod
+    def tearDownClass(cls):
+        """Clean up the entire temp media directory after all tests in this class are done"""
+        super().tearDownClass()
+
+        # check if the temp directory still exists on the disk
+        if os.path.exists(TEMP_MEDIA_ROOT):
+            # shutil.rmtree recursively deletes the directory and every file inside it
+            shutil.rmtree(TEMP_MEDIA_ROOT, ignore_errors=True)
 
     def setUp(self):
 
