@@ -13,6 +13,7 @@ from rest_framework.authtoken.models import Token
 
 
 class TestProjectGroupListView(TestCase):
+    """Test cases for the ProjectGroupList view."""
 
     def setUp(self):
         User = get_user_model()
@@ -45,6 +46,7 @@ class TestProjectGroupListView(TestCase):
         self.token_user2 = Token.objects.create(user=self.user2)
     
     def test_view_get_project_group_list_valid(self):
+        """Test retrieving all project groups for a valid project idea."""
         response = self.client.get(self.url(self.project_idea.id))
         data = response.data
 
@@ -64,11 +66,13 @@ class TestProjectGroupListView(TestCase):
         self.assertIn(self.project_group2.owner.username, owner_list)
 
     def test_view_get_project_group_list_invalid_project_idea(self):
+        """Test retrieving project groups with a non-existent project idea ID."""
         response = self.client.get(self.url(999999999))
 
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
 
     def test_view_post_project_group_list_create(self):
+        """Test creating a new project group with valid authentication."""
         self.client.credentials(HTTP_AUTHORIZATION=f"Token {self.token_user}")
         data = {"name": "new_group",
                 "description": "new description"}
@@ -78,6 +82,7 @@ class TestProjectGroupListView(TestCase):
         self.assertIn(data.get("name"), response.data.get("detail"))
 
     def test_view_post_project_group_list_invalid_token(self):
+        """Test creating a project group with an invalid authentication token."""
         self.client.credentials(HTTP_AUTHORIZATION=f"{self.token_user}")
 
         data = {"name": "new_group",
@@ -88,7 +93,7 @@ class TestProjectGroupListView(TestCase):
         self.assertEqual(response.data.get("detail").code, "not_authenticated")
 
 class TestProjectGroupDetailView(TestCase):
-
+    """Test cases for the ProjectGroupDetail view."""
     def setUp(self):
         User = get_user_model()
         self.group_name = "test_group"
@@ -117,6 +122,7 @@ class TestProjectGroupDetailView(TestCase):
         self.token_user2 = Token.objects.create(user=self.user2)
 
     def test_view_get_project_group_detail_valid(self):
+        """Test retrieving a specific project group with valid IDs."""
         response = self.client.get(self.url(self.project_idea.id, self.project_group.id))
 
         data = response.data
@@ -129,21 +135,79 @@ class TestProjectGroupDetailView(TestCase):
         self.assertEqual(data.get("owner").get("username"), self.project_group.owner.username)
 
     def test_view_get_project_group_detail_invalid_project_idea(self):
+        """Test retrieving a project group with an invalid project idea ID."""
         response = self.client.get(self.url(999999999, self.project_group.id))
 
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
 
     def test_view_get_project_group_detail_invalid_project_group(self):
+        """Test retrieving a project group with an invalid group ID."""
         response = self.client.get(self.url(self.project_idea.id, 99999999999))
 
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
 
     def test_view_put_project_group_detail_valid(self):
+        """Test fully updating a project group with valid data."""
         self.client.credentials(HTTP_AUTHORIZATION=f"Token {self.token_user}")
         data = {"name": "updated_name",
                 "description": "updated description"}
         response = self.client.put(self.url(self.project_idea.id, self.project_group.id), data=data, format="json")
-        response_data = response.data
 
-        self.assertEqual(data.get("name"), response_data.get("name"))
-        self.assertEqual(data.get("description"), response_data.get("description"))
+        self.assertEqual(data.get("name"), response.data.get("name"))
+        self.assertEqual(data.get("description"), response.data.get("description"))
+
+    def test_view_put_project_group_detail_name_missing(self):
+        """Test fully updating a project group without providing a name."""
+        self.client.credentials(HTTP_AUTHORIZATION=f"Token {self.token_user}")
+        data = {"description": "updated description"}
+        response = self.client.put(self.url(self.project_idea.id, self.project_group.id), data=data, format="json")
+
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertIn("name", response.data.keys())
+
+    def test_view_put_project_group_detail_description_missing(self):
+        """Test fully updating a project group without providing a description."""
+        self.client.credentials(HTTP_AUTHORIZATION=f"Token {self.token_user}")
+        data = {"name": "updated_name"}
+        response = self.client.put(self.url(self.project_idea.id, self.project_group.id), data=data, format="json")
+
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertIn("description", response.data.keys())
+
+    def test_view_patch_project_group_detail_valid_name(self):
+        """Test partially updating only the name of a project group."""
+        self.client.credentials(HTTP_AUTHORIZATION=f"Token {self.token_user}")
+        data = {"name": "updated_name"}
+        response = self.client.patch(self.url(self.project_idea.id, self.project_group.id), data=data, format="json")
+
+        self.assertEqual(data.get("name"), response.data.get("name"))
+        self.assertEqual(self.project_group.description, response.data.get("description"))
+
+    def test_view_patch_project_group_detail_valid_description(self):
+        """Test partially updating only the description of a project group."""
+        self.client.credentials(HTTP_AUTHORIZATION=f"Token {self.token_user}")
+        data = {"description": "updated description"}
+        response = self.client.patch(self.url(self.project_idea.id, self.project_group.id), data=data, format="json")
+
+        self.assertEqual(data.get("description"), response.data.get("description"))
+        self.assertEqual(self.project_group.name, response.data.get("name"))
+
+    def test_view_patch_project_group_detail_invalid_group(self):
+        """Test partially updating a project group with an invalid group ID."""
+        self.client.credentials(HTTP_AUTHORIZATION=f"Token {self.token_user}")
+        data = {"description": "updated description"}
+        response = self.client.patch(self.url(self.project_idea.id, 99999999999999999), data=data, format="json")
+
+        self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
+
+    def test_view_patch_project_group_detail_valid_delete(self):
+        """Test deleting a project group with valid authentication."""
+        project_group_id = self.project_group.id
+        self.assertTrue(ProjectGroup.objects.filter(id=project_group_id).exists())
+
+        self.client.credentials(HTTP_AUTHORIZATION=f"Token {self.token_user}")
+        response = self.client.delete(self.url(self.project_idea.id, self.project_group.id))
+        self.assertFalse(ProjectGroup.objects.filter(id=project_group_id).exists())
+        self.assertIn("deleted.", response.data.get("detail"))
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+

@@ -6,10 +6,16 @@ from ..models import ProjectGroup, ProjectIdea
 from ..serializers.serializer_project_group_serializer import ProjectGroupSerializer
 
 class ProjectGroupList(APIView):
+    """
+    List all project groups for a specific project idea, or create a new project group.
+    """
 
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
 
     def get(self, request, idea_pk):
+        """
+        Retrieve all project groups belonging to a specific project idea.
+        """
         try:
             ProjectIdea.objects.get(id=idea_pk)
         except ProjectIdea.DoesNotExist:
@@ -23,6 +29,9 @@ class ProjectGroupList(APIView):
         return Response(data=serializer.data, status=status.HTTP_200_OK)
 
     def post(self, request, idea_pk):
+        """
+        Create a new project group for a specific project idea.
+        """
         try:
             project_idea = ProjectIdea.objects.get(id=idea_pk)
         except ProjectIdea.DoesNotExist:
@@ -42,7 +51,9 @@ class ProjectGroupList(APIView):
 
 
 class ProjectGroupDetail(APIView):
-
+    """
+    Retrieve, update, or delete a specific project group within a project idea.
+    """
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
 
     def _get_project_group(self, group_pk):
@@ -57,6 +68,9 @@ class ProjectGroupDetail(APIView):
         return project_group.project_idea.id == idea_pk
 
     def get(self, request, idea_pk, group_pk):
+        """
+        Retrieve details of a specific project group.
+        """
         group = self._get_project_group(group_pk)
 
         if not group:
@@ -72,6 +86,9 @@ class ProjectGroupDetail(APIView):
         return Response(serializer.data, status=status.HTTP_200_OK)
         
     def put(self, request, idea_pk, group_pk):
+        """
+        Fully update a specific project group.
+        """
         group = self._get_project_group(group_pk)
 
         if not group:
@@ -91,10 +108,13 @@ class ProjectGroupDetail(APIView):
 
         group = serializer.save()
 
-        return Response({"detail": f"The project group '{group.name}' has been updated."},
+        return Response(serializer.data,
                         status=status.HTTP_200_OK)
 
     def patch(self, request, idea_pk, group_pk):
+        """
+        Partially update a specific project group.
+        """
         group = self._get_project_group(group_pk)
 
         if not group:
@@ -114,10 +134,13 @@ class ProjectGroupDetail(APIView):
 
         group = serializer.save()
 
-        return Response({"detail": f"The project group '{group.name}' has been updated."},
+        return Response(serializer.data,
                         status=status.HTTP_200_OK)
 
     def delete(self, request, idea_pk, group_pk):
+        """
+        Delete a specific project group.
+        """
         group = self._get_project_group(group_pk)
 
         if not group:
