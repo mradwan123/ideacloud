@@ -89,7 +89,7 @@ class FinishedProjectDetail(APIView):
     """
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
 
-    def _get_object(self, request, idea_pk):
+    def _get_object(self, request, finished_pk):
         """Helper to find the project idea or return 404. On GET method, annotate with like data"""
         # we could do this in each method but having it centralized here makes easier changes in the long run
         if request.method == 'GET':
@@ -99,7 +99,7 @@ class FinishedProjectDetail(APIView):
             # simple fetch for PATCH/DELETE
             queryset = FinishedProject.objects.all()
 
-        return get_object_or_404(queryset, pk=idea_pk)
+        return get_object_or_404(queryset, pk=finished_pk)
 
     def _is_protected(self, instance):
         """
@@ -109,15 +109,15 @@ class FinishedProjectDetail(APIView):
         # .exists() is an efficient way to check for relationships without loading all data
         return instance.project_group_project_idea.exists() or instance.likes.exists()
 
-    def get(self, request, idea_pk):
+    def get(self, request, finished_pk):
         """Return a single project idea via its id"""
-        finished_project = self._get_object(request, idea_pk)
+        finished_project = self._get_object(request, finished_pk)
         serializer = FinishedProjectSerializer(finished_project)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
-    def patch(self, request, idea_pk):
+    def patch(self, request, finished_pk):
         """Update certain fields of the finished project"""
-        finished_project = self._get_object(request, idea_pk)
+        finished_project = self._get_object(request, finished_pk)
 
         if request.user != finished_project.author:
             return Response(
