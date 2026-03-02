@@ -1,0 +1,25 @@
+from django import forms
+from .models import User
+
+class RegisterForm(forms.ModelForm):
+
+    class Meta:
+        model = User
+        fields = [
+            'first_name',
+            'last_name',
+            'username',
+            'email',
+            'password',
+            'description',
+            'image'
+        ]
+        widgets = {
+            'first_name': forms.TextInput(attrs={'placeholder': 'First name'}),
+            'last_name': forms.TextInput(attrs={'placeholder': 'Last name'}),
+            'username': forms.TextInput(attrs={'placeholder': 'Username'}),
+            'email': forms.TextInput(attrs={'placeholder': 'Email'}),
+            'password': forms.PasswordInput(attrs={'placeholder': 'Password'}),
+            'description': forms.Textarea(attrs={'placeholder': 'Tell us about yourself'}),
+            # image uses a default field
+        }
