@@ -20,8 +20,10 @@ class TestProjectGroupListView(TestCase):
         self.group_description = "test description"
         self.password = "TestPassword1,"
         self.user = User.objects.create_user(username="test_user",
+                                             email="test_user@email.com",
                                              password=self.password)
         self.user2 = User.objects.create_user(username="test_user2",
+                                              email="test_user2@email.com",
                                               password=self.password)
         self.project_idea = ProjectIdea.objects.create(title="test idea",
                                                        author=self.user,
@@ -100,8 +102,10 @@ class TestProjectGroupDetailView(TestCase):
         self.group_description = "test description"
         self.password = "TestPassword1,"
         self.user = User.objects.create_user(username="test_user",
+                                             email="test_user@email.com",
                                              password=self.password)
         self.user2 = User.objects.create_user(username="test_user2",
+                                              email="test_user2@email.com",
                                               password=self.password)
         self.project_idea = ProjectIdea.objects.create(title="test idea",
                                                        author=self.user,

@@ -130,5 +130,4 @@ class FinishedProjectSerializerTests(TestCase):
         serializer = FinishedProjectSerializer(data=data)
 
         self.assertFalse(serializer.is_valid(), serializer.errors)
-        print(serializer.errors)
         #TODO fix this assertion: self.assertIn('title', serializer.errors)
