@@ -1,5 +1,6 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from projects.models import ProjectIdea
+from users.form import RegisterForm
 
 # Create your views here.
 
@@ -17,7 +18,14 @@ def login(request):
     return render(request, "login.html")
 
 def register(request):
-    return render(request, "register.html")
+    if request.method == 'POST':
+        form = RegisterForm(request.POST, request.FILES)
+        if form.is_valid():
+            form.save()
+            return redirect('front-end:login')
+    else:
+        form = RegisterForm()
+    return render(request, "register.html", {'form': form})
 
 def user_profile(request):
     return render(request, "user_profile.html")
