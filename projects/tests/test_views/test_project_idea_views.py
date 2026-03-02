@@ -154,7 +154,7 @@ class ProjectIdeaDetailTests(APITestCase):
 
     ## DELETE
 
-    def test_delete_comment_as_author(self):
+    def test_delete_project_idea_as_author(self):
         """Verifies that the author of a project idea, that has neither likes nor groups attached, can delete it"""
         self.client.force_authenticate(user=self.user_author)
 
@@ -197,7 +197,7 @@ class ProjectIdeaDetailTests(APITestCase):
 
     ## DELETE
     def test_delete_project_idea_as_guest(self):
-        """Ensures that a a guest cannot update a comment's content"""
+        """Ensures that a a guest cannot update a project idea's content"""
         self.client.logout()
 
         response = self.client.delete(self.url_detail)
@@ -205,7 +205,7 @@ class ProjectIdeaDetailTests(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
 
     def test_delete_project_idea_as_other_user(self):
-        """Ensures that another user that is not the author of a comment cannot delete it"""
+        """Ensures that another user that is not the author of a project idea cannot delete it"""
         self.client.force_authenticate(user=self.user_other)
 
         response = self.client.delete(self.url_detail)
