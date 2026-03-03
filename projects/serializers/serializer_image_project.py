@@ -3,7 +3,9 @@ from ..models import ImageProject
 from django.core.files.base import ContentFile
 from PIL import Image
 from config.image_helper.base64_image_conversion import base64_to_image
+from config.image_helper.validate_image import is_image_valid
 import uuid
+from rest_framework.exceptions import ValidationError
 
 
 class ImageProjectSerializer(serializers.ModelSerializer):
@@ -19,11 +21,8 @@ class ImageProjectSerializer(serializers.ModelSerializer):
             data = data.copy()
 
         if data.get("image"):
-            byte_data = base64_to_image(data["image"])
-
-            filename = f"image_{uuid.uuid4().hex[:10]}.jpg"
-
-            data["image"] = ContentFile(byte_data.getvalue(), filename)
+            
+            data["image"] = base64_to_image(data["image"])
         
         return super().to_internal_value(data)
     
@@ -36,5 +35,8 @@ class ImageProjectSerializer(serializers.ModelSerializer):
         return representation
     
     def validate_image(self, value):
+
+        if not is_image_valid(value):
+            raise ValidationError("Image could not be saved. Has to be jpg in base64 format.")
         
         return value

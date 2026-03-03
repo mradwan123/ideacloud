@@ -1,8 +1,7 @@
 from django.test import TestCase
 from django.core.exceptions import ValidationError
 from django.contrib.auth import get_user_model
-from ...models import ProjectGroup
-from ...models import ProjectIdea
+from projects.models import ProjectGroup, ProjectIdea
 from django.db.utils import IntegrityError
 
 class TestProjectGroup(TestCase):

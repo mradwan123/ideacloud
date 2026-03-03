@@ -68,11 +68,7 @@ class UserSerializer(serializers.ModelSerializer):
         # Handle base64 image if present. Check to see if image is URL. 
         # If URL, then we remove because we want file. If bytes file, then we decode and send
         if data.get("image") and "/media/" not in str(data.get("image")):
-            byte_data = base64_to_image(data["image"])
-
-            filename = f"image_{uuid.uuid4().hex[:10]}.jpg"
-
-            data["image"] = ContentFile(byte_data.getvalue(), filename)
+            data["image"] = base64_to_image(data["image"])
         elif data.get("image") and "/media/" in str(data.get("image")):
             data.pop("image") 
         return super().to_internal_value(data)

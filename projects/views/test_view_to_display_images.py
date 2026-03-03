@@ -1,7 +1,7 @@
 from rest_framework.decorators import api_view
 from projects.models import ProjectIdea
 from django.contrib.auth import get_user_model
-from ..serializers.serializer_image_project import ImageProjectSerializer
+from projects.serializers.serializer_image_project import ImageProjectSerializer
 from django.http import HttpResponse
 
 @api_view(["POST",])
