@@ -12,7 +12,7 @@ from .views import (
     create_project,
     favourite_projects,
     saved_projects,
-    completed_projects,
+    finished_project,
     project_groups,
     interested_users,
     comments
@@ -23,7 +23,7 @@ urlpatterns = [
     path("", home, name="home"),
     path("project_ideas/", project_ideas, name="project-ideas"),
     # to be changed to "project_details/<int: id>"
-    path("project_details/", project_details, name="project-details"),
+    path("project_details/<int:pk>", project_details, name="project-details"),
     path("login/", user_login, name="login"),
     path("register/", register, name="register"),
     path("user_profile/", user_profile, name="user-profile"),
@@ -31,7 +31,7 @@ urlpatterns = [
     path("create_project/", create_project, name="create-project"),
     path("favourite_projects/", favourite_projects, name="favourite-projects"),
     path("saved_projects/", saved_projects, name="saved-projects"),
-    path("completed_projects/", completed_projects, name="completed-projects"),
+    path("completed_projects/", finished_project, name="completed-projects"),
     path("project_groups/", project_groups, name="project-groups"),
     path("interested_users/", interested_users, name="interested-users"),
     path("comments/", comments, name="comments")
