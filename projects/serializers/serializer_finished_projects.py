@@ -2,6 +2,7 @@ from rest_framework import serializers
 from projects.models import FinishedProject, Tag, ProjectGroup
 from django.contrib.auth import get_user_model
 from projects.serializers.serializer_profanity_validator import ProfanityValidator
+from rest_framework.exceptions import ValidationError
 
 
 User = get_user_model()
@@ -77,12 +78,9 @@ class FinishedProjectSerializer(serializers.ModelSerializer):
         request = self.context.get('request')
         if request and hasattr(request, 'user'):
             project_group = validated_data['project_group']
-            print(project_group)
-        return super().create(validated_data)
-        #     project_group_owner = ProjectGroup.objects.filter(owner=)
-        # if project_group.owner = request.user
+            if project_group.owner == request.user:
+                return super().create(validated_data)
+        raise ValidationError("User is not allowed to publish this Finished Group. User is not owner of Project Group.")
             
-        # finished_project = self.context.get("project_idea")
-        # if project_idea:
-        #     validated_data['project_idea'] = project_idea
-        # return super().create(validated_data)
+            
+    

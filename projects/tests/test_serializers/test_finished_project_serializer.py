@@ -3,6 +3,7 @@ from django.contrib.auth import get_user_model
 from projects.models import FinishedProject, ProjectGroup, ProjectIdea, ImageProject, Tag
 from projects.serializers.serializer_project_idea_serializer import ProjectIdeaSerializer
 from projects.serializers.serializer_finished_projects import FinishedProjectSerializer
+from rest_framework.exceptions import ValidationError
 
 
 User = get_user_model()
@@ -11,7 +12,8 @@ User = get_user_model()
 class FinishedProjectSerializerTests(TestCase):
     def setUp(self):
         # create test user
-        self.user = User.objects.create_user(username="test_user", password="password")
+        self.user = User.objects.create_user(username="test_user", password="password", email='test@hello.com')
+        self.user2 = User.objects.create_user(username="test_user2", password="password2", email='test@hello2.com')
         # create test project idea
         self.project_idea = ProjectIdea.objects.create(
             title="test project idea",
@@ -29,16 +31,24 @@ class FinishedProjectSerializerTests(TestCase):
         # create a group
         self.project_group = ProjectGroup.objects.create(
                                 name='Test Group',
-                                project_idea = self.project_idea
+                                project_idea = self.project_idea,
+                                owner=self.user #TODO create another user that is not project idea owner, and is group owner
                                 )
         
-        #create finisihed project
+        #create finished project
         self.finished_project = FinishedProject.objects.create(
             title = "test finished project title",
             description = 'test description',
             project_group = self.project_group,
             
         )
+        
+        request = type('Request', (), {'user': self.user})()
+        self.context = {"request": request}
+        
+        request_user2 = type('Request', (), {'user': self.user2})()
+        self.context2 = {"request": request_user2}
+        
         self.finished_project.tags.add(self.tag)
         # add annotations that the view normally provides
         self.finished_project.likes_count = 0
@@ -47,7 +57,7 @@ class FinishedProjectSerializerTests(TestCase):
         
     def test_serializer_contains_all_fields(self):
         """Verify that all fields are returned correctly"""
-        serializer = FinishedProjectSerializer(instance=self.finished_project)
+        serializer = FinishedProjectSerializer(instance=self.finished_project, context=self.context)
         data = serializer.data
 
         expected_fields = {
@@ -62,9 +72,9 @@ class FinishedProjectSerializerTests(TestCase):
             "title": "Title",
             "description": "Description",
             "tags": ["python"],
+            "project_group": self.project_group.pk
         }
-        serializer = FinishedProjectSerializer(data=data)
-
+        serializer = FinishedProjectSerializer(data=data, context=self.context)
         self.assertTrue(serializer.is_valid())
         # author is read-only so we pass it here
         project = serializer.save()
@@ -112,7 +122,7 @@ class FinishedProjectSerializerTests(TestCase):
             "tags": ["python"],
         }
 
-        serializer = FinishedProjectSerializer(data=data)
+        serializer = FinishedProjectSerializer(data=data, context=self.context)
 
         self.assertTrue(serializer.is_valid(), serializer.errors)
         # check the internal value "validated_data"
@@ -127,7 +137,24 @@ class FinishedProjectSerializerTests(TestCase):
             "tags": [self.tag.id],
         }
 
-        serializer = FinishedProjectSerializer(data=data)
+        serializer = FinishedProjectSerializer(data=data, context=self.context)
 
         self.assertFalse(serializer.is_valid(), serializer.errors)
         #TODO fix this assertion: self.assertIn('title', serializer.errors)
+        
+    def test_finished_project_user_not_project_group_owner_fail(self):
+        data = {
+            "title": "Title",
+            "description": "Description",
+            "tags": ["python"],
+            "project_group": self.project_group.pk
+        }
+        
+        serializer = FinishedProjectSerializer(data=data, context=self.context2)
+        self.assertTrue(serializer.is_valid())
+        # author is read-only so we pass it here
+        with self.assertRaises(ValidationError) as error:
+            project = serializer.save()
+        self.assertIn("User is not allowed to publish this Finished Group.", str(error.exception.detail))
+        
+            

@@ -39,35 +39,37 @@ class FinishedProjectList(APIView):
     def get(self, request):
         """
         Return a list of all ideas with optional filtering. Also includes the number of likes on a finished project and if the current user already has liked it.
-        query_params:   sort - how the return data should be sorted (e.g., ?sort=title or ?sort=-created_on); "-" makes it descending
+        query_params:   sort - how the return data should be sorted (e.g., ?sort=title; "-" makes it descending
                         tag  - filter for multiple tags (e.g., ?tags=python,django)
         """
-        # sort like specified in the 'sort' instruction from the URL (e.g. /finished-projects/?sort=title); default to '-created_on'
-        sort_by = request.query_params.get('sort', '-created_on')
 
         # .getlist() gets multiple values like ?tag=python&tag=automation
-        tags = request.query_params.getlist('tag')
+        # tags = request.query_params.getlist('tag')
 
-        queryset = _get_queryset_with_like_data(request.user)
+        # queryset = _get_queryset_with_like_data(request.user)
 
-        if tags:
-            # get all project ideas from the db that match certain tags
-            # .distinct() ensures we don't get the same project twice if it matches multiple tags
-            # tags__name__in: tags    : looks in the tags field of the ProjectIdea model
-            #               __name    : checks the name field of the Tag model (through the relationship)
-            #                 __in    : field lookup; checks if the name is found anywhere inside the tags list we provide
-            queryset = queryset.filter(tags__name__in=tags).distinct()
+        # if tags:
+        #     # get all project ideas from the db that match certain tags
+        #     # .distinct() ensures we don't get the same project twice if it matches multiple tags
+        #     # tags__name__in: tags    : looks in the tags field of the ProjectIdea model
+        #     #               __name    : checks the name field of the Tag model (through the relationship)
+        #     #                 __in    : field lookup; checks if the name is found anywhere inside the tags list we provide
+        #     queryset = queryset.filter(tags__name__in=tags).distinct()
 
         # order the queryset as dictated by sort_by
-        queryset = queryset.order_by(sort_by)
+        # queryset = queryset.order_by(sort_by)
 
         # serialization (object -> json)
+        queryset = FinishedProject.objects.all()
         serializer = FinishedProjectSerializer(queryset, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
     def post(self, request):
         """Create a new FinishedProject with the provided data and authenticated user"""
-        serializer = FinishedProjectSerializer(data=request.data)
+                
+        context = {"request": request}
+                   
+        serializer = FinishedProjectSerializer(data=request.data, context=context)
 
         # validation check for model requirements
         # if validation fails DRF stops here and sends a 400 Bad Request back to the user (so we don't have to use any if logic)
@@ -77,6 +79,7 @@ class FinishedProjectList(APIView):
         # this ensures the post is linked to the right person safely and automatically
         serializer.save()
         return Response(serializer.data, status=status.HTTP_201_CREATED)
+        #TODO handle not group owner request in API errors, status should be 401
 
 
 class FinishedProjectDetail(APIView):
