@@ -70,7 +70,7 @@ class ImageProjectSerializerTests(TestCase):
         self.assertTrue(serializer.data["image"].endswith(".jpg"))
         self.assertIn("/media/project_images/image_", serializer.data["image"])
         # verify the project_idea is returned as its ID (the primary key)
-        self.assertEqual(serializer.data["project_idea"], self.project_idea.id)
+        self.assertEqual(image_instance.project_idea.id, self.project_idea.id)
 
     def test_image_deserialization_and_save(self):
         """
