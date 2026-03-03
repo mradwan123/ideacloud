@@ -3,18 +3,30 @@ from projects.models import ProjectIdea
 from front_end.form import RegisterForm
 from users.serializers import UserSerializer
 from django.contrib.auth import authenticate, login
+from django.contrib.auth.decorators import login_required
+from projects.serializers.serializer_project_idea_serializer import ProjectIdeaSerializer
+from django.shortcuts import get_object_or_404
 
 # Create your views here.
 
+# TODO after making "home.html"
+# it will have a view for logged in and not logged in user
 def home(request):
-    response = ProjectIdea.objects.all()
-    return render(request, "home.html", context={"ideas": response})
+    ideas = ProjectIdea.objects.all()
+    serializer = ProjectIdeaSerializer(ideas, many=True)
+    return render(request, "home.html", context={"ideas": serializer.data})
 
+@login_required(login_url="front-end:login")
 def project_ideas(request):
-    return render(request, "project_ideas.html")
+    ideas = ProjectIdea.objects.all()
+    serializer = ProjectIdeaSerializer(ideas, many=True)
+    return render(request, "project_ideas.html", context={"ideas": serializer.data})
 
-def project_details(request):
-    return render(request, "project_details.html")
+@login_required(login_url="front-end:login")
+def project_details(request, pk):
+    idea = get_object_or_404(ProjectIdea, pk=pk)
+    serializer = ProjectIdeaSerializer(idea)
+    return render(request, "project_details.html", context={"idea": serializer.data})
 
 def user_login(request):
     if request.method == "POST":
@@ -28,15 +40,14 @@ def user_login(request):
     return render(request, "login.html")
 
 def register(request):
-    registration_form = RegisterForm
+    registration_form = RegisterForm()
     if request.method == "POST":
         serializer = UserSerializer(data=request.POST)
-        print(serializer.is_valid())
-        print(serializer.errors)
         if serializer.is_valid():
             serializer.save()
             return redirect("front-end:login")
         else:
+            # TODO: process user errors
             return redirect("front-end:register")
     return render(request, "register.html", {"form": registration_form})
 
@@ -46,6 +57,7 @@ def user_profile(request):
 def about(request):
     return render(request, "about.html")
 
+@login_required(login_url="front-end:login")
 def create_project(request):
     return render(request, "create_project.html")
 
@@ -55,7 +67,7 @@ def favourite_projects(request):
 def saved_projects(request):
     return render(request, "saved_projects.html")
 
-def completed_projects(request):
+def finished_project(request):
     return render(request, "completed_projects.html")
 
 def project_groups(request):
