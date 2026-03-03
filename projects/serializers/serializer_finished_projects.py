@@ -1,9 +1,7 @@
 from rest_framework import serializers
-from projects.models import FinishedProject, Tag
+from projects.models import FinishedProject, Tag, ProjectGroup
 from django.contrib.auth import get_user_model
-from ..models import ProjectGroup
 from projects.serializers.serializer_profanity_validator import ProfanityValidator
-
 
 
 User = get_user_model()
@@ -73,3 +71,18 @@ class FinishedProjectSerializer(serializers.ModelSerializer):
             representation["title"] = instance.title.title()
 
         return representation
+    
+    
+    def create(self, validated_data):
+        request = self.context.get('request')
+        if request and hasattr(request, 'user'):
+            project_group = validated_data['project_group']
+            print(project_group)
+        return super().create(validated_data)
+        #     project_group_owner = ProjectGroup.objects.filter(owner=)
+        # if project_group.owner = request.user
+            
+        # finished_project = self.context.get("project_idea")
+        # if project_idea:
+        #     validated_data['project_idea'] = project_idea
+        # return super().create(validated_data)

@@ -75,7 +75,7 @@ class FinishedProjectList(APIView):
 
         # the json doesn't include the autor, so we 'inject' the logged-in user here
         # this ensures the post is linked to the right person safely and automatically
-        serializer.save(author=request.user)
+        serializer.save()
         return Response(serializer.data, status=status.HTTP_201_CREATED)
 
 
