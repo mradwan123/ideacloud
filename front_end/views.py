@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect
 from projects.models import ProjectIdea
 from front_end.form import RegisterForm
 from users.serializers import UserSerializer
+from django.contrib.auth import authenticate, login
 
 # Create your views here.
 
@@ -15,21 +16,29 @@ def project_ideas(request):
 def project_details(request):
     return render(request, "project_details.html")
 
-def login(request):
+def user_login(request):
+    if request.method == "POST":
+        username = request.POST.get("username")
+        password = request.POST.get("password")
+        user = authenticate(request=request, username=username, password=password)
+        if user is not None:
+            login(request, user)
+            return redirect("front-end:home")
+        # TODO: process user errors
     return render(request, "login.html")
 
 def register(request):
     registration_form = RegisterForm
-    if request.method == 'POST':
+    if request.method == "POST":
         serializer = UserSerializer(data=request.POST)
         print(serializer.is_valid())
         print(serializer.errors)
         if serializer.is_valid():
             serializer.save()
-            return redirect('front-end:login')
+            return redirect("front-end:login")
         else:
-            return redirect('front-end:register')
-    return render(request, "register.html", {'form': registration_form})
+            return redirect("front-end:register")
+    return render(request, "register.html", {"form": registration_form})
 
 def user_profile(request):
     return render(request, "user_profile.html")
