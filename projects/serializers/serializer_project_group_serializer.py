@@ -32,7 +32,7 @@ class ProjectGroupSerializer(serializers.ModelSerializer):
         
         # this appends logic to the fields without overwriting default model behaviour
         extra_kwargs = {
-            'title': {'validators': [ProfanityValidator()]},
+            'name': {'validators': [ProfanityValidator()]},
             'description': {'validators': [ProfanityValidator()]},
         }
 
