@@ -113,11 +113,13 @@ def remove_saved_project(request, pk):
     request.user.interested_projects.remove(idea)
     return redirect("front-end:project-details", pk=pk)
 
+@login_required(login_url="front-end:login")
 def add_like(request, pk):
     idea = get_object_or_404(ProjectIdea, pk=pk)
     idea.likes.add(request.user)
     return redirect("front-end:project-details", pk=pk)
 
+@login_required(login_url="front-end:login")
 def remove_like(request, pk):
     idea = get_object_or_404(ProjectIdea, pk=pk)
     idea.likes.remove(request.user)
