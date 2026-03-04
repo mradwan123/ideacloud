@@ -30,13 +30,16 @@ def project_details(request, pk):
     # check if the user has favourited the idea
     has_favourited = idea in request.user.favorite_projects.all()
     has_saved = idea in request.user.interested_projects.all()
+    has_liked = request.user in idea.likes.all()
     return render(
         request,
         "project_details.html",
         context={
             "idea": serializer.data,
             "has_favourited": has_favourited,
-            "has_saved": has_saved
+            "has_saved": has_saved,
+            "has_liked": has_liked,
+            "like_count": idea.likes.count()
         })
 
 def user_login(request):
@@ -108,6 +111,16 @@ def add_saved_project(request, pk):
 def remove_saved_project(request, pk):
     idea = get_object_or_404(ProjectIdea, pk=pk)
     request.user.interested_projects.remove(idea)
+    return redirect("front-end:project-details", pk=pk)
+
+def add_like(request, pk):
+    idea = get_object_or_404(ProjectIdea, pk=pk)
+    idea.likes.add(request.user)
+    return redirect("front-end:project-details", pk=pk)
+
+def remove_like(request, pk):
+    idea = get_object_or_404(ProjectIdea, pk=pk)
+    idea.likes.remove(request.user)
     return redirect("front-end:project-details", pk=pk)
 
 def finished_project(request):

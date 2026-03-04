@@ -25,7 +25,7 @@
 
   <!-- where the likes will go -->
   <div class="likes-button">
-    <div class="button">1234 Likes</div>
+    <div class="button">{{ like_count }} Likes</div>
   </div>
 
   <!-- buttons with add/remove project from favourites -->
@@ -54,6 +54,18 @@
     </form>
   {% endif %}
 
+  <!-- buttons with add/remove project from saved -->
+  {% if has_liked %}
+    <form action="{% url 'front-end:remove-like' idea.id %}" method="POST">
+        {% csrf_token %}
+        <button type="submit" class="button">Remove Like</button>
+    </form>
+  {% else %}
+    <form action="{% url 'front-end:add-like' idea.id %}" method="POST">
+        {% csrf_token %}
+        <button type="submit" class="button">Add Like</button>
+    </form>
+  {% endif %}
 </div>
 
 <div>
