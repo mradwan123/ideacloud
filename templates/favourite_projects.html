@@ -16,25 +16,35 @@
 
 </div>
 
-<div class="ideas-grid">
-    {% for idea in favourites %}
-    <div class="idea-card">
-        <img src="{% static 'images/image_placeholder.jpg' %}">
-        <div class="caption">
-            <p class="project-title">
-                <a href="{% url 'front-end:project-details' idea.id %}">
-                    {{ idea.title }}
-                </a>
-            </p>
-            <p class="project-owner-thumbnail">
-                By {{ idea.author }}
-            </p>
-            <p class="project-description-thumbnail">
-                {{ idea.description|truncatewords:10 }}
-            </p>
+{% if favourites %}
+    <div class="ideas-grid">
+        {% for idea in favourites %}
+        <div class="idea-card">
+            <img src="{% static 'images/image_placeholder.jpg' %}">
+            <div class="caption">
+                <p class="project-title">
+                    <a href="{% url 'front-end:project-details' idea.id %}">
+                        {{ idea.title }}
+                    </a>
+                </p>
+                <p class="project-owner-thumbnail">
+                    By {{ idea.author }}
+                </p>
+                <p class="project-description-thumbnail">
+                    {{ idea.description|truncatewords:10 }}
+                </p>
+            </div>
         </div>
+        {% endfor %}
     </div>
-    {% endfor %}
-</div>
+{% else %}
+    <div class="no-projects">
+        <hr>
+        <p>
+            You haven't put any projects in your favourites yet.<br>
+            Start exploring and save the ones you like.
+        </p>
+    </div>
+{% endif %}
 
 {% endblock %}

@@ -326,6 +326,11 @@ label {
     margin: 0;
 }
 
+.no-projects {
+    text-align: center;
+    margin-top: 3rem;
+}
+
 /* -- all project ideas -- */
 
 .new-project-button {
