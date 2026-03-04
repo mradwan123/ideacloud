@@ -85,7 +85,7 @@ class FinishedProject(models.Model):
 
     title = models.CharField(max_length=200)
     # project groups are linked to the idea, so we don't need an additional reference
-    project_group = models.ForeignKey(ProjectGroup, on_delete=models.SET_NULL, null=True, related_name='groups_finished_projects')
+    project_group = models.ForeignKey(ProjectGroup, on_delete=models.SET_NULL, null=True, related_name='finished_projects')
     description = models.TextField()
     finished_on = models.DateTimeField(auto_now_add=True)
     tags = models.ManyToManyField(Tag, related_name='tags_finished_projects')

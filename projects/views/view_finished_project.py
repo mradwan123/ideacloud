@@ -110,7 +110,7 @@ class FinishedProjectDetail(APIView):
         related_names: 'project_group_finished_project' and 'likes'
         """
         # .exists() is an efficient way to check for relationships without loading all data
-        return instance.project_group_project_idea.exists() or instance.likes.exists()
+        return instance.likes.exists()
 
     def get(self, request, finished_pk):
         """Return a single project idea via its id"""
@@ -122,34 +122,23 @@ class FinishedProjectDetail(APIView):
         """Update certain fields of the finished project"""
         finished_project = self._get_object(request, finished_pk)
 
-        if request.user != finished_project.author:
-            return Response(
-                {"detail": "Only the author is allowed to edit the finished project"},
-                status=status.HTTP_403_FORBIDDEN
-            )
+        context = {"request": request}
 
-        if self._is_protected(finished_project):
-            return Response(
-                {"detail": "This finished project has likes or groups connected and therefore can't be edited."},
-                status=status.HTTP_409_CONFLICT
-            )
-
-        # partial=True allows missing fields in the request and is therefore essential for the patch logic
-        serializer = FinishedProjectSerializer(finished_project, data=request.data, partial=True)
+        serializer = FinishedProjectSerializer(finished_project, data=request.data, partial=True, context=context)
         serializer.is_valid(raise_exception=True)
         serializer.save()
         return Response(serializer.data, status=status.HTTP_200_OK)
 
-    def delete(self, request, idea_pk):
+    def delete(self, request, finished_pk):
         """Delete a single finished project via its id"""
-        finished_project = self._get_object(request, idea_pk)
-
-        if request.user != finished_project.author:
+        finished_project = self._get_object(request, finished_pk)
+        print(finished_project.project_group)
+        if request.user != finished_project.project_group.owner:
             return Response(
                 {"detail": "Only the author is allowed to delete the finished project"},
                 status=status.HTTP_403_FORBIDDEN
             )
-
+            
         if self._is_protected(finished_project):
             return Response(
                 {"detail": "This finished project has likes or groups connected and therefore can't be deleted."},

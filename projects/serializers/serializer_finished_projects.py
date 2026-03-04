@@ -82,5 +82,12 @@ class FinishedProjectSerializer(serializers.ModelSerializer):
                 return super().create(validated_data)
         raise ValidationError("User is not allowed to publish this Finished Group. User is not owner of Project Group.")
             
+    def update(self, instance, validated_data):
+        request = self.context.get('request')
+        if request and hasattr(request, 'user'):
+            project_group = validated_data['project_group']
+            if project_group.owner == request.user:
+                return super().update(instance, validated_data)
+        raise ValidationError("User is not allowed to edit description/title of this Finished Group. User is not owner of Project Group.")
             
     
