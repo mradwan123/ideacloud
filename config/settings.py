@@ -35,7 +35,7 @@ SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', '6niu^40cw#4#@ozotbp&e8t!nxwoi-
 # DEBUG = True
 DEBUG = os.environ.get('DJANGO_DEBUG', '') != 'False'
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['127.0.0.1', 'aqueous-crag-51920-280fe96ba7c2.herokuapp.com']
 
 # example value
 # CSRF_TRUSTED_ORIGINS = ['https://slimarius.pythonanywhere.com']
