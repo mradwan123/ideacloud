@@ -12,6 +12,21 @@
   <h4>By <a>{{ idea.author }}</a></h4>
 </div>
 
+<!-- buttons with add/remove project from favourites -->
+<div class="fav-project-bttn">
+  {% if has_favourited %}
+    <form action="{% url 'front-end:remove-favourite' idea.id %}" method="POST">
+        {% csrf_token %}
+        <button type="submit" class="button">Remove from Favourites</button>
+    </form>
+{% else %}
+    <form action="{% url 'front-end:add-favourite' idea.id %}" method="POST">
+        {% csrf_token %}
+        <button type="submit" class="button">Add to Favourites</button>
+    </form>
+{% endif %}
+</div>
+
 <!-- info of the project section -->
 <!-- images are only a placeholder -->
 <div class="images-row">

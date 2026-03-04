@@ -1,4 +1,40 @@
-{% extends 'base_nested_pages_user_profile.html' %}
+{% extends 'base.html' %}
 {% load static %}
 
 {% block title %} Favourite Projects {% endblock %}
+
+
+{% block content %}
+
+<div class="page-description">
+    
+    <h3 class="page-title">Favourite Projects</h3>
+
+    <p>
+        All your favourite projects.
+    </p>
+
+</div>
+
+<div class="ideas-grid">
+    {% for idea in favourites %}
+    <div class="idea-card">
+        <img src="{% static 'images/image_placeholder.jpg' %}">
+        <div class="caption">
+            <p class="project-title">
+                <a href="{% url 'front-end:project-details' idea.id %}">
+                    {{ idea.title }}
+                </a>
+            </p>
+            <p class="project-owner-thumbnail">
+                By {{ idea.author }}
+            </p>
+            <p class="project-description-thumbnail">
+                {{ idea.description|truncatewords:10 }}
+            </p>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+
+{% endblock %}

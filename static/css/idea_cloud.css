@@ -317,6 +317,19 @@ label {
     margin-right: 1rem;
 }
 
+.fav-project-bttn {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 1rem;
+}
+
+.fav-project-bttn form {
+    display: inline-flex;
+}
+
+.fav-project-bttn button {
+    margin: 0;
+}
 
 /* -- all project ideas -- */
 
