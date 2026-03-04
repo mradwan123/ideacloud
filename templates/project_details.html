@@ -8,8 +8,8 @@
 {% block content %}
 
 <div class="project-details-general-info">
-  <h3>Name of the Project</h3>
-  <h4>By <a>[Name of the owner]</a></h4>
+  <h3> {{ idea.title }} </h3>
+  <h4>By <a>{{ idea.author }}</a></h4>
 </div>
 
 <!-- info of the project section -->
@@ -26,7 +26,7 @@
 </div>
 <div>
   <p>
-    Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.
+    {{ idea.description }}
   </p>
 </div>
 
