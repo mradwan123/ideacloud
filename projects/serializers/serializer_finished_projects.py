@@ -1,19 +1,15 @@
 from rest_framework import serializers
-from projects.models import FinishedProject, Tag
+from projects.models import FinishedProject, Tag, ProjectGroup
 from django.contrib.auth import get_user_model
-from ..models import ProjectGroup
 from projects.serializers.serializer_profanity_validator import ProfanityValidator
-
+from rest_framework.exceptions import ValidationError
 
 
 User = get_user_model()
 
 
 class FinishedProjectSerializer(serializers.ModelSerializer):
-    title = serializers.CharField(max_length=200)
-    # we're nesting the serializers here; the variable names HAVE to be the related_name of the model
-    # read_only set to true because we wouldn't change anything from here
-
+    
     # these are the annotated values from the queryset in the ProjectIdea views
     likes_count = serializers.IntegerField(read_only=True)
     has_liked = serializers.BooleanField(read_only=True)
@@ -73,3 +69,22 @@ class FinishedProjectSerializer(serializers.ModelSerializer):
             representation["title"] = instance.title.title()
 
         return representation
+    
+    
+    def create(self, validated_data):
+        request = self.context.get('request')
+        if request and hasattr(request, 'user'):
+            project_group = validated_data['project_group']
+            if project_group.owner == request.user:
+                return super().create(validated_data)
+        raise ValidationError("User is not allowed to publish this Finished Group. User is not owner of Project Group.")
+            
+    def update(self, instance, validated_data):
+        request = self.context.get('request')
+        if request and hasattr(request, 'user'):
+            project_group = validated_data['project_group']
+            if project_group.owner == request.user:
+                return super().update(instance, validated_data)
+        raise ValidationError("User is not allowed to edit description/title of this Finished Group. User is not owner of Project Group.")
+            
+    
