@@ -244,6 +244,12 @@ label {
     margin-bottom: 1rem;
 }
 
+.user-info img {
+    height: 1rem;
+    width: auto;
+    margin-left: 0.5rem;
+}
+
 
 /* --- project details --- */
 

@@ -6,6 +6,7 @@ from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
 from projects.serializers.serializer_project_idea_serializer import ProjectIdeaSerializer
 from django.shortcuts import get_object_or_404
+from users.models import User
 
 # Create your views here.
 
@@ -51,8 +52,10 @@ def register(request):
             return redirect("front-end:register")
     return render(request, "register.html", {"form": registration_form})
 
+@login_required(login_url="front-end:login")
 def user_profile(request):
-    return render(request, "user_profile.html")
+    user = request.user
+    return render(request, "user_profile.html", context={"user": user})
 
 def about(request):
     return render(request, "about.html")
