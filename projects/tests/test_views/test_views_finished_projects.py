@@ -227,14 +227,14 @@ class FinishedProjectDetailTests(APITestCase):
 #         self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
 #         self.assertIs(response.data.get("title"), None)
 
-#     ## DELETE
-#     def test_delete_finished_project_as_guest(self):
-#         """Ensures that a a guest cannot update a finished project's content"""
-#         self.client.logout()
+    ## DELETE
+    def test_delete_finished_project_as_guest(self):
+        """Ensures that a a guest cannot update a finished project's content"""
+        self.client.logout()
 
-#         response = self.client.delete(self.url_detail)
+        response = self.client.delete(self.url_detail)
 
-#         self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
+        self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
 
 #     def test_delete_finished_project_as_other_user(self):
 #         """Ensures that another user that is not the author of a finished project cannot delete it"""
