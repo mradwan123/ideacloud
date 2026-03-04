@@ -23,7 +23,7 @@ class ProjectIdeaListTests(APITestCase):
         # adding "python" tag to the project_idea
         self.project_idea.tags.add(self.tag_python)
         # helpers to manage urls easier in test
-        self.url_list = reverse("projects:project-list")
+        self.url_list = reverse("projects:project-idea-list")
 
     ### VALID
     ## GET

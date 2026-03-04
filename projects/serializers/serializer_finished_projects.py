@@ -9,10 +9,7 @@ User = get_user_model()
 
 
 class FinishedProjectSerializer(serializers.ModelSerializer):
-    title = serializers.CharField(max_length=200)
-    # we're nesting the serializers here; the variable names HAVE to be the related_name of the model
-    # read_only set to true because we wouldn't change anything from here
-
+    
     # these are the annotated values from the queryset in the ProjectIdea views
     likes_count = serializers.IntegerField(read_only=True)
     has_liked = serializers.BooleanField(read_only=True)
