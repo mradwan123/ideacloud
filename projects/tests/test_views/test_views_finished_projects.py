@@ -236,19 +236,25 @@ class FinishedProjectDetailTests(APITestCase):
 
         self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
 
-#     def test_delete_finished_project_as_other_user(self):
-#         """Ensures that another user that is not the author of a finished project cannot delete it"""
-#         self.client.force_authenticate(user=self.user2)
+    def test_delete_finished_project_as_other_user(self):
+        """Ensures that another user that is not the author of a finished project cannot delete it"""
+        self.client.force_authenticate(user=self.user2)
 
-#         response = self.client.delete(self.url_detail)
+        response = self.client.delete(self.url_detail)
 
-#         self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
+        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
 
-#     ## SERIALIZER CONNECTION
-#     def test_update_finished_project_with_profane_content(self):
-#         """Makes sure that the view rejects banned words correctly (via serializer)"""
-#         self.client.force_authenticate(user=self.user1)
-#         data = {"title": "Fuck this!"}
+    ## SERIALIZER CONNECTION
+    def test_update_finished_project_with_profane_content(self):
+        """Makes sure that the view rejects banned words correctly (via serializer)"""
+        self.client.force_authenticate(user=self.user1)
+        data = {
+            "title": "Fucking Great New Idea",
+            "description": "Entirely new description",
+            "tags": ["automation"],
+            "project_group": self.project_group.id
+        }
 
-#         response = self.client.patch(self.url_detail, data, format='json')
-#         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        response = self.client.patch(self.url_detail, data, format='json')
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertIn("Profanity", str(response.data['validators']))

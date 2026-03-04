@@ -132,7 +132,6 @@ class FinishedProjectDetail(APIView):
     def delete(self, request, finished_pk):
         """Delete a single finished project via its id"""
         finished_project = self._get_object(request, finished_pk)
-        print(finished_project.project_group)
         if request.user != finished_project.project_group.owner:
             return Response(
                 {"detail": "Only the author is allowed to delete the finished project"},
