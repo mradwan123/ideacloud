@@ -3,7 +3,8 @@ from django.conf import settings
 from django.conf.urls.static import static
 from projects.views.view_project_idea import ProjectIdeaList, ProjectIdeaDetail
 from projects.views.view_project_group import ProjectGroupList, ProjectGroupDetail
-from projects.views.view_likes import ProjectIdeaToggleLike, FinishedProjectToggleLike
+from projects.views.view_finished_project import FinishedProjectList, FinishedProjectDetail
+
 
 app_name = "projects"
 urlpatterns = [
@@ -19,6 +20,12 @@ urlpatterns = [
     # Access to methods related to a specific group
     path("project-ideas/<int:idea_pk>/project-groups/<int:group_pk>/", ProjectGroupDetail.as_view(), name="project-group-detail"),
 
+    ## FinishedProject
+    # Listing all finished projects or create a new one
+    path("finished-projects/", FinishedProjectList.as_view(), name="finished-project-list"),
+    # Access to get/path/del methods related to a specific finished project
+    path("finished-projects/<int:finished_pk>/", FinishedProjectDetail.as_view(), name="finished-project-detail"),
+    
     ##Likes
     # Toggling a user's like on Project Ideas
     path("project-ideas/<int:idea_pk>/like/", ProjectIdeaToggleLike.as_view(), name="project-idea-like"),
