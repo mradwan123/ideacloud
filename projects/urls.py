@@ -4,7 +4,7 @@ from django.conf.urls.static import static
 from projects.views.view_project_idea import ProjectIdeaList, ProjectIdeaDetail
 from projects.views.view_project_group import ProjectGroupList, ProjectGroupDetail
 from projects.views.view_finished_project import FinishedProjectList, FinishedProjectDetail
-
+from projects.views.view_likes import ProjectIdeaToggleLike, FinishedProjectToggleLike
 
 app_name = "projects"
 urlpatterns = [
