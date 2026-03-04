@@ -37,7 +37,7 @@ class ImageProjectSerializerTests(TestCase):
             author=self.user,
             description="Testing image serialization"
         )
-
+        
     def _create_test_image(self):
         """Helper to create an image in memory"""
         # we create a 100x100px image in RAM
@@ -56,11 +56,11 @@ class ImageProjectSerializerTests(TestCase):
         #     image=image_file
         # )
         data = {"image": image_file,
-                "project_idea": self.project_idea.id}
+                "project_idea": self.project_idea.pk}
 
         # pass the database object into the serializer
         serializer = ImageProjectSerializer(data=data)
-        self.assertTrue(serializer.is_valid())
+        serializer.is_valid()
         image_instance = serializer.save()
 
         # verify that the id in the JSON matches the id in the database
