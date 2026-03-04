@@ -29,12 +29,14 @@ def project_details(request, pk):
     serializer = ProjectIdeaSerializer(idea)
     # check if the user has favourited the idea
     has_favourited = idea in request.user.favorite_projects.all()
+    has_saved = idea in request.user.interested_projects.all()
     return render(
         request,
         "project_details.html",
         context={
             "idea": serializer.data,
-            "has_favourited": has_favourited
+            "has_favourited": has_favourited,
+            "has_saved": has_saved
         })
 
 def user_login(request):
@@ -90,8 +92,23 @@ def remove_favourite_project(request, pk):
     request.user.favorite_projects.remove(idea)
     return redirect("front-end:project-details", pk=pk)
 
+@login_required(login_url="front-end:login")
 def saved_projects(request):
-    return render(request, "saved_projects.html")
+    user = request.user
+    saved = user.interested_projects.all()
+    return render(request, "saved_projects.html", context={"saved": saved})
+
+@login_required(login_url="front-end:login")
+def add_saved_project(request, pk):
+    idea = get_object_or_404(ProjectIdea, pk=pk)
+    request.user.interested_projects.add(idea)
+    return redirect("front-end:project-details", pk=pk)
+
+@login_required(login_url="front-end:login")
+def remove_saved_project(request, pk):
+    idea = get_object_or_404(ProjectIdea, pk=pk)
+    request.user.interested_projects.remove(idea)
+    return redirect("front-end:project-details", pk=pk)
 
 def finished_project(request):
     return render(request, "completed_projects.html")

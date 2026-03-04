@@ -310,24 +310,19 @@ label {
     color: black;
 }
 
-.likes-button {
+.project-actions {
     display: flex;
-    justify-content: flex-end;
-    margin-bottom: 1rem;
-    margin-right: 1rem;
+    justify-content: flex-end;   /* push everything to the right */
+    align-items: center;
+    gap: 1rem;                   /* space between buttons */
+    margin-bottom: 1.5rem;
 }
 
-.fav-project-bttn {
-    display: flex;
-    justify-content: flex-end;
-    margin-bottom: 1rem;
+.project-actions form {
+    margin: 0;                   /* remove default form spacing */
 }
 
-.fav-project-bttn form {
-    display: inline-flex;
-}
-
-.fav-project-bttn button {
+.project-actions .button {
     margin: 0;
 }
 
