@@ -37,8 +37,7 @@ DEBUG = os.environ.get('DJANGO_DEBUG', '') != 'False'
 
 ALLOWED_HOSTS = ['127.0.0.1', 'aqueous-crag-51920-280fe96ba7c2.herokuapp.com']
 
-# example value
-# CSRF_TRUSTED_ORIGINS = ['https://slimarius.pythonanywhere.com']
+CSRF_TRUSTED_ORIGINS = ['https://aqueous-crag-51920-280fe96ba7c2.herokuapp.com/']
 
 # Application definition
 
