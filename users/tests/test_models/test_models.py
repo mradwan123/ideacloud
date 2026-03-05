@@ -1,5 +1,4 @@
 from django.test import TestCase, override_settings
-from ...models import User
 from django.contrib.auth import get_user_model
 from django.core.exceptions import ValidationError
 from django.db import IntegrityError
@@ -13,6 +12,7 @@ from django.core.files.uploadedfile import SimpleUploadedFile
 import shutil
 import tempfile
 
+User = get_user_model()
 
 # Create a temporary media directory for tests
 TEMP_MEDIA_ROOT = tempfile.mkdtemp()

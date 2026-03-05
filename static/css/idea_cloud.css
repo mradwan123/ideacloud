@@ -244,6 +244,12 @@ label {
     margin-bottom: 1rem;
 }
 
+.user-info img {
+    height: 1rem;
+    width: auto;
+    margin-left: 0.5rem;
+}
+
 
 /* --- project details --- */
 
@@ -304,13 +310,26 @@ label {
     color: black;
 }
 
-.likes-button {
+.project-actions {
     display: flex;
-    justify-content: flex-end;
-    margin-bottom: 1rem;
-    margin-right: 1rem;
+    justify-content: flex-end;   /* push everything to the right */
+    align-items: center;
+    gap: 1rem;                   /* space between buttons */
+    margin-bottom: 1.5rem;
 }
 
+.project-actions form {
+    margin: 0;                   /* remove default form spacing */
+}
+
+.project-actions .button {
+    margin: 0;
+}
+
+.no-projects {
+    text-align: center;
+    margin-top: 3rem;
+}
 
 /* -- all project ideas -- */
 
@@ -325,19 +344,19 @@ label {
     color: black;
 }
 
-.all-projects-row {
+.ideas-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: 1rem;
+    gap: 2rem;
 }
 
-.image-card img {
+.idea-card img {
     width: 100%;
     height: 20rem;
     object-fit: cover;
     border-radius: 0.5rem;
     display: block;
-    margin-bottom: 0.3rem;
+    margin-bottom: 0.5rem;
 }
 
 .caption {
@@ -360,6 +379,17 @@ label {
     padding-right: 1rem;
 }
 
+@media (max-width: 1000px) {
+    .ideas-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 600px) {
+    .ideas-grid {
+        grid-template-columns: 1fr;
+    }
+}
 
 /* -- project groups -- */
 
@@ -459,3 +489,41 @@ label {
     font-size: 0.9em;
 }
 /* ----- end tags buttons --------- 
+/* -- comments -- */
+
+.add-comment {
+    margin-bottom: 5rem;
+}
+
+.comment-box {
+    display: flex;
+    align-items: flex-start;
+    gap: 1.5rem;
+    margin-bottom: 4rem;
+    max-width: 100%;
+    margin: 0 auto 2rem auto;
+}
+
+.comment-box img {
+    width: 7rem;
+    height: 7rem;
+    object-fit: cover;
+    border-radius: 0.5rem;
+}
+
+.comment-actions {
+    display: flex;
+    margin-top: 0.5rem;
+}
+
+.comment-actions a,
+.comment-actions button {
+    margin: 0;
+    display: inline-flex;
+    align-items: center;
+    color: black;
+}
+
+.edit-comment-form a {
+    color: black;
+}

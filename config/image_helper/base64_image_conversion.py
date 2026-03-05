@@ -1,6 +1,7 @@
 import base64
 import uuid
 from django.core.files.base import ContentFile
+from io import BytesIO
 
 def base64_to_image(b64: bytes):
 
