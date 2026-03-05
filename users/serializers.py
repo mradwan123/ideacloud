@@ -8,6 +8,8 @@ from datetime import date
 from projects.serializers.serializer_profanity_validator import ProfanityValidator
 from django.contrib.auth.password_validation import validate_password as django_validate_password
 from config.image_helper.base64_image_conversion import base64_to_image
+from django.core.files.base import ContentFile
+import uuid
 
 
 User = get_user_model()
@@ -66,7 +68,7 @@ class UserSerializer(serializers.ModelSerializer):
         # Handle base64 image if present. Check to see if image is URL. 
         # If URL, then we remove because we want file. If bytes file, then we decode and send
         if data.get("image") and "/media/" not in str(data.get("image")):
-            data["image"] = base64_to_image(data['image'])
+            data["image"] = base64_to_image(data["image"])
         elif data.get("image") and "/media/" in str(data.get("image")):
             data.pop("image") 
         return super().to_internal_value(data)
