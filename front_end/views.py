@@ -1,6 +1,10 @@
 from django.shortcuts import render, redirect
 from projects.models import ProjectIdea, Tag
 from users.form import RegisterForm
+from django.contrib import messages
+from django.contrib.auth.decorators import login_required
+
+
 
 # Create your views here.
 
@@ -33,10 +37,50 @@ def user_profile(request):
 def about(request):
     return render(request, "about.html")
 
+
 def create_project(request):
+    if request.method == "POST":
+        # Get form data
+        title = request.POST.get('title', '').strip()
+        description = request.POST.get('description', '').strip()
+        selected_tags = request.POST.getlist('tags')  # Get list of selected tag IDs
+        images = request.FILES.getlist('images')  # Get uploaded images
+        
+        # Validate required fields
+        if not title or not description:
+            messages.error(request, 'Title and description are required.')
+            tags = Tag.objects.all().order_by('name')
+            return render(request, "create_project.html", {'tags': tags})
+        
+        try:
+            # Create the project
+            project = ProjectIdea.objects.create(
+                title=title,
+                description=description,
+                author=request.user
+            )
+            
+            # Add selected tags
+            if selected_tags:
+                project.tags.set(selected_tags)
+            
+            # Handle image uploads
+            for image in images:
+                ImageProject.objects.create(
+                    image=image,
+                    project_idea=project
+                )
+            
+            messages.success(request, 'Project created successfully!')
+            return redirect("front-end:project-details", pk=project.id)
+            
+        except Exception as e:
+            messages.error(request, f'Error creating project: {str(e)}')
+    
+    # GET request - show form with tags
     tags = Tag.objects.all().order_by('name')
     context = {
-        'tags': tags  
+        'tags': tags
     }
     return render(request, "create_project.html", context)
     
