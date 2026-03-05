@@ -397,3 +397,67 @@ label {
     font-size: 1rem;
     opacity: 0.7;
 }
+
+/*---- tags buttons - create project page -----
+
+/* Tags container */
+.tags-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin: 15px 0 25px 0;
+}
+
+/* Hide the actual checkbox */
+.tag-checkbox-hidden {
+    display: none;
+}
+
+/* Tag button styling */
+.tag-button {
+    display: inline-flex;
+    align-items: center;
+    padding: 10px 18px;
+    background-color: transparent;
+    border: 2px solid #007bff;
+    border-radius: 5px;
+    color: #007bff;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    user-select: none;
+    position: relative;
+}
+
+/* Add checkmark before text when selected */
+.tag-checkbox-hidden:checked + .tag-button::before {
+    content: "✓ ";
+    font-weight: bold;
+    margin-right: 5px;
+}
+
+/* Hover effect */
+.tag-button:hover {
+    background-color: rgba(0, 123, 255, 0.1);
+    border-color: #0056b3;
+}
+
+/* Active/Selected state */
+.tag-checkbox-hidden:checked + .tag-button {
+    background-color: #007bff;
+    border-color: #007bff;
+    color: #ffffff;
+}
+
+.tag-checkbox-hidden:checked + .tag-button:hover {
+    background-color: #0056b3;
+    border-color: #0056b3;
+}
+
+/* No tags message */
+.no-tags {
+    color: #6c757d;
+    font-style: italic;
+}
+/* ----- end tags buttons --------- 

@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from projects.models import ProjectIdea
+from projects.models import ProjectIdea, Tag
 from users.form import RegisterForm
 
 # Create your views here.
@@ -34,7 +34,12 @@ def about(request):
     return render(request, "about.html")
 
 def create_project(request):
-    return render(request, "create_project.html")
+    tags = Tag.objects.all().order_by('name')
+    context = {
+        'tags': tags  
+    }
+    return render(request, "create_project.html", context)
+    
 
 def favourite_projects(request):
     return render(request, "favourite_projects.html")

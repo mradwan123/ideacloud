@@ -17,15 +17,31 @@
 
     <!-- title -->
     <label for="title">Title *</label>
-    <input type="text" id="title" name="title" placeholder="title of the project" required>
+    <input type="text" id="title" name="title" placeholder="Input Project Title" required>
 
     <!-- description -->
-    <label for="project-description">Description</label>
-    <textarea id="project-description" rows="4" placeholder="Tell us about your project"></textarea>
+    <label for="project-description">Description *</label>
+    <textarea id="project-description" rows="4" placeholder="Tell us about your project" required></textarea>
     
     <!-- tags to add -->
-
+     <!-- tags selection -->
+    <label for="tags">Tags</label>
+    <div class="tags-container">
+        {% for tag in tags %}
+        <div class="tag-checkbox">
+            <input type="checkbox" id="tag-{{ tag.id }}" name="tags" value="{{ tag.id }}">
+            <label for="tag-{{ tag.id }}">{{ tag.name }}</label>
+        </div>
+        {% empty %}
+        <p class="no-tags">No tags available. Contact admin to add tags.</p>
+        {% endfor %}
+    </div>
     <!-- picure uploading to add -->
+     <!-- picture uploading -->
+    <!-- <label for="project-images">Project Images</label>
+    <input type="file" id="project-images" name="images" accept="image/*" multiple>
+    <small class="file-hint">You can upload multiple images</small> -->
+
 
     <!-- disclaimer -->
     <p class="disclaimer">
