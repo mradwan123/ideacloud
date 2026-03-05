@@ -35,9 +35,9 @@ SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', '6niu^40cw#4#@ozotbp&e8t!nxwoi-
 # DEBUG = True
 DEBUG = os.environ.get('DJANGO_DEBUG', '') != 'False'
 
-ALLOWED_HOSTS = ['127.0.0.1', 'aqueous-crag-51920-280fe96ba7c2.herokuapp.com']
+ALLOWED_HOSTS = ['127.0.0.1', 'infinite-forest-53358.herokuapp.com']
 
-CSRF_TRUSTED_ORIGINS = ['https://aqueous-crag-51920-280fe96ba7c2.herokuapp.com/']
+CSRF_TRUSTED_ORIGINS = ['https://infinite-forest-53358.herokuapp.com/']
 
 # Application definition
 
