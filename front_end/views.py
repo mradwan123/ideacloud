@@ -10,12 +10,12 @@ from users.models import User
 
 # Create your views here.
 
-# TODO after making "home.html"
-# it will have a view for logged in and not logged in user
 def home(request):
-    ideas = ProjectIdea.objects.all()
-    serializer = ProjectIdeaSerializer(ideas, many=True)
-    return render(request, "home.html", context={"ideas": serializer.data})
+    if request.user.is_authenticated:
+        ideas = ProjectIdea.objects.all()
+        serializer = ProjectIdeaSerializer(ideas, many=True)
+        return render(request, "home.html", context={"ideas": serializer.data})
+    return render(request, "home.html")
 
 @login_required(login_url="front-end:login")
 def project_ideas(request):
