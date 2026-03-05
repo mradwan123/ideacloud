@@ -408,56 +408,54 @@ label {
     margin: 15px 0 25px 0;
 }
 
-/* Hide the actual checkbox */
-.tag-checkbox-hidden {
+/* Hide the checkbox */
+.tag-checkbox {
     display: none;
 }
 
-/* Tag button styling */
-.tag-button {
-    display: inline-flex;
-    align-items: center;
-    padding: 10px 18px;
-    background-color: transparent;
-    border: 2px solid #007bff;
-    border-radius: 5px;
-    color: #007bff;
+/* Tag button - the entire tag is clickable */
+.tag-btn {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #e9ecef;
+    color: #495057;
+    border-radius: 25px;
     font-size: 14px;
     font-weight: 500;
     cursor: pointer;
     transition: all 0.3s ease;
     user-select: none;
-    position: relative;
 }
 
-/* Add checkmark before text when selected */
-.tag-checkbox-hidden:checked + .tag-button::before {
-    content: "✓ ";
-    font-weight: bold;
-    margin-right: 5px;
+/* Hover effect - when mouse is over */
+.tag-btn:hover {
+    background-color: #dee2e6;
+    transform: translateY(-2px);
 }
 
-/* Hover effect */
-.tag-button:hover {
-    background-color: rgba(0, 123, 255, 0.1);
-    border-color: #0056b3;
-}
-
-/* Active/Selected state */
-.tag-checkbox-hidden:checked + .tag-button {
-    background-color: #007bff;
-    border-color: #007bff;
+/* Selected state - when clicked/toggled ON */
+.tag-checkbox:checked + .tag-btn {
+    background-color: #647D76;
     color: #ffffff;
 }
 
-.tag-checkbox-hidden:checked + .tag-button:hover {
-    background-color: #0056b3;
-    border-color: #0056b3;
+/* Selected hover - when hovering over a selected tag */
+.tag-checkbox:checked + .tag-btn:hover {
+    background-color: #647D76;
 }
 
 /* No tags message */
 .no-tags {
     color: #6c757d;
     font-style: italic;
+    margin: 0;
+}
+
+/* File input hint */
+.file-hint {
+    display: block;
+    color: #6c757d;
+    margin-top: 5px;
+    font-size: 0.9em;
 }
 /* ----- end tags buttons --------- 

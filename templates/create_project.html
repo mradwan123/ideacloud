@@ -25,15 +25,13 @@
     
     <!-- tags to add -->
      <!-- tags selection -->
-    <label for="tags">Tags</label>
+  <label>Tags</label>
     <div class="tags-container">
         {% for tag in tags %}
-        <div class="tag-checkbox">
-            <input type="checkbox" id="tag-{{ tag.id }}" name="tags" value="{{ tag.id }}">
-            <label for="tag-{{ tag.id }}">{{ tag.name }}</label>
-        </div>
+            <input type="checkbox" id="tag-{{ tag.id }}" name="tags" value="{{ tag.id }}" class="tag-checkbox">
+            <label for="tag-{{ tag.id }}" class="tag-btn">{{ tag.name }}</label>
         {% empty %}
-        <p class="no-tags">No tags available. Contact admin to add tags.</p>
+            <p class="no-tags">No tags available. Contact admin to add tags.</p>
         {% endfor %}
     </div>
     <!-- picure uploading to add -->
