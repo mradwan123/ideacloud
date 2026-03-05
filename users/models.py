@@ -1,8 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 
-
-
 class User(AbstractUser):
     '''
     Docstring for User class:
@@ -14,10 +12,9 @@ class User(AbstractUser):
     description = models.TextField(max_length=1000, null=True, blank=True)
     available = models.BooleanField(default=False)
     # Automatically sets the field to the current date only when the model instance is first created.
-    created_on = models.DateTimeField(auto_now_add=True, editable=False)  
+    created_on = models.DateTimeField(auto_now_add=True, editable=False)
     favorite_projects = models.ManyToManyField("projects.ProjectIdea", related_name='user_favorite_project_idea', blank=True)
-    interested_projects = models.ManyToManyField("projects.ProjectIdea", related_name='user_interested_project_idea', blank=True)    
-    
-    
+    interested_projects = models.ManyToManyField("projects.ProjectIdea", related_name='user_interested_project_idea', blank=True)
+
     def __str__(self):
         return self.username
