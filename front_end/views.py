@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from projects.models import ProjectIdea
+from projects.models import ProjectIdea, ProjectIdeaComment
 from front_end.form import RegisterForm
 from users.serializers import UserSerializer
 from django.contrib.auth import authenticate, login
@@ -125,6 +125,63 @@ def remove_like(request, pk):
     idea.likes.remove(request.user)
     return redirect("front-end:project-details", pk=pk)
 
+@login_required(login_url="front-end:login")
+def public_user_profile(request, user_id):
+    profile_user = get_object_or_404(User, id=user_id)
+    return render(
+        request,
+        "user_profile.html",
+        context={
+            "profile_user": profile_user
+        }
+    )
+
+@login_required(login_url="front-end:login")
+def comments(request, pk):
+    idea = get_object_or_404(ProjectIdea, pk=pk)
+    comments = idea.project_idea_comments.all().select_related("user")
+    return render(
+        request,
+        "comments.html",
+        context={
+            "idea": idea,
+            "comments": comments
+        }
+    )
+
+@login_required(login_url="front-end:login")
+def add_comment(request, pk):
+    idea = get_object_or_404(ProjectIdea, pk=pk)
+    if request.method == "POST":
+        content = request.POST.get("content", "").strip()
+        if content:
+            ProjectIdeaComment.objects.create(
+                user=request.user,
+                project_idea=idea,
+                content=content
+            )
+    return redirect("front-end:comments", pk=pk)
+
+@login_required(login_url="front-end:login")
+def remove_comment(request, comment_id):
+    comment = get_object_or_404(ProjectIdeaComment, pk=comment_id)
+    if request.user == comment.user or request.user.is_staff:
+        comment.delete()
+    return redirect("front-end:comments", pk=comment.project_idea.id)
+
+@login_required(login_url="front-end:login")
+def edit_comment(request, comment_id):
+    comment = get_object_or_404(ProjectIdeaComment, pk=comment_id)
+    if request.user != comment.user and not request.user.is_staff:
+        return redirect("front-end:comments", pk=comment.project_idea.id)
+    if request.method == "POST":
+        new_content = request.POST.get("content", "").strip()
+        if new_content:
+            comment.content = new_content
+            comment.save()
+        return redirect("front-end:comments", pk=comment.project_idea.id)
+    return render(request, "edit_comment.html", context={"comment": comment})
+
 def finished_project(request):
     return render(request, "completed_projects.html")
 
@@ -133,6 +190,3 @@ def project_groups(request):
 
 def interested_users(request):
     return render(request, "interested_users.html")
-
-def comments(request):
-    return render(request, "comments.html")

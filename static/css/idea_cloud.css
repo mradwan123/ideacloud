@@ -427,3 +427,42 @@ label {
     font-size: 1rem;
     opacity: 0.7;
 }
+
+/* -- comments -- */
+
+.add-comment {
+    margin-bottom: 5rem;
+}
+
+.comment-box {
+    display: flex;
+    align-items: flex-start;
+    gap: 1.5rem;
+    margin-bottom: 4rem;
+    max-width: 100%;
+    margin: 0 auto 2rem auto;
+}
+
+.comment-box img {
+    width: 7rem;
+    height: 7rem;
+    object-fit: cover;
+    border-radius: 0.5rem;
+}
+
+.comment-actions {
+    display: flex;
+    margin-top: 0.5rem;
+}
+
+.comment-actions a,
+.comment-actions button {
+    margin: 0;
+    display: inline-flex;
+    align-items: center;
+    color: black;
+}
+
+.edit-comment-form a {
+    color: black;
+}
