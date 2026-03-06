@@ -5,20 +5,50 @@
 
 {% block content %}
 
-<!-- recent and famous projects go here 
-- it will be a view like in the 'project_ideas.html'
--->
+{% if user.is_authenticated %}
 
-<h1>Here are all the projects</h1>
+<div class="page-description">
+    
+    <h3 class="page-title">Welcome to IdeaCloud</h3>
 
-<!-- first look of how back- and front-end will communicate -->
-{% for idea in ideas %}
-<ul>
-    <li>{{ idea.title }}</li>
-    <li>{{ idea.author }}</li>
-    <li>{{ idea.description }}</li>
-    <li>{{ idea.tags }}</li>
-</ul>
-{% endfor %}
+    <p>
+        Start browsing the projects of our community.
+    </p>
+
+</div>
+
+<div class="ideas-grid">
+    {% for idea in ideas %}
+    <div class="idea-card">
+        <img src="{% static 'images/image_placeholder.jpg' %}">
+        <div class="caption">
+            <p class="project-title">
+                <a href="{% url 'front-end:project-details' idea.id %}">
+                    {{ idea.title }}
+                </a>
+            </p>
+            <p class="project-owner-thumbnail">
+                By {{ idea.author }}
+            </p>
+            <p class="project-description-thumbnail">
+                {{ idea.description|truncatewords:10 }}
+            </p>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+
+{% else %}
+<div class="page-description">
+    
+    <h3 class="page-title">Welcome to IdeaCloud</h3>
+
+    <p>
+        Not part of our community yet? <a href="{% url 'front-end:register' %}">Register!</a>
+    </p>
+
+</div>
+
+{% endif %}
 
 {% endblock %}

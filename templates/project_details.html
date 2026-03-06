@@ -8,8 +8,8 @@
 {% block content %}
 
 <div class="project-details-general-info">
-  <h3>Name of the Project</h3>
-  <h4>By <a>[Name of the owner]</a></h4>
+  <h3> {{ idea.title }} </h3>
+  <h4>By <a>{{ idea.author }}</a></h4>
 </div>
 
 <!-- info of the project section -->
@@ -20,19 +20,63 @@
   <img src="../static/images/image_placeholder.jpg">
 </div>
 
-<!-- where the likes will go -->
-<div class="likes-button">
-  <div class="button">1234 Likes</div>
+
+<div class="project-actions">
+
+  <!-- where the likes will go -->
+  <div class="likes-button">
+    <div class="button">{{ like_count }} Likes</div>
+  </div>
+
+  <!-- buttons with add/remove project from favourites -->
+  {% if has_favourited %}
+    <form action="{% url 'front-end:remove-favourite' idea.id %}" method="POST">
+        {% csrf_token %}
+        <button type="submit" class="button">Remove from Favourites</button>
+    </form>
+  {% else %}
+    <form action="{% url 'front-end:add-favourite' idea.id %}" method="POST">
+        {% csrf_token %}
+        <button type="submit" class="button">Add to Favourites</button>
+    </form>
+  {% endif %}
+
+  <!-- buttons with add/remove project from saved -->
+  {% if has_saved %}
+    <form action="{% url 'front-end:remove-saved' idea.id %}" method="POST">
+        {% csrf_token %}
+        <button type="submit" class="button">Remove from Saved</button>
+    </form>
+  {% else %}
+    <form action="{% url 'front-end:add-saved' idea.id %}" method="POST">
+        {% csrf_token %}
+        <button type="submit" class="button">Add to Saved</button>
+    </form>
+  {% endif %}
+
+  <!-- buttons with add/remove project from saved -->
+  {% if has_liked %}
+    <form action="{% url 'front-end:remove-like' idea.id %}" method="POST">
+        {% csrf_token %}
+        <button type="submit" class="button">Remove Like</button>
+    </form>
+  {% else %}
+    <form action="{% url 'front-end:add-like' idea.id %}" method="POST">
+        {% csrf_token %}
+        <button type="submit" class="button">Add Like</button>
+    </form>
+  {% endif %}
 </div>
+
 <div>
   <p>
-    Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.
+    {{ idea.description }}
   </p>
 </div>
 
 <!-- link to the pages of the project comments (if any)-->
 <p class="comments">
-  <a href="{% url 'front-end:comments' %}">Comments</a>
+  <a href="{% url 'front-end:comments' idea.id %}">Comments</a>
 </p>
 
 <!-- section with buttons for opening the page with interested users and groups -->
