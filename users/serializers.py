@@ -9,7 +9,9 @@ from projects.serializers.serializer_profanity_validator import ProfanityValidat
 from django.contrib.auth.password_validation import validate_password as django_validate_password
 from config.image_helper.base64_image_conversion import base64_to_image
 from django.core.files.base import ContentFile
-import uuid
+from config.settings import DEFAULT_PROFILE_IMAGE_URL
+from config.image_helper.validate_image import is_image_valid
+import os
 
 
 User = get_user_model()
@@ -66,11 +68,9 @@ class UserSerializer(serializers.ModelSerializer):
             
         
         # Handle base64 image if present. Check to see if image is URL. 
-        # If URL, then we remove because we want file. If bytes file, then we decode and send
-        if data.get("image") and "/media/" not in str(data.get("image")):
+        if data.get("image"):
             data["image"] = base64_to_image(data["image"])
-        elif data.get("image") and "/media/" in str(data.get("image")):
-            data.pop("image") 
+
         return super().to_internal_value(data)
     
     def validate_password(self, value):
@@ -106,4 +106,27 @@ class UserSerializer(serializers.ModelSerializer):
         'title': {'validators': [ProfanityValidator()]},
         'description': {'validators': [ProfanityValidator()]}
     }
+    
+    def validate_image(self, value):
+        if value and not is_image_valid(value):
+            raise ValidationError("Image could not be saved. Has to be jpg in base64 format.")
         
+        return value
+    
+    def to_representation(self, instance):
+        representation = super().to_representation(instance)
+
+        if not representation.get("image"):
+            representation["image"] = DEFAULT_PROFILE_IMAGE_URL
+
+        return representation
+    
+    def update(self, instance, validated_data):
+        if "image" in validated_data.keys():
+            if instance.image and not instance.image.path.endswith("default.jpg") and os.path.isfile(instance.image.path):
+                os.remove(instance.image.path)
+
+        return super().update(instance, validated_data)
+    
+    
+

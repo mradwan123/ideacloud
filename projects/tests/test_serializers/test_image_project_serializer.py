@@ -60,7 +60,7 @@ class ImageProjectSerializerTests(TestCase):
 
         # pass the database object into the serializer
         serializer = ImageProjectSerializer(data=data)
-        serializer.is_valid()
+        self.assertTrue(serializer.is_valid())
         image_instance = serializer.save()
 
         # verify that the id in the JSON matches the id in the database
