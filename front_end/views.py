@@ -82,45 +82,43 @@ def create_project(request):
         description = request.POST.get('description').strip()
         tags = request.POST.getlist('tags')  # Get list of selected tag IDs
         images = request.FILES.getlist('images')  # Get uploaded images
-        
+
         # Validate required fields
         if not title:
             messages.error(request, 'Title and description are required.')
             return redirect('front-end:create-project')
         print(tags)
         data = {
-            'title':title,
+            'title': title,
             'description': description,
-            'tags':tags,
+            'tags': tags,
         }
-        
+
         serializer = ProjectIdeaSerializer(data=data)
-            
+
         serializer.is_valid(raise_exception=True)
-        
+
         project_idea = serializer.save(author=request.user)
         print(project_idea)
-            
-        #-----------------TODO : Check images for create project ----------------
-        
-            # Handle image uploads
+
+        # -----------------TODO : Check images for create project ----------------
+
+        # Handle image uploads
         for image in images:
             ImageProject.objects.create(
-                    image=image,
-                    project_idea=project_idea
-                )
-            
+                image=image,
+                project_idea=project_idea
+            )
+
         messages.success(request, 'Project created successfully!')
         return redirect("front-end:project-details", pk=project_idea.id)
-            
-      
+
     # GET request - show form with tags
     tags = Tag.objects.all().order_by('name')
     context = {
         'tags': tags
     }
     return render(request, "create_project.html", context)
-    
 
 @login_required(login_url="front-end:login")
 def favourite_projects(request):
