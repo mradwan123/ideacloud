@@ -10,7 +10,7 @@ from projects.models import ProjectIdea, FinishedProject
 
 class ProjectIdeaToggleLike(APIView):
     """
-    /project-ideas/<idea_pk>/lik/
+    /project-ideas/<idea_pk>/like/
     Methods:
         POST: Toggles the like status for the authenticated user
     """

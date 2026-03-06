@@ -2,7 +2,7 @@ from django.test import TestCase
 from django.core.exceptions import ValidationError
 from projects.serializers.serializer_project_group_serializer import ProjectGroupSerializer
 from projects.views.view_project_group import ProjectGroupDetail, ProjectGroupList
-from projects.models import ProjectIdea, ProjectGroup
+from projects.models import ProjectIdea, ProjectGroup, FinishedProject
 from django.contrib.auth import get_user_model
 from django.utils import timezone
 from datetime import timedelta
@@ -46,7 +46,7 @@ class TestProjectGroupListView(TestCase):
 
         self.token_user = Token.objects.create(user=self.user)
         self.token_user2 = Token.objects.create(user=self.user2)
-    
+
     def test_view_get_project_group_list_valid(self):
         """Test retrieving all project groups for a valid project idea."""
         response = self.client.get(self.url(self.project_idea.id))
@@ -90,9 +90,10 @@ class TestProjectGroupListView(TestCase):
         data = {"name": "new_group",
                 "description": "new description"}
         response = self.client.post(self.url(self.project_idea.id), data=data, format="json")
-        
+
         self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
         self.assertEqual(response.data.get("detail").code, "not_authenticated")
+
 
 class TestProjectGroupDetailView(TestCase):
     """Test cases for the ProjectGroupDetail view."""
@@ -215,3 +216,104 @@ class TestProjectGroupDetailView(TestCase):
         self.assertIn("deleted.", response.data.get("detail"))
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
+
+class ProjectGroupMembershipToggleTests(TestCase):
+    def setUp(self):
+        User = get_user_model()
+        self.user_owner = User.objects.create_user(username="owner", password="password", email="owner@email.com")
+        self.user_other = User.objects.create_user(username="other", password="password", email="other@email.com")
+        self.client = APIClient()
+
+        self.project_idea = ProjectIdea.objects.create(
+            title="Membership Idea",
+            description="Testing membership logic",
+            author=self.user_owner
+        )
+        # create project group
+        self.project_group = ProjectGroup.objects.create(
+            name="Toggle Team",
+            description="Testing toggle",
+            project_idea=self.project_idea,
+            owner=self.user_owner
+        )
+        # owner is auto-added via serializer logic but here we write directly to the db
+        self.project_group.members.add(self.user_owner)
+
+        # Helpers for URLs
+        self.url_toggle = reverse("projects:project-group-toggle-membership", kwargs={
+            "idea_pk": self.project_idea.pk,
+            "group_pk": self.project_group.pk
+        })
+
+    ### VALID
+    ## POST
+    def test_join_project_group_authenticated_user_not_owner(self):
+        """Verify that an authenticated user can join a group"""
+        self.client.force_authenticate(user=self.user_other)
+
+        response = self.client.post(self.url_toggle)
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.data.get("action"), "joined")
+        self.assertEqual(self.project_group.members.count(), 2)
+        self.assertTrue(self.project_group.members.filter(id=self.user_other.id).exists())
+
+    def test_leave_project_group_authenticated_user_not_owner(self):
+        """Verify that a member can leave without affecting the owner"""
+        self.project_group.members.add(self.user_other)
+        self.client.force_authenticate(user=self.user_other)
+
+        response = self.client.post(self.url_toggle)
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.data.get("action"), "left")
+        self.assertEqual(self.project_group.members.count(), 1)
+        self.assertEqual(self.project_group.owner, self.user_owner)
+        self.assertFalse(self.project_group.members.filter(id=self.user_other.id).exists())
+
+    def test_leave_project_group_owner(self):
+        """Verify that if the owner leaves, the next member becomes the owner"""
+        self.project_group.members.add(self.user_other)
+        self.client.force_authenticate(user=self.user_owner)
+
+        response = self.client.post(self.url_toggle)
+
+        # needed, so we can compare the db object later in the test
+        self.project_group.refresh_from_db()
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.data.get("action"), "left")
+        self.assertEqual(self.project_group.members.count(), 1)
+        self.assertEqual(self.project_group.owner, self.user_other)
+
+    def test_last_member_leaves_deletes_group(self):
+        """Verify that the group is deleted if the last member (owner) leaves"""
+        self.client.force_authenticate(user=self.user_owner)
+
+        response = self.client.post(self.url_toggle)
+
+        self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
+        self.assertFalse(ProjectGroup.objects.filter(id=self.project_group.id).exists())
+
+    ### INVALID
+    ## POST
+    def test_toggle_membership_locked_on_finished_project(self):
+        """Ensure membership cannot be changed if the project is finished"""
+        FinishedProject.objects.create(
+            title="Finished Project",
+            description="This project is finished",
+            project_group=self.project_group
+        )
+
+        self.client.force_authenticate(user=self.user_owner)
+
+        response = self.client.post(self.url_toggle)
+        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
+        self.assertIn("Membership locked, because the project is finished.", response.data["error"])
+
+    def test_toggle_membership_unauthenticated(self):
+        """Verify guests cannot join or leave groups"""
+        self.client.logout()
+
+        response = self.client.post(self.url_toggle)
+        self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
