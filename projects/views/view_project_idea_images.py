@@ -41,7 +41,7 @@ class AddProjectIdeaImage(APIView):
         serializer = ImageProjectSerializer(data=request.data)
 
         serializer.is_valid(raise_exception=True)
-
+   
         serializer.save()
         
         return Response(serializer.data,
@@ -51,7 +51,7 @@ class RemoveProjectIdeaImage(APIView):
     
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
 
-    def delete(self, request, idea_pk):
+    def delete(self, request, idea_pk, image_pk):
         """Remove an image from a given project idea by id. Can on be done by project idea author.
         Data:
         {
@@ -68,22 +68,22 @@ class RemoveProjectIdeaImage(APIView):
             return Response({"error": "User unauthorized. Must be author."},
                             status=status.HTTP_401_UNAUTHORIZED)
 
-        image_id = request.data.get("image_id")
-        if not image_id:
-            return Response({"error": "No image_id given."},
-                            status=status.HTTP_400_BAD_REQUEST)
+        # image_id = request.data.get("image_id")
+        # if not image_id:
+        #     return Response({"error": "No image_id given."},
+        #                     status=status.HTTP_400_BAD_REQUEST)
 
         try:
-            image = ImageProject.objects.get(id=image_id)
+            image = ImageProject.objects.get(id=image_pk)
         except ImageProject.DoesNotExist:
-            return Response({"error": f"Image with ID '{image_id}' not found under project idea '{idea_pk}'."},
+            return Response({"error": f"Image with ID '{image_pk}' not found under project idea '{idea_pk}'."},
                             status=status.HTTP_404_NOT_FOUND)
         
         if image.project_idea.id != idea_pk:
-            return Response({"error": f"Image with ID '{image_id}' not found under project idea '{idea_pk}'."},
+            return Response({"error": f"Image with ID '{image_pk}' not found under project idea '{idea_pk}'."},
                             status=status.HTTP_404_NOT_FOUND)
         
         image.delete()
 
-        return Response({"detail": f"Image with ID '{image_id}' has been delete from project idea '{idea_pk}'."},
+        return Response({"detail": f"Image with ID '{image_pk}' has been delete from project idea '{idea_pk}'."},
                         status=status.HTTP_200_OK)

@@ -68,7 +68,10 @@ class UserSerializer(serializers.ModelSerializer):
         
         # Handle base64 image if present. Check to see if image is URL. 
         if data.get("image"):
-            data["image"] = base64_to_image(data["image"])
+            try:
+                data["image"] = base64_to_image(data["image"])
+            except ValueError:
+                raise ValidationError({"error": "Invalid image format. Image has to be jpg."})
 
         return super().to_internal_value(data)
 

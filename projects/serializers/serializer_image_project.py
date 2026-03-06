@@ -13,6 +13,9 @@ class ImageProjectSerializer(serializers.ModelSerializer):
     class Meta:
         model = ImageProject
         fields = ['id', 'image', 'project_idea']
+        extra_kwargs = {
+            "image": {"required": True},
+        }
 
     def to_internal_value(self, data):
         """Sanitization; BEFORE validation. Turns incoming JSON into Python objects"""
@@ -22,7 +25,10 @@ class ImageProjectSerializer(serializers.ModelSerializer):
 
         if data.get("image"):
             
-            data["image"] = base64_to_image(data["image"])
+            try:
+                data["image"] = base64_to_image(data["image"])
+            except ValueError:
+                raise ValidationError({"error": "Invalid image format. Image has to be jpg."})
         
         return super().to_internal_value(data)
     
@@ -40,3 +46,4 @@ class ImageProjectSerializer(serializers.ModelSerializer):
             raise ValidationError("Image could not be saved. Has to be jpg in base64 format.")
         
         return value
+    
