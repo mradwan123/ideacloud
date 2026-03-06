@@ -428,6 +428,67 @@ label {
     opacity: 0.7;
 }
 
+/*---- tags buttons - create project page -----
+
+/* Tags container */
+.tags-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin: 15px 0 25px 0;
+}
+
+/* Hide the checkbox */
+.tag-checkbox {
+    display: none;
+}
+
+/* Tag button - the entire tag is clickable */
+.tag-btn {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #e9ecef;
+    color: #495057;
+    border-radius: 25px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    user-select: none;
+}
+
+/* Hover effect - when mouse is over */
+.tag-btn:hover {
+    background-color: #dee2e6;
+    transform: translateY(-2px);
+}
+
+/* Selected state - when clicked/toggled ON */
+.tag-checkbox:checked + .tag-btn {
+    background-color: #647D76;
+    color: #ffffff;
+}
+
+/* Selected hover - when hovering over a selected tag */
+.tag-checkbox:checked + .tag-btn:hover {
+    background-color: #647D76;
+}
+
+/* No tags message */
+.no-tags {
+    color: #6c757d;
+    font-style: italic;
+    margin: 0;
+}
+
+/* File input hint */
+.file-hint {
+    display: block;
+    color: #6c757d;
+    margin-top: 5px;
+    font-size: 0.9em;
+}
+/* ----- end tags buttons --------- 
 /* -- comments -- */
 
 .add-comment {
