@@ -92,6 +92,9 @@ class ProjectGroupDetail(APIView):
         """
         group = self._get_project_group(group_pk)
 
+        if group.groups_finished_projects.exists():
+            return Response({"error": "Groups are locked because the project is finished."}, status=status.HTTP_403_FORBIDDEN)
+
         if group and request.user != group.owner:
             return Response(
                 {"detail": "Only the owner is allowed to change the group data."},
@@ -124,6 +127,9 @@ class ProjectGroupDetail(APIView):
         """
         group = self._get_project_group(group_pk)
 
+        if group.groups_finished_projects.exists():
+            return Response({"error": "Groups are locked because the project is finished."}, status=status.HTTP_403_FORBIDDEN)
+
         if group and request.user != group.owner:
             return Response(
                 {"detail": "Only the owner is allowed to change the group data."},
@@ -155,6 +161,9 @@ class ProjectGroupDetail(APIView):
         Delete a specific project group.
         """
         group = self._get_project_group(group_pk)
+
+        if group.groups_finished_projects.exists():
+            return Response({"error": "Groups are locked because the project is finished."}, status=status.HTTP_403_FORBIDDEN)
 
         if group and request.user != group.owner:
             return Response(
@@ -195,7 +204,7 @@ class ProjectGroupMembershipToggle(APIView):
 
         # deny changes to the membership if the group has a finished project attached
         if group.groups_finished_projects.exists():
-            return Response({"error": "Membership locked, because the project is finished."}, status=status.HTTP_403_FORBIDDEN)
+            return Response({"error": "Membership locked because the project is finished."}, status=status.HTTP_403_FORBIDDEN)
         # if anything crashes during the owner swap, the user is not removed from the members list
         with transaction.atomic():
             # check if the user is actually in the group
