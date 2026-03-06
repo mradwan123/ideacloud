@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+{% block tab %}Edit Comment{% endblock %}
+
+{% block content %}
+<div class="page-description">
+    <h3 class="page-title">Edit Comment</h3>
+    <p>Modify your comment below and save it.</p>
+</div>
+
+<div class="edit-comment-form">
+    <form action="{% url 'front-end:edit-comment' comment.id %}" method="POST">
+        {% csrf_token %}
+        <textarea name="content" rows="5" required>{{ comment.content }}</textarea>
+        <div>
+            <button type="submit" class="button">Save</button>
+            <a href="{% url 'front-end:comments' comment.project_idea.id %}" class="button">Cancel</a>
+        </div>
+    </form>
+</div>
+{% endblock %}

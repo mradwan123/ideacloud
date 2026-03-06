@@ -6,25 +6,39 @@
 {% block content %}
 
 <div class="user-profile">
-    <h3 class="page-title">User Name</h3>
+    <h3 class="page-title"> {{ user.username }}' Profile</h3>
     <div class="columns">
         <div class="column-left">
             <!-- user description will be replaced by value-->
             <!-- if none saved...? -->
+            {% if user.description %}
             <p>
-                Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.
+                {{ user.description }}
             </p>
+            {% else %}
             <p>
-                Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.
+                No description for this user.
             </p>
+            {% endif %}
         </div>    
         <div class="column-right">
             <div class="profile-img">
-                <img src="../static/images/profile-pic.avif">
+                {% if user.image %}
+                    <img src="{{ user.image.url }}">
+                {% else %}
+                    <img src="../static/images/profile-pic.avif">
+                {% endif %}
             </div>
             <div class="profile-links">
-                <!-- availability takes a boolean to display "Free" or "Busy"-->
-                <div class="user-info">Availability:</div>
+                <!-- availability takes a boolean to display different images-->
+                <div class="user-info">
+                    Available
+                {% if user.available == True %}
+                    <img src="../static/images/available.svg">
+                {% else %}
+                    <img src="../static/images/unavailable.svg">
+                {% endif %}
+                </div>
                 <!-- probably the permissions will determine which user sees what-->
                 <div class="user-info"><a href="{% url 'front-end:favourite-projects' %}">Favourite Projects</a></div>
                 <div class="user-info"><a href="{% url 'front-end:saved-projects' %}">Saved Projects</a></div>

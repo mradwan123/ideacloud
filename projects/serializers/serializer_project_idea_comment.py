@@ -3,5 +3,5 @@ from projects.models import ProjectIdeaComment
 
 class ProjectIdeaCommentSerializer(serializers.ModelSerializer):
     class Meta:
-      model = ProjectIdeaComment
-      fields = ['id', 'user', 'content', 'project_idea']
+        model = ProjectIdeaComment
+        fields = ['id', 'user', 'content', 'project_idea']
