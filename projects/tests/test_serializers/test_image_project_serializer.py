@@ -37,7 +37,7 @@ class ImageProjectSerializerTests(TestCase):
             author=self.user,
             description="Testing image serialization"
         )
-        
+
     def _create_test_image(self):
         """Helper to create an image in memory"""
         # we create a 100x100px image in RAM
@@ -45,7 +45,7 @@ class ImageProjectSerializerTests(TestCase):
         # print(image_path)
         with open(image_path, "rb") as img:
             base64_image = image_to_base64(img.read())
-        
+
         return base64_image
 
     def test_image_serialization_output(self):
