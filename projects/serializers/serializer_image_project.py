@@ -21,11 +21,11 @@ class ImageProjectSerializer(serializers.ModelSerializer):
             data = data.copy()
 
         if data.get("image"):
-            
+
             data["image"] = base64_to_image(data["image"])
-        
+
         return super().to_internal_value(data)
-    
+
     def to_representation(self, instance):
         representation = super().to_representation(instance)
 
@@ -33,10 +33,10 @@ class ImageProjectSerializer(serializers.ModelSerializer):
             del representation["project_idea"]
 
         return representation
-    
+
     def validate_image(self, value):
 
         if not is_image_valid(value):
             raise ValidationError("Image could not be saved. Has to be jpg in base64 format.")
-        
+
         return value
