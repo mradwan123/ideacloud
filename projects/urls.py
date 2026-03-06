@@ -6,6 +6,7 @@ from projects.views.view_project_group import ProjectGroupList, ProjectGroupDeta
 from projects.views.view_project_idea_images import AddProjectIdeaImage, RemoveProjectIdeaImage
 from projects.views.view_finished_project import FinishedProjectList, FinishedProjectDetail
 from projects.views.view_likes import ProjectIdeaToggleLike, FinishedProjectToggleLike
+from projects.views.project_idea_comment_views import ProjectIdeaCommentListCreateView
 
 app_name = "projects"
 urlpatterns = [
@@ -36,4 +37,6 @@ urlpatterns = [
     path("project-ideas/<int:idea_pk>/like/", ProjectIdeaToggleLike.as_view(), name="project-idea-like"),
     # Toggling a user's like on Finished Projects
     path("finished-projects/<int:project_pk>/like/", FinishedProjectToggleLike.as_view(), name="finished-project-like"),
+    ## ProjectComments
+    path("project-comments/", ProjectIdeaCommentListCreateView.as_view(), name="project-comments")
 ]
