@@ -9,7 +9,7 @@ User = get_user_model()
 
 
 class FinishedProjectSerializer(serializers.ModelSerializer):
-    
+
     # these are the annotated values from the queryset in the ProjectIdea views
     likes_count = serializers.IntegerField(read_only=True)
     has_liked = serializers.BooleanField(read_only=True)
@@ -69,8 +69,7 @@ class FinishedProjectSerializer(serializers.ModelSerializer):
             representation["title"] = instance.title.title()
 
         return representation
-    
-    
+
     def create(self, validated_data):
         request = self.context.get('request')
         if request and hasattr(request, 'user'):
@@ -78,7 +77,7 @@ class FinishedProjectSerializer(serializers.ModelSerializer):
             if project_group.owner == request.user:
                 return super().create(validated_data)
         raise ValidationError("User is not allowed to publish this Finished Group. User is not owner of Project Group.")
-            
+
     def update(self, instance, validated_data):
         request = self.context.get('request')
         if request and hasattr(request, 'user'):
@@ -86,5 +85,3 @@ class FinishedProjectSerializer(serializers.ModelSerializer):
             if project_group.owner == request.user:
                 return super().update(instance, validated_data)
         raise ValidationError("User is not allowed to edit description/title of this Finished Group. User is not owner of Project Group.")
-            
-    
