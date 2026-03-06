@@ -6,10 +6,13 @@ from users.serializers import UserSerializer
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
 from projects.serializers.serializer_project_idea_serializer import ProjectIdeaSerializer
+from projects.serializers.serializer_project_group_serializer import ProjectGroupSerializer
 from django.shortcuts import get_object_or_404
-from users.models import User
+from django.contrib.auth import get_user_model
 
 # Create your views here.
+
+User = get_user_model()
 
 def home(request):
     if request.user.is_authenticated:
@@ -87,7 +90,7 @@ def create_project(request):
         if not title:
             messages.error(request, 'Title and description are required.')
             return redirect('front-end:create-project')
-        print(tags)
+        
         data = {
             'title':title,
             'description': description,
@@ -230,8 +233,42 @@ def edit_comment(request, comment_id):
 def finished_project(request):
     return render(request, "completed_projects.html")
 
-def project_groups(request):
+def project_groups_list(request):
     return render(request, "project_groups.html")
 
-def interested_users(request):
-    return render(request, "interested_users.html")
+@login_required(login_url="front-end:login")
+def project_groups_create(request, idea_pk):
+    name = request.POST.get('name').strip()
+    description = request.POST.get('description').strip()
+        
+    data = {"name":name,
+            "descrption": description}
+    
+    project_idea = ProjectIdea.objects.get(id=idea_pk)
+   
+    context = {"request": request,
+                "project_idea": project_idea}
+    serializer = ProjectGroupSerializer(data=request.POST, context=context)
+
+    serializer.is_valid(raise_exception=True)
+
+    group = serializer.save()
+    return render(request, "project_groups_create.html")
+
+
+@login_required(login_url="front-end:login")
+def interested_users(request, pk):
+    if request.method == 'GET':
+        idea = get_object_or_404(ProjectIdea, pk=pk)
+        print(request.GET)
+        interested_users = idea.user_interested_project_idea.all()
+        print(interested_users)
+        serializer = ProjectIdeaSerializer(idea)
+
+    return render(request, "interested_users.html",
+                    context={
+                        "idea": serializer.data,
+                        "interested_users": interested_users,
+        
+                    }
+    )
