@@ -92,7 +92,7 @@ class ProjectGroupDetail(APIView):
         """
         group = self._get_project_group(group_pk)
 
-        if request.user != group.owner:
+        if group and request.user != group.owner:
             return Response(
                 {"detail": "Only the owner is allowed to change the group data."},
                 status=status.HTTP_403_FORBIDDEN
@@ -156,7 +156,7 @@ class ProjectGroupDetail(APIView):
         """
         group = self._get_project_group(group_pk)
 
-        if request.user != group.owner:
+        if group and request.user != group.owner:
             return Response(
                 {"detail": "Only the owner is allowed to delete the group"},
                 status=status.HTTP_403_FORBIDDEN
