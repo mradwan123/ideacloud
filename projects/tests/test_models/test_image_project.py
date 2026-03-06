@@ -1,11 +1,9 @@
-from django.test import TestCase
 from django.contrib.auth import get_user_model
 from django.core.files.uploadedfile import SimpleUploadedFile
 from projects.models import ImageProject, ProjectIdea
 import os
 from PIL import Image
 from io import BytesIO
-from django.core.files.uploadedfile import SimpleUploadedFile
 import shutil
 import tempfile
 from django.test import TestCase, override_settings
