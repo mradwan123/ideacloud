@@ -27,34 +27,33 @@ class FinishedProjectSerializerTests(TestCase):
             project_idea=self.project_idea,
             image="project_images/test.jpg"
         )
-        
+
         # create a group
         self.project_group = ProjectGroup.objects.create(
-                                name='Test Group',
-                                project_idea = self.project_idea,
-                                owner=self.user #TODO create another user that is not project idea owner, and is group owner
-                                )
-        
-        #create finished project
-        self.finished_project = FinishedProject.objects.create(
-            title = "test finished project title",
-            description = 'test description',
-            project_group = self.project_group,
-            
+            name='Test Group',
+            project_idea=self.project_idea,
+            owner=self.user  # TODO create another user that is not project idea owner, and is group owner
         )
-        
+
+        # create finished project
+        self.finished_project = FinishedProject.objects.create(
+            title="test finished project title",
+            description='test description',
+            project_group=self.project_group,
+        )
+
         request = type('Request', (), {'user': self.user})()
         self.context = {"request": request}
-        
+
         request_user2 = type('Request', (), {'user': self.user2})()
         self.context2 = {"request": request_user2}
-        
+
         self.finished_project.tags.add(self.tag)
         # add annotations that the view normally provides
         self.finished_project.likes_count = 0
         self.finished_project.has_liked = False
         self.finished_project.save()
-        
+
     def test_serializer_contains_all_fields(self):
         """Verify that all fields are returned correctly"""
         serializer = FinishedProjectSerializer(instance=self.finished_project, context=self.context)
@@ -62,7 +61,7 @@ class FinishedProjectSerializerTests(TestCase):
 
         expected_fields = {
             "id", "title", "description", "finished_on", "tags",
-            'likes_count', 'has_liked', "project_group", 
+            'likes_count', 'has_liked', "project_group",
         }
         self.assertEqual(set(data.keys()), expected_fields)
 
@@ -140,8 +139,8 @@ class FinishedProjectSerializerTests(TestCase):
         serializer = FinishedProjectSerializer(data=data, context=self.context)
 
         self.assertFalse(serializer.is_valid(), serializer.errors)
-        #TODO fix this assertion: self.assertIn('title', serializer.errors)
-        
+        # TODO fix this assertion: self.assertIn('title', serializer.errors)
+
     def test_finished_project_user_not_project_group_owner_fail(self):
         data = {
             "title": "Title",
@@ -149,12 +148,10 @@ class FinishedProjectSerializerTests(TestCase):
             "tags": ["python"],
             "project_group": self.project_group.pk
         }
-        
+
         serializer = FinishedProjectSerializer(data=data, context=self.context2)
         self.assertTrue(serializer.is_valid())
         # author is read-only so we pass it here
         with self.assertRaises(ValidationError) as error:
             project = serializer.save()
         self.assertIn("User is not allowed to publish this Finished Group.", str(error.exception.detail))
-        
-            
