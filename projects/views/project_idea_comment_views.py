@@ -23,4 +23,4 @@ class ProjectIdeaCommentListCreateView(APIView):
             project_idea_id=project_id
             )
             return Response(serializer.data, status=201)
-            return Response(serializer.errors, status=400)
+        return Response(serializer.errors, status=400)

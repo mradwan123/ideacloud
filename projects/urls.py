@@ -37,5 +37,6 @@ urlpatterns = [
     path("project-ideas/<int:idea_pk>/like/", ProjectIdeaToggleLike.as_view(), name="project-idea-like"),
     # Toggling a user's like on Finished Projects
     path("finished-projects/<int:project_pk>/like/", FinishedProjectToggleLike.as_view(), name="finished-project-like"),
+    ## ProjectComments
     path("project-comments/", ProjectIdeaCommentListCreateView.as_view(), name="project-comments")
 ]
