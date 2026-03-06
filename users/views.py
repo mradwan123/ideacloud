@@ -1,6 +1,5 @@
 from django.contrib.auth import get_user_model
 from django.contrib.auth import authenticate
-from .models import User
 from rest_framework import status
 from .serializers import UserSerializer
 from .permissions import CanUpdateUser, IsAdminOrUser
@@ -8,7 +7,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import IsAuthenticatedOrReadOnly, IsAuthenticated, IsAdminUser, AllowAny
-from rest_framework.decorators import api_view, authentication_classes, permission_classes
+from rest_framework.decorators import api_view
 from rest_framework.authtoken.models import Token
 from django.shortcuts import get_object_or_404
 
@@ -26,14 +25,14 @@ class UserAPIView(APIView):
 
     def get_permissions(self):
         if self.request.method == "GET":
-            return [IsAdminUser()] # only admin can list users
+            return [IsAdminUser()]  # only admin can list users
         if self.request.method == "POST":
-            return [AllowAny()] # anyone can create user
+            return [AllowAny()]  # anyone can create user
         return super().get_permissions()
 
     def get(self, request):
         """
-        GET list of all users. Only admin can see list of all user details. 
+        GET list of all users. Only admin can see list of all user details.
         - Checks for authentication.
         - Admin verified through user_id
         """
@@ -68,7 +67,7 @@ class LoginView(APIView):
         password = request.data.get("password")
 
         if not username or not password:
-            return Response({'error':'Username and password required.'}, status.HTTP_400_BAD_REQUEST)
+            return Response({'error': 'Username and password required.'}, status.HTTP_400_BAD_REQUEST)
 
         user = authenticate(username=username, password=password)
 
@@ -95,7 +94,7 @@ class LogoutView(APIView):
             token = Token.objects.filter(user=request.user)
             if token:
                 token[0].delete()
-                return Response({'detail':'Token Deleted. User logged out.'}, status.HTTP_204_NO_CONTENT)
+                return Response({'detail': 'Token Deleted. User logged out.'}, status.HTTP_204_NO_CONTENT)
         return Response({'error': 'User not authenticated'}, status.HTTP_401_UNAUTHORIZED)
 
 class UserDetailView(APIView):
