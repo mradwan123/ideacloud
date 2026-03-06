@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from django.contrib import messages
-from projects.models import ProjectIdea, ProjectIdeaComment, Tag
+from projects.models import ProjectIdea, ProjectIdeaComment, Tag, ImageProject
 from front_end.form import RegisterForm
 from users.serializers import UserSerializer
 from django.contrib.auth import authenticate, login
@@ -78,42 +78,42 @@ def about(request):
 def create_project(request):
     if request.method == "POST":
         # Get form data
-        title = request.POST.get('title', '').strip()
-        description = request.POST.get('description', '').strip()
-        selected_tags = request.POST.getlist('tags')  # Get list of selected tag IDs
+        title = request.POST.get('title').strip()
+        description = request.POST.get('description').strip()
+        tags = request.POST.getlist('tags')  # Get list of selected tag IDs
         images = request.FILES.getlist('images')  # Get uploaded images
         
         # Validate required fields
-        if not title or not description:
+        if not title:
             messages.error(request, 'Title and description are required.')
-            tags = Tag.objects.all().order_by('name')
-            return render(request, "create_project.html", {'tags': tags})
+            return redirect('front-end:create-project')
+        print(tags)
+        data = {
+            'title':title,
+            'description': description,
+            'tags':tags,
+        }
         
-        try:
-            # Create the project
-            project = ProjectIdea.objects.create(
-                title=title,
-                description=description,
-                author=request.user
-            )
+        serializer = ProjectIdeaSerializer(data=data)
             
-            # Add selected tags
-            if selected_tags:
-                project.tags.set(selected_tags)
+        serializer.is_valid(raise_exception=True)
+        
+        project_idea = serializer.save(author=request.user)
+        print(project_idea)
             
+        #-----------------TODO : Check images for create project ----------------
+        
             # Handle image uploads
-            for image in images:
-                ImageProject.objects.create(
+        for image in images:
+            ImageProject.objects.create(
                     image=image,
-                    project_idea=project
+                    project_idea=project_idea
                 )
             
-            messages.success(request, 'Project created successfully!')
-            return redirect("front-end:project-details", pk=project.id)
+        messages.success(request, 'Project created successfully!')
+        return redirect("front-end:project-details", pk=project_idea.id)
             
-        except Exception as e:
-            messages.error(request, f'Error creating project: {str(e)}')
-    
+      
     # GET request - show form with tags
     tags = Tag.objects.all().order_by('name')
     context = {

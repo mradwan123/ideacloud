@@ -11,7 +11,7 @@
 
 </div>
 
-<form>
+<form method="POST" enctype="multipart/form-data">
 
     {% csrf_token %}
 
@@ -21,14 +21,14 @@
 
     <!-- description -->
     <label for="project-description">Description *</label>
-    <textarea id="project-description" rows="4" placeholder="Tell us about your project" required></textarea>
+    <textarea id="project-description" name='description' rows="4" placeholder="Tell us about your project" required></textarea>
     
     <!-- tags to add -->
      <!-- tags selection -->
-  <label>Tags</label>
-    <div class="tags-container">
+  <label>Tags</label>description
+    <div class="tags-container">        
         {% for tag in tags %}
-            <input type="checkbox" id="tag-{{ tag.id }}" name="tags" value="{{ tag.id }}" class="tag-checkbox">
+            <input type="checkbox" id="tag-{{ tag.id }}" name="tags" value="{{ tag.name }}" class="tag-checkbox">
             <label for="tag-{{ tag.id }}" class="tag-btn">{{ tag.name }}</label>
         {% empty %}
             <p class="no-tags">No tags available. Contact admin to add tags.</p>
@@ -37,7 +37,7 @@
     <!-- picure uploading to add -->
      <!-- picture uploading -->
     <label for="project-images">Project Images</label>
-    <input type="file" id="project-images" name="images" accept="image/*" multiple>
+    <input type="file" id="project-images" name="images" accept="image/jpg" multiple>
     <small class="file-hint">You can upload multiple images</small>
 
 
