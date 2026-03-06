@@ -66,9 +66,9 @@ class FinishedProjectList(APIView):
 
     def post(self, request):
         """Create a new FinishedProject with the provided data and authenticated user"""
-                
+
         context = {"request": request}
-                   
+
         serializer = FinishedProjectSerializer(data=request.data, context=context)
 
         # validation check for model requirements
@@ -79,7 +79,7 @@ class FinishedProjectList(APIView):
         # this ensures the post is linked to the right person safely and automatically
         serializer.save()
         return Response(serializer.data, status=status.HTTP_201_CREATED)
-        #TODO handle not group owner request in API errors, status should be 401
+        # TODO handle not group owner request in API errors, status should be 401
 
 
 class FinishedProjectDetail(APIView):
@@ -137,7 +137,7 @@ class FinishedProjectDetail(APIView):
                 {"detail": "Only the author is allowed to delete the finished project"},
                 status=status.HTTP_403_FORBIDDEN
             )
-            
+
         if self._is_protected(finished_project):
             return Response(
                 {"detail": "This finished project has likes or groups connected and therefore can't be deleted."},
