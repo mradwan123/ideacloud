@@ -11,14 +11,15 @@ class ProjectIdeaCommentTest(TestCase):
         self.project_idea = ProjectIdea.objects.create(
             title="Test Project",
             description="Test description",
-            
+
         )
-       # Comment data for testing
+        # Comment data for testing
         self.comment_data = {
             "user": self.user.id,
             "project_idea": self.project_idea.id,
             "content": "This is a test"
         }
+
     def test_serializer_valid(self):
         # Create serializer with the test data
         serializer = ProjectIdeaCommentSerializer(data=self.comment_data)
@@ -27,6 +28,7 @@ class ProjectIdeaCommentTest(TestCase):
             print(serializer.errors)
         # Check that the serializer is valid
         self.assertTrue(serializer.is_valid())
+
     def test_serializer_create(self):
         # Create serializer and save the comment
         serializer = ProjectIdeaCommentSerializer(data=self.comment_data)
