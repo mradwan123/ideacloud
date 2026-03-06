@@ -16,94 +16,25 @@
   <a href="{% url 'front-end:create-project' %}" class="button">New Project +</a>
 </div>
 
-<div class="all-projects-row">
-    <div class="image-card">
-        <img src="../static/images/image_placeholder.jpg">
+<div class="ideas-grid">
+    {% for idea in ideas %}
+    <div class="idea-card">
+        <img src="{% static 'images/image_placeholder.jpg' %}">
         <div class="caption">
             <p class="project-title">
-                Project Title
+                <a href="{% url 'front-end:project-details' idea.id %}">
+                    {{ idea.title }}
+                </a>
             </p>
             <p class="project-owner-thumbnail">
-                By [Name of the Owner]
+                By {{ idea.author }}
             </p>
             <p class="project-description-thumbnail">
-                Project Description
+                {{ idea.description|truncatewords:10 }}
             </p>
         </div>
     </div>
-    <div class="image-card">
-        <img src="../static/images/image_placeholder.jpg">
-        <div class="caption">
-            <p class="project-title">
-                Project Title
-            </p>
-            <p class="project-owner-thumbnail">
-                By [Name of the Owner]
-            </p>
-            <p class="project-description-thumbnail">
-                Project Description
-            </p>
-        </div>
-    </div>
-    <div class="image-card">
-        <img src="../static/images/image_placeholder.jpg">
-        <div class="caption">
-            <p class="project-title">
-                Project Title
-            </p>
-            <p class="project-owner-thumbnail">
-                By [Name of the Owner]
-            </p>
-            <p class="project-description-thumbnail">
-                Project Description
-            </p>
-        </div>
-    </div>
-</div>
-
-<div class="all-projects-row">
-    <div class="image-card">
-        <img src="../static/images/image_placeholder.jpg">
-        <div class="caption">
-            <p class="project-title">
-                Project Title
-            </p>
-            <p class="project-owner-thumbnail">
-                By [Name of the Owner]
-            </p>
-            <p class="project-description-thumbnail">
-                Project Description
-            </p>
-        </div>
-    </div>
-    <div class="image-card">
-        <img src="../static/images/image_placeholder.jpg">
-        <div class="caption">
-            <p class="project-title">
-                Project Title
-            </p>
-            <p class="project-owner-thumbnail">
-                By [Name of the Owner]
-            </p>
-            <p class="project-description-thumbnail">
-                Project Description
-            </p>
-        </div>
-    </div>
-    <div class="image-card">
-        <img src="../static/images/image_placeholder.jpg">
-        <div class="caption">
-            <p class="project-title">
-                Project Title
-            </p>
-            <p class="project-owner-thumbnail">
-                By [Name of the Owner]
-            </p>
-            <p class="project-description-thumbnail">
-                Project Description
-            </p>
-        </div>
-    </div>
+    {% endfor %}
 </div>
 
 <!-- maybe 'more' button? -->

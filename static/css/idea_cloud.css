@@ -244,6 +244,12 @@ label {
     margin-bottom: 1rem;
 }
 
+.user-info img {
+    height: 1rem;
+    width: auto;
+    margin-left: 0.5rem;
+}
+
 
 /* --- project details --- */
 
@@ -304,13 +310,26 @@ label {
     color: black;
 }
 
-.likes-button {
+.project-actions {
     display: flex;
-    justify-content: flex-end;
-    margin-bottom: 1rem;
-    margin-right: 1rem;
+    justify-content: flex-end;   /* push everything to the right */
+    align-items: center;
+    gap: 1rem;                   /* space between buttons */
+    margin-bottom: 1.5rem;
 }
 
+.project-actions form {
+    margin: 0;                   /* remove default form spacing */
+}
+
+.project-actions .button {
+    margin: 0;
+}
+
+.no-projects {
+    text-align: center;
+    margin-top: 3rem;
+}
 
 /* -- all project ideas -- */
 
@@ -325,19 +344,19 @@ label {
     color: black;
 }
 
-.all-projects-row {
+.ideas-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: 1rem;
+    gap: 2rem;
 }
 
-.image-card img {
+.idea-card img {
     width: 100%;
     height: 20rem;
     object-fit: cover;
     border-radius: 0.5rem;
     display: block;
-    margin-bottom: 0.3rem;
+    margin-bottom: 0.5rem;
 }
 
 .caption {
@@ -360,6 +379,17 @@ label {
     padding-right: 1rem;
 }
 
+@media (max-width: 1000px) {
+    .ideas-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 600px) {
+    .ideas-grid {
+        grid-template-columns: 1fr;
+    }
+}
 
 /* -- project groups -- */
 
@@ -396,4 +426,104 @@ label {
 .name-and-comment h4 {
     font-size: 1rem;
     opacity: 0.7;
+}
+
+/*---- tags buttons - create project page -----
+
+/* Tags container */
+.tags-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin: 15px 0 25px 0;
+}
+
+/* Hide the checkbox */
+.tag-checkbox {
+    display: none;
+}
+
+/* Tag button - the entire tag is clickable */
+.tag-btn {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #e9ecef;
+    color: #495057;
+    border-radius: 25px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    user-select: none;
+}
+
+/* Hover effect - when mouse is over */
+.tag-btn:hover {
+    background-color: #dee2e6;
+    transform: translateY(-2px);
+}
+
+/* Selected state - when clicked/toggled ON */
+.tag-checkbox:checked + .tag-btn {
+    background-color: #647D76;
+    color: #ffffff;
+}
+
+/* Selected hover - when hovering over a selected tag */
+.tag-checkbox:checked + .tag-btn:hover {
+    background-color: #647D76;
+}
+
+/* No tags message */
+.no-tags {
+    color: #6c757d;
+    font-style: italic;
+    margin: 0;
+}
+
+/* File input hint */
+.file-hint {
+    display: block;
+    color: #6c757d;
+    margin-top: 5px;
+    font-size: 0.9em;
+}
+/* ----- end tags buttons --------- 
+/* -- comments -- */
+
+.add-comment {
+    margin-bottom: 5rem;
+}
+
+.comment-box {
+    display: flex;
+    align-items: flex-start;
+    gap: 1.5rem;
+    margin-bottom: 4rem;
+    max-width: 100%;
+    margin: 0 auto 2rem auto;
+}
+
+.comment-box img {
+    width: 7rem;
+    height: 7rem;
+    object-fit: cover;
+    border-radius: 0.5rem;
+}
+
+.comment-actions {
+    display: flex;
+    margin-top: 0.5rem;
+}
+
+.comment-actions a,
+.comment-actions button {
+    margin: 0;
+    display: inline-flex;
+    align-items: center;
+    color: black;
+}
+
+.edit-comment-form a {
+    color: black;
 }

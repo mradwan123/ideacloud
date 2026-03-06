@@ -21,24 +21,32 @@
 
 </div>
 
-<form method="POST" enctype="multipart/form-data">
-    {% csrf_token %}
-    <label>First Name *</label><br>
-    {{ form.first_name }}<br>
-    <label>Last Name *</label><br>
-    {{ form.last_name }}<br>
-    <label>Username</label><br>
-    {{ form.username }}<br>
-    <label>Email *</label><br>
-    {{ form.email }}<br>
-    <label>Password *</label><br>
-    {{ form.password }}<br>
-    <label>Description</label>
-    {{ form.description }}<br>
-    <button type="submit" class="form_button" id="confirm_button">Register</button>
-    <button type="reset" class="form_button" id="cancel_button">Cancel</button>
-    <p>* are required fields</p>
-</form>
+<div class="register-form">
+    <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        <label>First Name *</label><br>
+        {{ form.first_name }}<br>
+        <label>Last Name *</label><br>
+        {{ form.last_name }}<br>
+        <label>Username</label><br>
+        {{ form.username }}<br>
+        <label>Email *</label><br>
+        {{ form.email }}<br>
+        <label>Password *</label><br>
+        {{ form.password }}<br>
+        <label>Description</label>
+        {{ form.description }}<br>
+        <label>Profile Picture</label><br>
+        <input type="file" name="profile_picture" accept="image/*"><br>
+        <p>* are required fields</p>
+        <!-- buttons -->
+        <div class="register-buttons">
+            <button type="submit" class="form_button" id="confirm_button">Register</button>
+            <button type="reset" class="form_button" id="cancel_button">Cancel</button>
+        </div>
+            
+    </form>
+</div>
 
 <!-- HTML only form
 <form>

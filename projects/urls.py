@@ -3,6 +3,7 @@ from django.conf import settings
 from django.conf.urls.static import static
 from projects.views.view_project_idea import ProjectIdeaList, ProjectIdeaDetail
 from projects.views.view_project_group import ProjectGroupList, ProjectGroupDetail, ProjectGroupMembershipToggle
+from projects.views.view_project_idea_images import AddProjectIdeaImage, RemoveProjectIdeaImage
 from projects.views.view_finished_project import FinishedProjectList, FinishedProjectDetail
 from projects.views.view_likes import ProjectIdeaToggleLike, FinishedProjectToggleLike
 
@@ -13,6 +14,8 @@ urlpatterns = [
     path("project-ideas/", ProjectIdeaList.as_view(), name="project-idea-list"),
     # Access to methods related to a specific idea
     path("project-ideas/<int:idea_pk>/", ProjectIdeaDetail.as_view(), name="project-idea-detail"),
+    path("project-ideas/<int:idea_pk>/add-image/", AddProjectIdeaImage.as_view(), name="project-idea-add-image"),
+    path("project-ideas/<int:idea_pk>/remove-image/", RemoveProjectIdeaImage.as_view(), name="project-idea-remove-image"),
 
     ## ProjectGroup
     # Listing all groups under an idea or create a new one

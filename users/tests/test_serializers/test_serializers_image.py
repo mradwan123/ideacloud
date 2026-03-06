@@ -4,7 +4,7 @@ import tempfile
 from django.test import TestCase, override_settings
 from django.contrib.auth import get_user_model
 from users.serializers import UserSerializer
-from config.settings import MEDIA_ROOT
+from config.settings import MEDIA_ROOT, DEFAULT_PROFILE_IMAGE_URL
 from config.image_helper.base64_image_conversion import image_to_base64
 
 User = get_user_model()
@@ -61,10 +61,63 @@ class UserProfileSerializerTests(TestCase):
         # check if the string "test.jpg" exists in the "image" field so we know the path is correct
         self.assertTrue(serializer.data["image"].endswith(".jpg"))
         self.assertIn("/media/profile_images/image_", serializer.data["image"])
-        
-        
-    
-    #TODO: test for: image broken, update image, deleted, string broken.    
-      
+        self.assertTrue(os.path.isfile(user_instance.image.path))
 
-   
+    def test_user_image_default_representation(self):
+        """Verify the serializer outputs the correct URL and ID"""
+        data = self.user_data
+
+        # pass the database object into the serializer
+        serializer = UserSerializer(data=data)
+        self.assertTrue(serializer.is_valid())
+        user_instance = serializer.save()
+
+        representaion = serializer.to_representation(user_instance)
+
+        self.assertEqual(representaion.get("image"), DEFAULT_PROFILE_IMAGE_URL)
+
+    def test_user_image_deletion_on_change(self):
+        """Checks if custom profile image gets deleted from DB on account on user deletion."""
+        image_file = self._create_test_image()
+        data = self.user_data
+        data['image'] = image_file
+
+        # pass the database object into the serializer
+        serializer = UserSerializer(data=data)
+        self.assertTrue(serializer.is_valid())
+        user_instance = serializer.save()
+
+        img_path = user_instance.image.path
+        self.assertTrue(os.path.isfile(img_path))
+
+        updated_serializer = UserSerializer(user_instance, data={"image": self._create_test_image()}, partial=True)
+        self.assertTrue(updated_serializer.is_valid())
+        user_instance = updated_serializer.save()
+
+        self.assertFalse(os.path.isfile(img_path))
+        new_img_path = user_instance.image.path
+        self.assertTrue(os.path.isfile(new_img_path))
+
+    def test_user_image_deletion_on_set_to_null(self):
+        """Checks if custom profile image gets deleted from DB on account on imagefield being set to null."""
+        image_file = self._create_test_image()
+        data = self.user_data
+        data['image'] = image_file
+
+        # pass the database object into the serializer
+        serializer = UserSerializer(data=data)
+        self.assertTrue(serializer.is_valid())
+        user_instance = serializer.save()
+
+        img_path = user_instance.image.path
+        self.assertTrue(os.path.isfile(img_path))
+
+        updated_serializer = UserSerializer(user_instance, data={"image": None}, partial=True)
+        self.assertTrue(updated_serializer.is_valid())
+        updated_user_instance = updated_serializer.save()
+
+        self.assertFalse(os.path.isfile(img_path))
+
+        representaion = serializer.to_representation(updated_user_instance)
+        self.assertEqual(representaion.get("image"), DEFAULT_PROFILE_IMAGE_URL)
+
