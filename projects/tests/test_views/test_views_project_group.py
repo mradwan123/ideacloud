@@ -332,7 +332,7 @@ class ProjectGroupMembershipToggleTests(TestCase):
 
         response = self.client.post(self.url_toggle)
         self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
-        self.assertIn("Membership locked, because the project is finished.", response.data["error"])
+        self.assertIn("Membership locked because the project is finished.", response.data["error"])
 
     def test_toggle_membership_unauthenticated(self):
         """Verify guests cannot join or leave groups"""
