@@ -27,13 +27,12 @@ class UserProfileSerializerTests(TestCase):
             shutil.rmtree(TEMP_MEDIA_ROOT, ignore_errors=True)
 
     def setUp(self):
-            self.user_data = {
-                    'username': 'testuser',
-                    'email': 'test@example.com',
-                    'password': 'testpass123',
-                    'description':'test desc',
-                }        
-            
+        self.user_data = {
+            'username': 'testuser',
+            'email': 'test@example.com',
+            'password': 'testpass123',
+            'description': 'test desc',
+        }
 
     def _create_test_image(self):
         """Helper to create an image in memory"""
@@ -41,7 +40,7 @@ class UserProfileSerializerTests(TestCase):
         image_path = MEDIA_ROOT / "profile_images" / "default.jpg"
         with open(image_path, "rb") as img:
             base64_image = image_to_base64(img.read())
-        
+
         return base64_image
 
     def test_user_image_base64_save_success_serialization(self):
@@ -61,10 +60,5 @@ class UserProfileSerializerTests(TestCase):
         # check if the string "test.jpg" exists in the "image" field so we know the path is correct
         self.assertTrue(serializer.data["image"].endswith(".jpg"))
         self.assertIn("/media/profile_images/image_", serializer.data["image"])
-        
-        
-    
-    #TODO: test for: image broken, update image, deleted, string broken.    
-      
 
-   
+    # TODO: test for: image broken, update image, deleted, string broken.
