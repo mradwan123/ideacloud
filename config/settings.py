@@ -54,6 +54,7 @@ INSTALLED_APPS = [
     'users.apps.UsersConfig',
     'front_end.apps.FrontEndConfig',
     'widget_tweaks',
+    'drf_yasg'
 ]
 
 MIDDLEWARE = [
