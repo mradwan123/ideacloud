@@ -20,18 +20,18 @@ class FinishedProjectsListTests(APITestCase):
             description="Testing views",
             author=self.user1
         )
-         # create a group
+        # create a group
         self.project_group = ProjectGroup.objects.create(
-                                name='Test Group',
-                                project_idea = self.project_idea,
-                                owner=self.user1 #TODO create another user that is not project idea owner, and is group owner
-                                )
-        
-        #create a finished project
+            name='Test Group',
+            project_idea=self.project_idea,
+            owner=self.user1  # TODO create another user that is not project idea owner, and is group owner
+        )
+
+        # create a finished project
         self.finished_project = FinishedProject.objects.create(
             title="Finished Project Title",
             description="Testing views",
-            project_group = self.project_group
+            project_group=self.project_group
         )
         # adding "python" tag to the finished project
         self.finished_project.tags.add(self.tag_python)
@@ -51,7 +51,7 @@ class FinishedProjectsListTests(APITestCase):
         finished_project_2 = FinishedProject.objects.create(
             title="Finished Project Title",
             description="Testing views",
-            project_group=self.project_group  
+            project_group=self.project_group
         )
 
         response = self.client.get(self.url_list)
@@ -62,16 +62,15 @@ class FinishedProjectsListTests(APITestCase):
         # we use 1 here as the view returns in reverse order sorted by creation time and our setup finished_project comes second in this order
         # this also verifies that the default sorting is working as intended
         finished_project = response.data[1]
-        
+
         # verify base fields
         self.assertEqual(finished_project["title"], "Finished Project Title")
         self.assertEqual(finished_project["description"], "Testing views")
-       
 
         # verify nested M2M data
         finished_project = response.data[0]
 
-        self.assertIn("python", finished_project["tags"])     
+        self.assertIn("python", finished_project["tags"])
 
         # verify annotated fields
         # self.assertEqual(finished_project["likes_count"], 0)
@@ -137,17 +136,17 @@ class FinishedProjectDetailTests(APITestCase):
             author=self.user1
         )
         self.project_group = ProjectGroup.objects.create(
-                                name='Test Group',
-                                project_idea = self.project_idea,
-                                owner=self.user1 #TODO create another user that is not project idea owner, and is group owner
-                                )
-        #create finsihed project
+            name='Test Group',
+            project_idea=self.project_idea,
+            owner=self.user1  # TODO create another user that is not project idea owner, and is group owner
+        )
+        # create finsihed project
         self.finished_project = FinishedProject.objects.create(
             title="Finished Project Title",
             description="Testing views",
-            project_group = self.project_group
+            project_group=self.project_group
         )
-        
+
         # adding "python" tag to the finished_project
         self.finished_project.tags.add(self.tag_python)
         # helpe to manage urls easier in test
@@ -207,7 +206,7 @@ class FinishedProjectDetailTests(APITestCase):
     #     self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
     #     self.assertIs(response.data.get("title"), None)
 
-    #TODO determine if similar test as below is necessary and implement accordingly. Current: Test error.
+    # TODO determine if similar test as below is necessary and implement accordingly. Current: Test error.
     def test_update_a_single_finished_project_as_guest(self):
         """Test that an owner can edit their final project before it has likes or groups attached"""
         self.client.logout()
@@ -232,7 +231,7 @@ class FinishedProjectDetailTests(APITestCase):
             "description": "Entirely new description",
             "tags": ["automation"],
             "project_group": self.project_group.id
-        }        
+        }
         response = self.client.patch(self.url_detail, data, format="json")
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
         self.assertIn("User is not allowed to edit description/title of this Finished Group.", str(response.data))
@@ -254,7 +253,6 @@ class FinishedProjectDetailTests(APITestCase):
 
         self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
 
-    
     ## SERIALIZER CONNECTION
     def test_update_finished_project_with_profane_content(self):
         """Makes sure that the view rejects banned words correctly (via serializer)"""
@@ -268,4 +266,4 @@ class FinishedProjectDetailTests(APITestCase):
 
         response = self.client.patch(self.url_detail, data, format='json')
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
-        #self.assertIn("Profanity", str(response.data))
+        # self.assertIn("Profanity", str(response.data))
