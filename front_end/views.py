@@ -14,15 +14,13 @@ from users.models import User
 def home(request):
     if request.user.is_authenticated:
         ideas = ProjectIdea.objects.all()
-        serializer = ProjectIdeaSerializer(ideas, many=True)
-        return render(request, "home.html", context={"ideas": serializer.data})
+        return render(request, "home.html", context={"ideas": ideas})
     return render(request, "home.html")
 
 @login_required(login_url="front-end:login")
 def project_ideas(request):
     ideas = ProjectIdea.objects.all()
-    serializer = ProjectIdeaSerializer(ideas, many=True)
-    return render(request, "project_ideas.html", context={"ideas": serializer.data})
+    return render(request, "project_ideas.html", context={"ideas": ideas})
 
 @login_required(login_url="front-end:login")
 def project_details(request, pk):
@@ -69,7 +67,7 @@ def register(request):
 @login_required(login_url="front-end:login")
 def user_profile(request):
     user = request.user
-    return render(request, "user_profile.html", context={"user": user})
+    return render(request, "user_profile.html", context={"user_profile": user})
 
 def about(request):
     return render(request, "about.html")
@@ -170,12 +168,12 @@ def remove_like(request, pk):
 
 @login_required(login_url="front-end:login")
 def public_user_profile(request, user_id):
-    profile_user = get_object_or_404(User, id=user_id)
+    profile_user = get_object_or_404(User, pk=user_id)
     return render(
         request,
         "user_profile.html",
         context={
-            "profile_user": profile_user
+            "user_profile": profile_user
         }
     )
 
