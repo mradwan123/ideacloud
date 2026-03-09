@@ -54,6 +54,7 @@ INSTALLED_APPS = [
     'users.apps.UsersConfig',
     'front_end.apps.FrontEndConfig',
     'widget_tweaks',
+    'drf_yasg'
 ]
 
 MIDDLEWARE = [
@@ -173,7 +174,6 @@ STATICFILES_DIRS = [
     BASE_DIR / "static",
 ]
 
-MEDIA_URL = 'media/' 
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
@@ -200,3 +200,8 @@ STORAGES = {
         "BACKEND": "django.contrib.staticfiles.storage.StaticFilesStorage",
     },
 }
+
+
+HOST = "http://127.0.0.1:8000/"
+
+DEFAULT_PROFILE_IMAGE_URL = f"{MEDIA_URL}profile_images/default.jpg"

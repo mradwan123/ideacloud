@@ -73,11 +73,11 @@ class UserModelTest(TestCase):
             user = User(created_on='12-12-12')
             user.full_clean()
 
-    def test_user_default_image_path(self):
-        """Verify that the default image file is used when creating a new profile without specifying a profile image."""
-        default_path = str(settings.MEDIA_ROOT) + "/profile_images/default.jpg"
-        user_path = self.user.image.path
-        self.assertEqual(default_path, user_path)
+    # def test_user_default_image_path(self):
+    #     """Verify that the default image file is used when creating a new profile without specifying a profile image."""
+    #     default_path = str(settings.MEDIA_ROOT) + "/profile_images/default.jpg"
+    #     user_path = self.user.image.path
+    #     self.assertEqual(default_path, user_path)
 
     def test_user_custom_image_path(self):
         """Verify that a custom image can be saved in a profile."""

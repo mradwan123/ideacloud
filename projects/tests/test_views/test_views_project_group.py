@@ -161,6 +161,15 @@ class TestProjectGroupDetailView(TestCase):
         self.assertEqual(data.get("name"), response.data.get("name"))
         self.assertEqual(data.get("description"), response.data.get("description"))
 
+    def test_view_put_project_group_detail_invalid_not_owner(self):
+        """Test fully updating a project group with valid data but as a non-owner user."""
+        self.client.force_authenticate(user=self.user2)
+        data = {"name": "updated_name",
+                "description": "updated description"}
+        response = self.client.put(self.url(self.project_idea.id, self.project_group.id), data=data, format="json")
+
+        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
+
     def test_view_put_project_group_detail_name_missing(self):
         """Test fully updating a project group without providing a name."""
         self.client.credentials(HTTP_AUTHORIZATION=f"Token {self.token_user}")
@@ -188,6 +197,14 @@ class TestProjectGroupDetailView(TestCase):
         self.assertEqual(data.get("name"), response.data.get("name"))
         self.assertEqual(self.project_group.description, response.data.get("description"))
 
+    def test_view_patch_project_group_detail_invalid_not_owner(self):
+        """Test fully updating a project group with valid data but as a non-owner user."""
+        self.client.force_authenticate(user=self.user2)
+        data = {"name": "updated_name"}
+        response = self.client.patch(self.url(self.project_idea.id, self.project_group.id), data=data, format="json")
+
+        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
+
     def test_view_patch_project_group_detail_valid_description(self):
         """Test partially updating only the description of a project group."""
         self.client.credentials(HTTP_AUTHORIZATION=f"Token {self.token_user}")
@@ -205,7 +222,7 @@ class TestProjectGroupDetailView(TestCase):
 
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
 
-    def test_view_patch_project_group_detail_valid_delete(self):
+    def test_view_delete_project_group_detail_valid_owner(self):
         """Test deleting a project group with valid authentication."""
         project_group_id = self.project_group.id
         self.assertTrue(ProjectGroup.objects.filter(id=project_group_id).exists())
@@ -216,6 +233,12 @@ class TestProjectGroupDetailView(TestCase):
         self.assertIn("deleted.", response.data.get("detail"))
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
+    def test_view_delete_project_group_detail_invalid_not_owner(self):
+        """Test fully updating a project group with valid data but as a non-owner user."""
+        self.client.force_authenticate(user=self.user2)
+        response = self.client.delete(self.url(self.project_idea.id, self.project_group.id))
+
+        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
 
 class ProjectGroupMembershipToggleTests(TestCase):
     def setUp(self):
@@ -309,7 +332,7 @@ class ProjectGroupMembershipToggleTests(TestCase):
 
         response = self.client.post(self.url_toggle)
         self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
-        self.assertIn("Membership locked, because the project is finished.", response.data["error"])
+        self.assertIn("Membership locked because the project is finished.", response.data["error"])
 
     def test_toggle_membership_unauthenticated(self):
         """Verify guests cannot join or leave groups"""

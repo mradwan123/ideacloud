@@ -11,3 +11,4 @@ sqlparse
 whitenoise
 pillow
 django-widget-tweaks
+drf_yasg
