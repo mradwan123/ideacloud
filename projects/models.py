@@ -108,9 +108,8 @@ class ImageProject(models.Model):
 
     def __str__(self):
         return self.image
-    
+
     def delete(self, *args, **kwargs):
         if os.path.isfile(self.image.path):
             os.remove(self.image.path)
         return super().delete(*args, **kwargs)
-    
