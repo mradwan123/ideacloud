@@ -18,7 +18,7 @@ class ProjectGroupCommentTesting(TestCase):
             author=self.user,
             description="Descriptive text",
         )
-        
+
         # create test project_group
         self.project_group = ProjectGroup.objects.create(
             name="Test Group",
@@ -26,18 +26,18 @@ class ProjectGroupCommentTesting(TestCase):
             owner=self.user,
             description="Descriptive text",
         )
-        
-        #creaate project_group_comment
+
+        # creaate project_group_comment
         self.project_group_comment = ProjectGroupComment(author=self.user,
                                                          project_group=self.project_group,
                                                          content='Testing Project Group Comment.')
-        
-#----- VALID TEST --------------
+
+# ----- VALID TEST --------------
 
     def test_create_project_group(self):
         """Verify, that the project_group_comments gets created correctly and without error"""
         self.assertEqual(self.project_group_comment.content, "Testing Project Group Comment.")
-        
+
     def test_created_on_correct_timestamp(self):
         """Verify that timestamps are generated correctly"""
         self.assertIsNotNone(self.project_group_comment.created_on)
@@ -48,7 +48,7 @@ class ProjectGroupCommentTesting(TestCase):
             now,
             delta=timedelta(minutes=1)
         )
-        
+
     def test_project_group_comment_str_method(self):
         """Verify the correctness of the string returned by the __str__ method"""
         # we don't test for the timestamp here. If rest works, so should the timestamp and we would
@@ -56,7 +56,7 @@ class ProjectGroupCommentTesting(TestCase):
         self.assertIn(
             f"Comment by {self.user.username} on {self.project_group.name}",
             str(self.project_group_comment))
-        
+
     ### INVALID
     def test_create_project_group_comment_too_long(self):
         """Ensure that a title exceeding max_length raises a ValidationError"""

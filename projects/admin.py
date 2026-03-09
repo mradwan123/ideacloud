@@ -6,4 +6,3 @@ admin.site.register(ProjectGroup)
 admin.site.register(Tag)
 admin.site.register(FinishedProject)
 admin.site.register(ImageProject)
-

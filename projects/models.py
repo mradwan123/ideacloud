@@ -113,4 +113,3 @@ class ImageProject(models.Model):
         if os.path.isfile(self.image.path):
             os.remove(self.image.path)
         return super().delete(*args, **kwargs)
-    

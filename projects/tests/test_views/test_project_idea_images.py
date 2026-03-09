@@ -40,7 +40,7 @@ class TestAddProjectIdeaImage(TestCase):
         if os.path.exists(TEMP_MEDIA_ROOT):
             # shutil.rmtree recursively deletes the directory and every file inside it
             shutil.rmtree(TEMP_MEDIA_ROOT, ignore_errors=True)
-    
+
     def setUp(self):
         self.user = User.objects.create_user(username="test_user",
                                              email="test_user@email.com",
@@ -155,7 +155,7 @@ class TestRemoveProjectIdeaImage(TestCase):
         self.assertTrue(ImageProject.objects.filter(id=image_id).exists())
 
         response = self.client.delete(self.url(self.project_idea.id, image_id), format="json")
-        
+
         self.assertFalse(os.path.exists(disk_path))
         self.assertFalse(ImageProject.objects.filter(id=image_id).exists())
 
