@@ -107,7 +107,7 @@ class ImageProject(models.Model):
         db_table = "image_project"
 
     def __str__(self):
-        return self.image
+        return f"Name: '{self.image.name}' Project Idea: '{self.project_idea.id}'"
     
     def delete(self, *args, **kwargs):
         if os.path.isfile(self.image.path):
