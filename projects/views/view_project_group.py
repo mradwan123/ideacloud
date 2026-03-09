@@ -92,16 +92,17 @@ class ProjectGroupDetail(APIView):
         """
         group = self._get_project_group(group_pk)
 
-        if group.groups_finished_projects.exists():
-            return Response({"error": "Groups are locked because the project is finished."}, status=status.HTTP_403_FORBIDDEN)
+        if group:
+            if group.groups_finished_projects.exists():
+                return Response({"error": "Groups are locked because the project is finished."}, status=status.HTTP_403_FORBIDDEN)
 
-        if group and request.user != group.owner:
-            return Response(
-                {"detail": "Only the owner is allowed to change the group data."},
-                status=status.HTTP_403_FORBIDDEN
-            )
+            if request.user != group.owner:
+                return Response(
+                    {"detail": "Only the owner is allowed to change the group data."},
+                    status=status.HTTP_403_FORBIDDEN
+                )
 
-        if not group:
+        else:
             return Response({"error": f"ProjectGroup with ID '{group_pk}' does not exist."},
                             status=status.HTTP_404_NOT_FOUND)
 
@@ -127,16 +128,17 @@ class ProjectGroupDetail(APIView):
         """
         group = self._get_project_group(group_pk)
 
-        if group.groups_finished_projects.exists():
-            return Response({"error": "Groups are locked because the project is finished."}, status=status.HTTP_403_FORBIDDEN)
+        if group:
+            if group.groups_finished_projects.exists():
+                return Response({"error": "Groups are locked because the project is finished."}, status=status.HTTP_403_FORBIDDEN)
 
-        if group and request.user != group.owner:
-            return Response(
-                {"detail": "Only the owner is allowed to change the group data."},
-                status=status.HTTP_403_FORBIDDEN
-            )
+            if request.user != group.owner:
+                return Response(
+                    {"detail": "Only the owner is allowed to change the group data."},
+                    status=status.HTTP_403_FORBIDDEN
+                )
 
-        if not group:
+        else:
             return Response({"error": f"ProjectGroup with ID '{group_pk}' does not exist."},
                             status=status.HTTP_404_NOT_FOUND)
 
@@ -162,16 +164,17 @@ class ProjectGroupDetail(APIView):
         """
         group = self._get_project_group(group_pk)
 
-        if group.groups_finished_projects.exists():
-            return Response({"error": "Groups are locked because the project is finished."}, status=status.HTTP_403_FORBIDDEN)
+        if group:
+            if group.groups_finished_projects.exists():
+                return Response({"error": "Groups are locked because the project is finished."}, status=status.HTTP_403_FORBIDDEN)
 
-        if group and request.user != group.owner:
-            return Response(
-                {"detail": "Only the owner is allowed to delete the group"},
-                status=status.HTTP_403_FORBIDDEN
-            )
+            if request.user != group.owner:
+                return Response(
+                    {"detail": "Only the owner is allowed to delete the group"},
+                    status=status.HTTP_403_FORBIDDEN
+                )
 
-        if not group:
+        else:
             return Response({"error": f"ProjectGroup with ID '{group_pk}' does not exist."},
                             status=status.HTTP_404_NOT_FOUND)
 
