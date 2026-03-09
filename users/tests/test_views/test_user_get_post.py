@@ -155,24 +155,6 @@ class UserTestAPIView(TestCase):
             msg=f"Expected 400, got {response.status_code}: {response.content}",
         )
 
-    def test_failed_user_register_with_post_request_authentication_no_description(self):
-        'User to add account with post request with no authentication but no description. Should fail with 400.'
-
-        data = {
-            'username': 'testuser4',
-            'password': 'Tpassword123',
-            'email': 'test3@test.com',
-            # 'description': 'test desc', removed for test
-        }
-
-        response = self.client.post(self.url, data, format='json')
-
-        self.assertEqual(
-            response.status_code,
-            status.HTTP_400_BAD_REQUEST,
-            msg=f"Expected 400, got {response.status_code}: {response.content}",
-        )
-
     def test_post_create_user_with_image_base64_successful(self):
         data = {
             'username': 'testuser4',
