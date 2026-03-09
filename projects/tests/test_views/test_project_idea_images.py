@@ -129,7 +129,7 @@ class TestRemoveProjectIdeaImage(TestCase):
                                                         author=self.user2,
                                                         description="test description2",)
 
-        self.url = lambda idea_pk: reverse('projects:project-idea-remove-image', args=[idea_pk])
+        self.url = lambda idea_pk, image_pk: reverse('projects:project-idea-remove-image', args=[idea_pk, image_pk])
         self.client = APIClient()
 
         self.token_user = Token.objects.create(user=self.user)
@@ -148,14 +148,13 @@ class TestRemoveProjectIdeaImage(TestCase):
     def test_project_idea_images_delete_remove_image(self):
         """Authorized user deletes image and validates its deletion from db."""
         self.client.credentials(HTTP_AUTHORIZATION=f"Token {self.token_user}")
-        data = {"image_id": self.image_instance.id}
         image_id = self.image_instance.id
 
         disk_path = os.path.join(TEMP_MEDIA_ROOT, self.image_instance.image.name)
         self.assertTrue(os.path.exists(disk_path))
         self.assertTrue(ImageProject.objects.filter(id=image_id).exists())
 
-        response = self.client.delete(self.url(self.project_idea.id), data=data, format="json")
+        response = self.client.delete(self.url(self.project_idea.id, image_id), format="json")
         
         self.assertFalse(os.path.exists(disk_path))
         self.assertFalse(ImageProject.objects.filter(id=image_id).exists())
@@ -166,9 +165,9 @@ class TestRemoveProjectIdeaImage(TestCase):
     def test_project_idea_images_delete_invalid_project_idea(self):
         """User tries to delete image of non existing project idea. Validates error response."""
         self.client.credentials(HTTP_AUTHORIZATION=f"Token {self.token_user}")
-        data = {"image_id": self.image_instance.id}
+        image_id = self.image_instance.id
 
-        response = self.client.delete(self.url(99999999), data=data, format="json")
+        response = self.client.delete(self.url(99999999, image_id), format="json")
 
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
         self.assertIn("error", response.data.keys())
@@ -176,9 +175,9 @@ class TestRemoveProjectIdeaImage(TestCase):
     def test_project_idea_images_delete_unauthorized_user(self):
         """Unauthorized user tries to delete image from project idea. Validates error response."""
         self.client.credentials(HTTP_AUTHORIZATION=f"Token {self.token_user2}")
-        data = {"image_id": self.image_instance.id}
+        image_id = self.image_instance.id
 
-        response = self.client.delete(self.url(self.project_idea.id), data=data, format="json")
+        response = self.client.delete(self.url(self.project_idea.id, image_id), format="json")
 
         self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
         self.assertIn("error", response.data.keys())
@@ -186,19 +185,18 @@ class TestRemoveProjectIdeaImage(TestCase):
     def test_project_idea_images_delete_invalid_image_id(self):
         """Authorized user tries to delete image from project idea with invalid image id. Validates error response."""
         self.client.credentials(HTTP_AUTHORIZATION=f"Token {self.token_user}")
-        data = {"image_id": 99999999999}
 
-        response = self.client.delete(self.url(self.project_idea.id), data=data, format="json")
+        response = self.client.delete(self.url(self.project_idea.id, 9999999999), format="json")
 
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
         self.assertIn("error", response.data.keys())
 
-    def test_project_idea_images_delete_missing_image_id(self):
-        """Authorized user tries to delete image from project idea missing image id. Validates error response."""
+    def test_project_idea_images_delete_image_not_related_to_idea(self):
+        """Authorized user tries to delete image unrelated to the project idea."""
         self.client.credentials(HTTP_AUTHORIZATION=f"Token {self.token_user}")
-        data = {"image_id": self.image_instance2.id}
+        image_id = self.image_instance2.id
 
-        response = self.client.delete(self.url(self.project_idea.id), data=data, format="json")
+        response = self.client.delete(self.url(self.project_idea.id, image_id), format="json")
 
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
         self.assertIn("error", response.data.keys())
