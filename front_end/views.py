@@ -92,7 +92,7 @@ def create_project(request):
         description = request.POST.get('description').strip()
         tags = request.POST.getlist('tags')  # Get list of selected tag IDs
         images = request.FILES.getlist('images')  # Get uploaded images
-
+        print(images)
         # Validate required fields
         if not title:
             messages.error(request, 'Title and description are required.')
@@ -102,27 +102,27 @@ def create_project(request):
             'title': title,
             'description': description,
             'tags': tags,
-            'image': images
+    
         }
         
         serializer = ProjectIdeaSerializer(data=data)
-       
+        
 
         serializer.is_valid(raise_exception=True)
 
         project_idea = serializer.save(author=request.user)
-        
-
+            
 
         # -----------------TODO : Check images for create project ----------------
 
         # Handle image uploads
         for image in images:
-            ImageProject.objects.create(
+            project_image = ImageProject.objects.create(
                 image=image,
                 project_idea=project_idea
             )
-
+            project_idea.images_projects.add(project_image)
+            
         messages.success(request, 'Project created successfully!')
         return redirect("front-end:project-details", pk=project_idea.id)
 
