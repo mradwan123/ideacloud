@@ -16,28 +16,13 @@
 </div>
 
 <!-- username and status (available/busy) of the interested users -->
-<div class="group-box">
-    <h4>[Username]</h4>
-    <p>Available: </p>
-    <hr>
-</div>
 
-<div class="group-box">
-    <h4>[Username]</h4>
-    <p>Available: </p>
-    <hr>
-</div>
-
-<div class="group-box">
-    <h4>[Username]</h4>
-    <p>Available: </p>
-    <hr>
-</div>
-
-<div class="group-box">
-    <h4>[Username]</h4>
-    <p>Available: </p>
-    <hr>
-</div>
-
+{% if interested_users %}
+    {% for user in interested_users %}
+    <div class="group-box">
+        <div class="user-info">
+            <h4>{{ user.username }}</h4>
+   {% endfor %}      
+{% endif %}
 {% endblock %}
+

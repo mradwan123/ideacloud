@@ -6,10 +6,14 @@ from users.serializers import UserSerializer
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
 from projects.serializers.serializer_project_idea_serializer import ProjectIdeaSerializer
+from projects.serializers.serializer_project_group_serializer import ProjectGroupSerializer
+from projects.serializers.serializer_image_project import ImageProjectSerializer
 from django.shortcuts import get_object_or_404
-from users.models import User
+from django.contrib.auth import get_user_model
 
 # Create your views here.
+
+User = get_user_model()
 
 def home(request):
     if request.user.is_authenticated:
@@ -54,9 +58,15 @@ def user_login(request):
 def register(request):
     registration_form = RegisterForm()
     if request.method == "POST":
+        print(request.FILES)
         serializer = UserSerializer(data=request.POST)
+        print(serializer.is_valid(), serializer.errors)
         if serializer.is_valid():
-            serializer.save()
+            user = serializer.save()
+            print(user)
+            user.image = request.FILES.get('profile_picture')
+            user.save()
+            
             return redirect("front-end:login")
         else:
             # TODO: process user errors
@@ -79,34 +89,33 @@ def create_project(request):
         description = request.POST.get('description').strip()
         tags = request.POST.getlist('tags')  # Get list of selected tag IDs
         images = request.FILES.getlist('images')  # Get uploaded images
-
+        print(images)
         # Validate required fields
         if not title:
             messages.error(request, 'Title and description are required.')
             return redirect('front-end:create-project')
-        print(tags)
+        
         data = {
             'title': title,
             'description': description,
             'tags': tags,
+    
         }
-
+        
         serializer = ProjectIdeaSerializer(data=data)
 
         serializer.is_valid(raise_exception=True)
 
         project_idea = serializer.save(author=request.user)
-        print(project_idea)
-
-        # -----------------TODO : Check images for create project ----------------
-
+            
         # Handle image uploads
         for image in images:
-            ImageProject.objects.create(
+            project_image = ImageProject.objects.create(
                 image=image,
                 project_idea=project_idea
             )
-
+            project_idea.images_projects.add(project_image)
+            
         messages.success(request, 'Project created successfully!')
         return redirect("front-end:project-details", pk=project_idea.id)
 
@@ -225,10 +234,40 @@ def edit_comment(request, comment_id):
 def finished_project(request):
     return render(request, "completed_projects.html")
 
-def project_groups(request, pk):
-    idea = get_object_or_404(ProjectIdea, pk=pk)
-    groups = idea.project_group_project_idea.all()
-    return render(request, "project_groups.html", context={"idea": idea, "groups": groups})
+def project_groups_list(request):
+    return render(request, "project_groups.html")
 
-def interested_users(request):
-    return render(request, "interested_users.html")
+@login_required(login_url="front-end:login")
+def project_groups_create(request, idea_pk):
+    name = request.POST.get('name').strip()
+    description = request.POST.get('description').strip()
+        
+    data = {"name":name,
+            "descrption": description}
+    
+    project_idea = ProjectIdea.objects.get(id=idea_pk)
+   
+    context = {"request": request,
+                "project_idea": project_idea}
+    serializer = ProjectGroupSerializer(data=request.POST, context=context)
+
+    serializer.is_valid(raise_exception=True)
+
+    group = serializer.save()
+    return render(request, "project_groups_create.html")
+
+
+@login_required(login_url="front-end:login")
+def interested_users(request, pk):
+    if request.method == 'GET':
+        idea = get_object_or_404(ProjectIdea, pk=pk)
+        interested_users = idea.user_interested_project_idea.all()
+        print(interested_users)
+
+        return render(request, "interested_users.html",
+                        context={
+                            "idea": idea,
+                            "interested_users": interested_users,
+            
+                        }
+        )
