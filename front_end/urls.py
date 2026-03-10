@@ -25,6 +25,7 @@ from .views import (
     edit_comment,
     finished_project,
     project_groups,
+    create_new_project_group,
     interested_users
 )
 
@@ -62,5 +63,6 @@ urlpatterns = [
     path("completed_projects/", finished_project, name="completed-projects"),
     # groups
     path("project_groups/<int:pk>/", project_groups, name="project-groups"),
+    path("project_groups/<int:pk>/create_new_project_group/", create_new_project_group, name="create-new-project-group"),
     path("interested_users/", interested_users, name="interested-users")
 ]

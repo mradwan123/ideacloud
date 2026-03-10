@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from django.contrib import messages
-from projects.models import ProjectIdea, ProjectIdeaComment, Tag, ImageProject
+from projects.models import ProjectIdea, ProjectIdeaComment, Tag, ImageProject, ProjectGroup
 from front_end.form import RegisterForm
 from users.serializers import UserSerializer
 from django.contrib.auth import authenticate, login
@@ -229,6 +229,24 @@ def project_groups(request, pk):
     idea = get_object_or_404(ProjectIdea, pk=pk)
     groups = idea.project_group_project_idea.all()
     return render(request, "project_groups.html", context={"idea": idea, "groups": groups})
+
+@login_required(login_url="front-end:login")
+def create_new_project_group(request, pk):
+    idea = get_object_or_404(ProjectIdea, pk=pk)
+    if request.method == "POST":
+        if request.user != idea.author and not request.user.is_staff:
+            return redirect("front-end:project-groups", pk=pk)
+        name = request.POST.get("name")
+        description = request.POST.get("description")
+        if name:
+            group = ProjectGroup.objects.create(
+                name=name,
+                description=description,
+                project_idea=idea,
+                owner=request.user
+            )
+            group.members.add(request.user)
+    return redirect("front-end:project-groups", pk=pk)
 
 def interested_users(request):
     return render(request, "interested_users.html")
