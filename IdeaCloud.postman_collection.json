@@ -1118,7 +1118,8 @@
               {
                 "key": "Authorization",
                 "value": "Token {{user_owner_token}}",
-                "type": "text"
+                "type": "text",
+                "disabled": true
               }
             ],
             "body": {
@@ -1204,14 +1205,14 @@
               }
             },
             "url": {
-              "raw": "{{host_address}}/projects_api/project-ideas/{{  idea_pk }}/remove-image/",
+              "raw": "{{host_address}}/projects_api/project-ideas/{{idea_pk}}/remove-image/",
               "host": [
                 "{{host_address}}"
               ],
               "path": [
                 "projects_api",
                 "project-ideas",
-                "{{  idea_pk }}",
+                "{{idea_pk}}",
                 "remove-image",
                 ""
               ]
@@ -1388,14 +1389,14 @@
             "method": "GET",
             "header": [],
             "url": {
-              "raw": "{{host_address}}/projects_api/project-ideas/1/",
+              "raw": "{{host_address}}/projects_api/project-ideas/{{idea_pk}}/",
               "host": [
                 "{{host_address}}"
               ],
               "path": [
                 "projects_api",
                 "project-ideas",
-                "1",
+                "{{idea_pk}}",
                 ""
               ]
             }
@@ -1414,14 +1415,14 @@
               }
             ],
             "url": {
-              "raw": "{{host_address}}/projects_api/project-ideas/1/",
+              "raw": "{{host_address}}/projects_api/project-ideas/{{idea_pk}}/",
               "host": [
                 "{{host_address}}"
               ],
               "path": [
                 "projects_api",
                 "project-ideas",
-                "1",
+                "{{idea_pk}}",
                 ""
               ]
             }
@@ -1463,14 +1464,14 @@
               }
             },
             "url": {
-              "raw": "{{host_address}}/projects_api/project-ideas/1/",
+              "raw": "{{host_address}}/projects_api/project-ideas/{{idea_pk}}/",
               "host": [
                 "{{host_address}}"
               ],
               "path": [
                 "projects_api",
                 "project-ideas",
-                "1",
+                "{{idea_pk}}",
                 ""
               ]
             }
@@ -1568,14 +1569,14 @@
               }
             },
             "url": {
-              "raw": "{{host_address}}/projects_api/project-ideas/1/",
+              "raw": "{{host_address}}/projects_api/project-ideas/{{idea_pk}}/",
               "host": [
                 "{{host_address}}"
               ],
               "path": [
                 "projects_api",
                 "project-ideas",
-                "1",
+                "{{idea_pk}}",
                 ""
               ]
             }
@@ -1603,14 +1604,14 @@
               }
             },
             "url": {
-              "raw": "{{host_address}}/projects_api/project-ideas/5/",
+              "raw": "{{host_address}}/projects_api/project-ideas/{{idea_pk}}/",
               "host": [
                 "{{host_address}}"
               ],
               "path": [
                 "projects_api",
                 "project-ideas",
-                "5",
+                "{{idea_pk}}",
                 ""
               ]
             }
@@ -1623,14 +1624,14 @@
             "method": "DELETE",
             "header": [],
             "url": {
-              "raw": "{{host_address}}/projects_api/project-ideas/1/",
+              "raw": "{{host_address}}/projects_api/project-ideas/{{idea_pk}}/",
               "host": [
                 "{{host_address}}"
               ],
               "path": [
                 "projects_api",
                 "project-ideas",
-                "1",
+                "{{idea_pk}}",
                 ""
               ]
             }
@@ -1675,14 +1676,14 @@
               }
             ],
             "url": {
-              "raw": "{{host_address}}/projects_api/project-ideas/3/",
+              "raw": "{{host_address}}/projects_api/project-ideas/{{idea_pk}}/",
               "host": [
                 "{{host_address}}"
               ],
               "path": [
                 "projects_api",
                 "project-ideas",
-                "3",
+                "{{idea_pk}}",
                 ""
               ]
             }
@@ -1701,14 +1702,14 @@
               }
             ],
             "url": {
-              "raw": "{{host_address}}/projects_api/project-ideas/1/",
+              "raw": "{{host_address}}/projects_api/project-ideas/{{idea_pk}}/",
               "host": [
                 "{{host_address}}"
               ],
               "path": [
                 "projects_api",
                 "project-ideas",
-                "1",
+                "{{idea_pk}}",
                 ""
               ]
             }
@@ -1727,14 +1728,14 @@
               }
             ],
             "url": {
-              "raw": "{{host_address}}/projects_api/project-ideas/3/",
+              "raw": "{{host_address}}/projects_api/project-ideas/{{idea_pk}}/",
               "host": [
                 "{{host_address}}"
               ],
               "path": [
                 "projects_api",
                 "project-ideas",
-                "3",
+                "{{idea_pk}}",
                 ""
               ]
             }
