@@ -3,7 +3,7 @@ from django.contrib import messages
 from projects.models import ProjectIdea, ProjectIdeaComment, Tag, ImageProject
 from front_end.form import RegisterForm
 from users.serializers import UserSerializer
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from projects.serializers.serializer_project_idea_serializer import ProjectIdeaSerializer
 from projects.serializers.serializer_project_group_serializer import ProjectGroupSerializer
@@ -21,12 +21,10 @@ def home(request):
         return render(request, "home.html", context={"ideas": ideas})
     return render(request, "home.html")
 
-@login_required(login_url="front-end:login")
 def project_ideas(request):
     ideas = ProjectIdea.objects.all()
     return render(request, "project_ideas.html", context={"ideas": ideas})
 
-@login_required(login_url="front-end:login")
 def project_details(request, pk):
     idea = get_object_or_404(ProjectIdea, pk=pk)
     # check if the user has favourited the idea
@@ -52,8 +50,16 @@ def user_login(request):
         if user is not None:
             login(request, user)
             return redirect("front-end:home")
+        else:
+            messages.error(request, "Invalid username or password!")
         # TODO: process user errors
     return render(request, "login.html")
+
+
+def user_logout(request):
+        logout(request)
+        messages.success(request, "You have been logged out successfully.")
+        return redirect("front-end:home")
 
 def register(request):
     registration_form = RegisterForm()
