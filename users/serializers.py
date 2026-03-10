@@ -74,6 +74,11 @@ class UserSerializer(serializers.ModelSerializer):
                 raise ValidationError({"error": "Invalid image format. Image has to be jpg."})
 
         return super().to_internal_value(data)
+    
+    def validate_username(self, value):
+        if User.objects.filter(username=value).exists():
+            raise serializers.ValidationError('Error: Duplicate username.')
+        return value
 
     def validate_password(self, value):
         """Changed name of built in and checking here"""

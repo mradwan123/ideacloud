@@ -62,21 +62,23 @@ def user_logout(request):
         return redirect("front-end:home")
 
 def register(request):
-    registration_form = RegisterForm()
     if request.method == "POST":
-        print(request.FILES)
         serializer = UserSerializer(data=request.POST)
-        print(serializer.is_valid(), serializer.errors)
         if serializer.is_valid():
             user = serializer.save()
-            print(user)
-            user.image = request.FILES.get('profile_picture')
-            user.save()
-            
+            if request.FILES.get('profile_picture'):
+                user.image = request.FILES.get('profile_picture')
+                user.save()
+            messages.success(request, "Registration successful! Please log in.")
             return redirect("front-end:login")
         else:
-            # TODO: process user errors
-            return redirect("front-end:register")
+            # Check for specific errors
+            if 'username' in serializer.errors:
+                messages.error(request, "Username already exists. Please choose a different username.")
+            else:
+                messages.error(request, "Registration failed. Please check your information.")
+    
+    registration_form = RegisterForm()
     return render(request, "register.html", {"form": registration_form})
 
 @login_required(login_url="front-end:login")
