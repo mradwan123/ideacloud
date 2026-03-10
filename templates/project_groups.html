@@ -15,29 +15,25 @@
 
 </div>
 
-<!-- group lists with name of the group and name of the member -->
-<div class="group-box">
-    <h4>[Group Name]</h4>
-    <p>[Person Name]</p>
-    <p>[Person Name]</p>
-    <p>[Person Name]</p>
-    <hr>
-</div>
+{% if groups %}
 
-<div class="group-box">
-    <h4>[Group Name]</h4>
-    <p>[Person Name]</p>
-    <p>[Person Name]</p>
-    <p>[Person Name]</p>
-    <hr>
-</div>
+    {% for group in groups %}
+    <!-- group lists with name of the group and name of the member -->
+    <div class="group-box">
+        <h4>{{ group.name }}</h4>
+        <p><strong>Owner:</strong><a href="{% url 'front-end:public-user-profile' user.id %}"> {{ group.owner.username }}</a></p>
+        <p>Other members:</p>
+        {% for user in group.members.all %}
+            <p><a href="{% url 'front-end:public-user-profile' user.id %}">{{ user.username }}</a></p>
+        {% endfor %}
+        <hr>
+    </div>
+    {% endfor %}
 
-<div class="group-box">
-    <h4>[Group Name]</h4>
-    <p>[Person Name]</p>
-    <p>[Person Name]</p>
-    <p>[Person Name]</p>
-    <hr>
-</div>
+{% else %}
+
+    <p>No project groups yet.</p>
+
+{% endif %}
 
 {% endblock %}

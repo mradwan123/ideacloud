@@ -60,6 +60,7 @@ urlpatterns = [
     # about section
     path("about/", about, name="about"),
     path("completed_projects/", finished_project, name="completed-projects"),
-    path("project_groups/", project_groups, name="project-groups"),
+    # groups
+    path("project_groups/<int:pk>/", project_groups, name="project-groups"),
     path("interested_users/", interested_users, name="interested-users")
 ]

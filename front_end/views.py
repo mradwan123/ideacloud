@@ -14,20 +14,17 @@ from users.models import User
 def home(request):
     if request.user.is_authenticated:
         ideas = ProjectIdea.objects.all()
-        serializer = ProjectIdeaSerializer(ideas, many=True)
-        return render(request, "home.html", context={"ideas": serializer.data})
+        return render(request, "home.html", context={"ideas": ideas})
     return render(request, "home.html")
 
 @login_required(login_url="front-end:login")
 def project_ideas(request):
     ideas = ProjectIdea.objects.all()
-    serializer = ProjectIdeaSerializer(ideas, many=True)
-    return render(request, "project_ideas.html", context={"ideas": serializer.data})
+    return render(request, "project_ideas.html", context={"ideas": ideas})
 
 @login_required(login_url="front-end:login")
 def project_details(request, pk):
     idea = get_object_or_404(ProjectIdea, pk=pk)
-    serializer = ProjectIdeaSerializer(idea)
     # check if the user has favourited the idea
     has_favourited = idea in request.user.favorite_projects.all()
     has_saved = idea in request.user.interested_projects.all()
@@ -36,7 +33,7 @@ def project_details(request, pk):
         request,
         "project_details.html",
         context={
-            "idea": serializer.data,
+            "idea": idea,
             "has_favourited": has_favourited,
             "has_saved": has_saved,
             "has_liked": has_liked,
@@ -69,7 +66,7 @@ def register(request):
 @login_required(login_url="front-end:login")
 def user_profile(request):
     user = request.user
-    return render(request, "user_profile.html", context={"user": user})
+    return render(request, "user_profile.html", context={"user_profile": user})
 
 def about(request):
     return render(request, "about.html")
@@ -170,12 +167,12 @@ def remove_like(request, pk):
 
 @login_required(login_url="front-end:login")
 def public_user_profile(request, user_id):
-    profile_user = get_object_or_404(User, id=user_id)
+    profile_user = get_object_or_404(User, pk=user_id)
     return render(
         request,
         "user_profile.html",
         context={
-            "profile_user": profile_user
+            "user_profile": profile_user
         }
     )
 
@@ -228,8 +225,10 @@ def edit_comment(request, comment_id):
 def finished_project(request):
     return render(request, "completed_projects.html")
 
-def project_groups(request):
-    return render(request, "project_groups.html")
+def project_groups(request, pk):
+    idea = get_object_or_404(ProjectIdea, pk=pk)
+    groups = idea.project_group_project_idea.all()
+    return render(request, "project_groups.html", context={"idea": idea, "groups": groups})
 
 def interested_users(request):
     return render(request, "interested_users.html")

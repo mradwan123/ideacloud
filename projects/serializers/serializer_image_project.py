@@ -23,7 +23,7 @@ class ImageProjectSerializer(serializers.ModelSerializer):
         if hasattr(data, 'copy'):
             data = data.copy()
 
-        if data.get("image"):          
+        if data.get("image"):
             try:
                 data["image"] = base64_to_image(data["image"])
             except ValueError:
@@ -45,4 +45,3 @@ class ImageProjectSerializer(serializers.ModelSerializer):
             raise ValidationError("Image could not be saved. Has to be jpg in base64 format.")
 
         return value
-    
