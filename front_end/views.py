@@ -25,7 +25,6 @@ def project_ideas(request):
 @login_required(login_url="front-end:login")
 def project_details(request, pk):
     idea = get_object_or_404(ProjectIdea, pk=pk)
-    serializer = ProjectIdeaSerializer(idea)
     # check if the user has favourited the idea
     has_favourited = idea in request.user.favorite_projects.all()
     has_saved = idea in request.user.interested_projects.all()
@@ -34,7 +33,7 @@ def project_details(request, pk):
         request,
         "project_details.html",
         context={
-            "idea": serializer.data,
+            "idea": idea,
             "has_favourited": has_favourited,
             "has_saved": has_saved,
             "has_liked": has_liked,
@@ -226,8 +225,10 @@ def edit_comment(request, comment_id):
 def finished_project(request):
     return render(request, "completed_projects.html")
 
-def project_groups(request):
-    return render(request, "project_groups.html")
+def project_groups(request, pk):
+    idea = get_object_or_404(ProjectIdea, pk=pk)
+    groups = idea.project_group_project_idea.all()
+    return render(request, "project_groups.html", context={"idea": idea, "groups": groups})
 
 def interested_users(request):
     return render(request, "interested_users.html")
