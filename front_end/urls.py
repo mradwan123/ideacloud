@@ -6,6 +6,7 @@ from .views import (
     project_ideas,
     project_details,
     user_login,
+    user_logout,
     register,
     user_profile,
     about,
@@ -51,9 +52,10 @@ urlpatterns = [
     path("comments/<int:pk>/add_comment", add_comment, name="add-comment"),
     path("comments/<int:comment_id>/remove_comment", remove_comment, name="remove-comment"),
     path("comments/<int:comment_id>/edit_comment", edit_comment, name="edit-comment"),
-    # login / register
+    # login / register / logout
     path("login/", user_login, name="login"),
     path("register/", register, name="register"),
+    path("logout/", user_logout, name="logout"),
     # user profile / public user profile
     path("user_profile/", user_profile, name="user-profile"),
     path("user_profile/<int:user_id>", public_user_profile, name="public-user-profile"),
