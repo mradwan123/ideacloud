@@ -106,15 +106,11 @@ def create_project(request):
         }
         
         serializer = ProjectIdeaSerializer(data=data)
-        
 
         serializer.is_valid(raise_exception=True)
 
         project_idea = serializer.save(author=request.user)
             
-
-        # -----------------TODO : Check images for create project ----------------
-
         # Handle image uploads
         for image in images:
             project_image = ImageProject.objects.create(
@@ -268,15 +264,13 @@ def project_groups_create(request, idea_pk):
 def interested_users(request, pk):
     if request.method == 'GET':
         idea = get_object_or_404(ProjectIdea, pk=pk)
-        print(request.GET)
         interested_users = idea.user_interested_project_idea.all()
         print(interested_users)
-        serializer = ProjectIdeaSerializer(idea)
 
-    return render(request, "interested_users.html",
-                    context={
-                        "idea": serializer.data,
-                        "interested_users": interested_users,
-        
-                    }
-    )
+        return render(request, "interested_users.html",
+                        context={
+                            "idea": idea,
+                            "interested_users": interested_users,
+            
+                        }
+        )
