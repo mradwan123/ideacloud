@@ -38,10 +38,10 @@ urlpatterns = [
     path("", include(("front_end.urls", "front_end"), namespace="front-end")),
     # for swagger dolcumentation
     path(
-        "api/v1/",
+        "swagger_api/",
         include([
             path("", schema_view.with_ui("swagger", cache_timeout=0), name="swagger-ui"),
-            path("swagger/schema/", schema_view.with_ui("swagger", cache_timeout=0), name="swagger-schema"),
+            path("schema/", schema_view.with_ui("swagger", cache_timeout=0), name="swagger-schema"),
         ])
     ),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
