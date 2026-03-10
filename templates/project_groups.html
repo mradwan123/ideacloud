@@ -20,10 +20,12 @@
     {% for group in groups %}
     <!-- group lists with name of the group and name of the member -->
     <div class="group-box">
-        <h4>{ group.name }</h4>
-        <p><strong>Owner:</strong> {{ group.owner.username }}</p>
-        <p>[Person Name]</p>
-        <p>[Person Name]</p>
+        <h4>{{ group.name }}</h4>
+        <p><strong>Owner:</strong><a href="{% url 'front-end:public-user-profile' user.id %}"> {{ group.owner.username }}</a></p>
+        <p>Other members:</p>
+        {% for user in group.members.all %}
+            <p><a href="{% url 'front-end:public-user-profile' user.id %}">{{ user.username }}</a></p>
+        {% endfor %}
         <hr>
     </div>
     {% endfor %}
