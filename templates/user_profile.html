@@ -11,9 +11,9 @@
         <div class="column-left">
             <!-- user description will be replaced by value-->
             <!-- if none saved...? -->
-            {% if user.description %}
+            {% if user_profile.description %}
             <p>
-                {{ user.description }}
+                {{ user_profile.description }}
             </p>
             {% else %}
             <p>
@@ -23,7 +23,7 @@
         </div>    
         <div class="column-right">
             <div class="profile-img">
-                {% if user.image %}
+                {% if user_profile.image %}
                     <img src="{{ user.image.url }}">
                 {% else %}
                     <img src="../static/images/profile-pic.avif">
@@ -33,7 +33,7 @@
                 <!-- availability takes a boolean to display different images-->
                 <div class="user-info">
                     Available
-                {% if user.available == True %}
+                {% if user_profile.available == True %}
                     <img src="../static/images/available.svg">
                 {% else %}
                     <img src="../static/images/unavailable.svg">
