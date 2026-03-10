@@ -40,7 +40,9 @@ def project_details(request, pk):
             "has_favourited": has_favourited,
             "has_saved": has_saved,
             "has_liked": has_liked,
-            "like_count": idea.likes.count()
+            "like_count": idea.likes.count(),
+            "user_id": request.user.id,
+            "author_id": idea.author.id,
         })
 
 def user_login(request):
@@ -233,3 +235,49 @@ def project_groups(request):
 
 def interested_users(request):
     return render(request, "interested_users.html")
+
+@login_required()
+def add_image_to_project_idea(request, idea_pk):
+    try:
+        project_idea = ProjectIdea.objects.get(id=idea_pk)
+    except ProjectIdea.DoesNotExist:
+        return redirect("front-end:project-ideas")
+
+    if project_idea.author.id != request.user.id:
+        return redirect("front-end:project-details", pk=idea_pk)
+    
+    project_image = request.FILES.get("project-image")
+    print(project_image)
+    print(request.FILES)
+    if not project_image:
+        return redirect("front-end:project-details", pk=idea_pk)
+    
+    try:
+        ImageProject.objects.create(image=project_image, project_idea=project_idea)
+    except Exception:
+        # TODO: some errorhanding if the image entry doesnt work
+        pass
+
+    return redirect("front-end:project-details", pk=idea_pk)
+
+@login_required()
+def remove_image_from_project_idea(request, idea_pk, image_pk):
+    try:
+        project_idea = ProjectIdea.objects.get(id=idea_pk)
+    except ProjectIdea.DoesNotExist:
+        return redirect("front-end:project-ideas")
+
+    if project_idea.author.id != request.user.id:
+        return redirect("front-end:project-details", pk=idea_pk)
+    
+    try:
+        image = ImageProject.objects.get(id=image_pk)
+    except ImageProject.DoesNotExist:
+        return redirect("front-end:project-details", pk=idea_pk)
+
+    if image.project_idea.id != idea_pk:
+        return redirect("front-end:project-details", pk=idea_pk)
+    
+    image.delete()
+
+    return redirect("front-end:project-details", pk=idea_pk)
