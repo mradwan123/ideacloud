@@ -7,6 +7,7 @@ from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
 from projects.serializers.serializer_project_idea_serializer import ProjectIdeaSerializer
 from projects.serializers.serializer_project_group_serializer import ProjectGroupSerializer
+from projects.serializers.serializer_image_project import ImageProjectSerializer
 from django.shortcuts import get_object_or_404
 from django.contrib.auth import get_user_model
 
@@ -60,9 +61,15 @@ def user_login(request):
 def register(request):
     registration_form = RegisterForm()
     if request.method == "POST":
+        print(request.FILES)
         serializer = UserSerializer(data=request.POST)
+        print(serializer.is_valid(), serializer.errors)
         if serializer.is_valid():
-            serializer.save()
+            user = serializer.save()
+            print(user)
+            user.image = request.FILES.get('profile_picture')
+            user.save()
+            
             return redirect("front-end:login")
         else:
             # TODO: process user errors
@@ -95,14 +102,17 @@ def create_project(request):
             'title': title,
             'description': description,
             'tags': tags,
+            'image': images
         }
-
+        
         serializer = ProjectIdeaSerializer(data=data)
+       
 
         serializer.is_valid(raise_exception=True)
 
         project_idea = serializer.save(author=request.user)
-        print(project_idea)
+        
+
 
         # -----------------TODO : Check images for create project ----------------
 
