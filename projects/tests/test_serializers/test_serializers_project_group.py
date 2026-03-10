@@ -8,7 +8,6 @@ from datetime import timedelta
 
 
 class TestProjectGroupSerializer(TestCase):
-
     def setUp(self):
         User = get_user_model()
         self.group_name = "test_group"
@@ -28,7 +27,7 @@ class TestProjectGroupSerializer(TestCase):
         request = type('Request', (), {'user': self.user})()
         self.context = {"request": request,
                         "project_idea": self.project_idea}
-        
+
     def test_serializer_project_group_valid(self):
         """
         Checks if a valid project group entry can be created
@@ -121,5 +120,15 @@ class TestProjectGroupSerializer(TestCase):
         self.assertIn(self.user.username, member_usernames)
         self.assertIn(self.user2.username, member_usernames)
 
+    def test_serializer_project_group_auto_add_owner(self):
+        """Verify that when a group is created, the owner is automatically added to the members"""
+        serializer = ProjectGroupSerializer(data=self.project_group_data, context=self.context)
+        self.assertTrue(serializer.is_valid())
 
+        project_group = serializer.save()
 
+        # check that the owner is set correclty
+        self.assertEqual(project_group.owner, self.user)
+        # check that the owner is also added to the members list
+        self.assertTrue(project_group.members.filter(id=self.user.id).exists())
+        self.assertEqual(project_group.members.count(), 1)

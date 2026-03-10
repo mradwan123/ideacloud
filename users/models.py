@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
+import os
 
 class User(AbstractUser):
     '''
@@ -8,7 +9,7 @@ class User(AbstractUser):
     Standard User fields plus(image, description, created_on, finsihed_projects)
     '''
     email = models.EmailField(unique=True)
-    image = models.ImageField(upload_to='profile_images/', default='profile_images/default.jpg')
+    image = models.ImageField(upload_to='profile_images/', null=True)
     description = models.TextField(max_length=1000, null=True, blank=True)
     available = models.BooleanField(default=False)
     # Automatically sets the field to the current date only when the model instance is first created.
@@ -18,3 +19,9 @@ class User(AbstractUser):
 
     def __str__(self):
         return self.username
+ 
+    def delete(self, *args, **kwargs):
+        if self.image and not self.image.path.endswith("default.jpg") and os.path.isfile(self.image.path):
+            os.remove(self.image.path)
+        return super().delete(*args, **kwargs)
+    

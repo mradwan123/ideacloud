@@ -12,27 +12,27 @@ class ProjectIdeaCommentTesting(TestCase):
         User = get_user_model()
         # create test user
         self.user = User.objects.create_user(username="author", password="password")
-        
+
         # create test project_idea
         self.project_idea = ProjectIdea.objects.create(
             title="Test Idea",
             author=self.user,
             description="Descriptive text",
         )
-        
-        #creaate project_idea_comment
+
+        # creaate project_idea_comment
         self.project_idea_comment = ProjectIdeaComment(
             user = self.user,
             project_idea = self.project_idea,
             content = 'Testing Project Idea Comment.',
         )
-        
-#----- VALID TEST --------------
+
+# ----- VALID TEST --------------
 
     def test_create_project_idea(self):
         """Verify, that the project_idea_comments gets created correctly and without error"""
         self.assertEqual(self.project_idea_comment.content, "Testing Project Idea Comment.")
-        
+
     def test_created_on_correct_timestamp(self):
         """Verify that timestamps are generated correctly"""
         self.assertIsNotNone(self.project_idea_comment.created_on)
@@ -43,7 +43,7 @@ class ProjectIdeaCommentTesting(TestCase):
             now,
             delta=timedelta(minutes=1)
         )
-        
+
     def test_project_idea_comment_str_method(self):
         """Verify the correctness of the string returned by the __str__ method"""
         # we don't test for the timestamp here. If the rest works, so should the timestamp and we would
@@ -51,7 +51,7 @@ class ProjectIdeaCommentTesting(TestCase):
         self.assertIn(
             f"'Test Idea' Submitted by: '{self.user.username}'",
             str(self.project_idea_comment))
-        
+
     ### INVALID
     def test_create_project_idea_comment_too_long(self):
         """Ensure that a title exceeding max_length raises a ValidationError"""
