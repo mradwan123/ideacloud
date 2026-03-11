@@ -76,9 +76,28 @@ class UserSerializer(serializers.ModelSerializer):
         return super().to_internal_value(data)
     
     def validate_username(self, value):
-        if User.objects.filter(username=value).exists():
-            raise serializers.ValidationError('Error: Duplicate username.')
+        """
+        Validate username uniqueness:
+        - For new users (POST): Check if username exists at all
+        - For updates (PUT/PATCH): Check if username exists for a DIFFERENT user
+        """
+        # Check if any user has this username
+        existing_user = User.objects.filter(username=value).first()
+        
+        # If this is a new user (no instance)
+        if not self.instance:
+            if existing_user:
+                raise serializers.ValidationError('Error: Duplicate username.')
+        
+        # If this is an update (has instance)
+        else:
+            # If username exists AND it belongs to a DIFFERENT user
+            if existing_user and existing_user.id != self.instance.id:
+                raise serializers.ValidationError('Error: This username is already taken by another user.')
+        
+        # Always return the value
         return value
+                
 
     def validate_password(self, value):
         """Changed name of built in and checking here"""
