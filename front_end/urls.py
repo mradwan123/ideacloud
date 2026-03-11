@@ -26,8 +26,10 @@ from .views import (
     edit_comment,
     finished_project_list,
     finished_project_detail,
-    project_groups_list,
-    project_groups_create,
+    project_groups,
+    add_image_to_project_idea,
+    remove_image_from_project_idea,
+    create_new_project_group,
     interested_users
 )
 
@@ -40,6 +42,11 @@ urlpatterns = [
     path("create_project/", create_project, name="create-project"),
     path("finished_projects/", finished_project_list, name="finished-projects"),
     path("finished_project_details/<int:pk>", finished_project_detail, name="finished-project-details"),
+
+    # handle project images
+    path("project_details/<int:idea_pk>/add_image_to_project", add_image_to_project_idea, name="add-image-to-project"),
+    path("project_details/<int:idea_pk>/remove_image_from_project/<int:image_pk>", remove_image_from_project_idea, name="remove-image-from-project"),
+
     # favourite
     path("favourite_projects/", favourite_projects, name="favourite-projects"),
     path("project_details/<int:pk>/add_favourite", add_favourite_project, name="add-favourite"),
@@ -65,9 +72,10 @@ urlpatterns = [
     path("user_profile/<int:user_id>", public_user_profile, name="public-user-profile"),
     # about section
     path("about/", about, name="about"),
-    # groups 
-    # TODO added project_id to urls
-    path("project_groups/<int:project_id>/", project_groups_list, name="project-groups"),
-    path("project_idea/<int:idea_pk>/groups/create/", project_groups_create, name="project-groups-create"),
+
+    # groups
+    path("project_groups/<int:pk>/", project_groups, name="project-groups"),
+    path("project_groups/<int:pk>/create_new_project_group/", create_new_project_group, name="create-new-project-group"),
+
     path("interested_users/<int:pk>/", interested_users, name="interested-users")
 ]
