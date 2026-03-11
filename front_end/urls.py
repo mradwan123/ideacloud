@@ -63,8 +63,9 @@ urlpatterns = [
     # about section
     path("about/", about, name="about"),
     path("completed_projects/", finished_project, name="completed-projects"),
-    # groups
-    path("project_groups/", project_groups_list, name="project-groups"),
+    # groups 
+    # TODO added project_id to urls
+    path("project_groups/<int:project_id>/", project_groups_list, name="project-groups"),
     path("project_idea/<int:idea_pk>/groups/create/", project_groups_create, name="project-groups-create"),
     path("interested_users/<int:pk>/", interested_users, name="interested-users")
 ]
