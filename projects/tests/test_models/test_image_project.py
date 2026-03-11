@@ -27,7 +27,7 @@ class ImageProjectTest(TestCase):
         buffer = BytesIO()
         image.save(buffer, format='JPEG')
         buffer.seek(0)
-        return SimpleUploadedFile('view_test.jpg', buffer.read(), content_type='image/jpeg')
+        return SimpleUploadedFile('test_image.jpg', buffer.read(), content_type='image/jpeg')
 
     def setUp(self):
         User = get_user_model()
@@ -46,16 +46,19 @@ class ImageProjectTest(TestCase):
         Project images are uploaded to /project_images/. This test uses dummy files and test
         start of the path with project_images/test_image
         """
-        # create dummy file
-        dummy_file = SimpleUploadedFile(
-            name="test_image.jpg",
-            content=b"fake image bytes",
-            content_type="image/jpeg",)
 
         image_project = ImageProject.objects.create(project_idea=self.project_idea,
-                                                    image=dummy_file)
-        self.assertTrue(image_project.image.name.startswith('project_images/test_image'),)
+                                                    image=self._create_test_image())
+        self.assertTrue(image_project.image.name.startswith("project_images/test_image"))
         self.assertTrue(os.path.exists(image_project.image.path))
 
-        # Checking foreign key
+        #Checking foreign key
         self.assertIsNotNone(image_project.pk)
+
+    def test_image_string_representation(self):
+        """Checks if the image field is correctly represented as a using the string method."""
+        image_project = ImageProject.objects.create(project_idea=self.project_idea,
+                                                    image=self._create_test_image())
+        string_rep = str(image_project)
+        self.assertIn("Name: ", string_rep)
+        self.assertIn("Project Idea: ", string_rep)

@@ -44,7 +44,7 @@ class UserSerializer(serializers.ModelSerializer):
     # Image validator: see to_internal_value below
     image = serializers.ImageField(required=False, allow_null=True)
 
-    description = serializers.CharField(max_length=1000, trim_whitespace=True)
+    description = serializers.CharField(default="", allow_blank=True, max_length=1000, trim_whitespace=True)
     available = serializers.BooleanField(default=False)
 
     # many-to-many relations
