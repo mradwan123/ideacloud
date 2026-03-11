@@ -27,20 +27,22 @@ def project_ideas(request):
 
 def project_details(request, pk):
     idea = get_object_or_404(ProjectIdea, pk=pk)
+    if request.user.is_authenticated:
     # check if the user has favourited the idea
-    has_favourited = idea in request.user.favorite_projects.all()
-    has_saved = idea in request.user.interested_projects.all()
-    has_liked = request.user in idea.likes.all()
-    return render(
-        request,
-        "project_details.html",
-        context={
-            "idea": idea,
-            "has_favourited": has_favourited,
-            "has_saved": has_saved,
-            "has_liked": has_liked,
-            "like_count": idea.likes.count()
-        })
+        has_favourited = idea in request.user.favorite_projects.all()
+        has_saved = idea in request.user.interested_projects.all()
+        has_liked = request.user in idea.likes.all()
+        return render(
+            request,
+            "project_details.html",
+            context={
+                "idea": idea,
+                "has_favourited": has_favourited,
+                "has_saved": has_saved,
+                "has_liked": has_liked,
+                "like_count": idea.likes.count()
+            })
+    return render(request, "project_details.html", context={"idea": idea} )
 
 def user_login(request):
     if request.method == "POST":

@@ -20,7 +20,7 @@
   <img src="../static/images/image_placeholder.jpg">
 </div>
 
-
+ {% if user.is_authenticated %}
 <div class="project-actions">
 
   <!-- where the likes will go -->
@@ -67,6 +67,7 @@
     </form>
   {% endif %}
 </div>
+  {% endif %}
 
 <div>
   <p>
@@ -75,9 +76,11 @@
 </div>
 
 <!-- link to the pages of the project comments (if any)-->
+  {% if user.is_authenticated %}
 <p class="comments">
   <a href="{% url 'front-end:comments' idea.id %}">Comments</a>
 </p>
+  
 
 <!-- section with buttons for opening the page with interested users and groups -->
 <div class="project-details-buttons">
@@ -88,5 +91,6 @@
     <div class="project-details-button-tag"><a href="{% url 'front-end:project-groups' idea.id %}">GROUPS WORKING ON IT</a></div>
   </div>
 </div>
+ {% endif %}
 
 {% endblock %}
