@@ -1,34 +1,34 @@
 from django.urls import path
 from django.conf import settings
 from django.conf.urls.static import static
-from .views import (
-    home,
-    project_ideas,
-    project_details,
-    user_login,
-    register,
-    user_profile,
-    about,
-    create_project,
-    favourite_projects,
-    add_favourite_project,
-    remove_favourite_project,
-    saved_projects,
-    add_saved_project,
-    remove_saved_project,
-    add_like,
-    remove_like,
-    public_user_profile,
-    comments,
-    add_comment,
-    remove_comment,
-    edit_comment,
-    finished_project,
-    project_groups,
-    interested_users,
-    add_image_to_project_idea,
-    remove_image_from_project_idea,
-)
+from .views import (home,
+                    project_ideas,
+                    project_details,
+                    user_login,
+                    user_logout,
+                    register,
+                    user_profile,
+                    about,
+                    create_project,
+                    favourite_projects,
+                    add_favourite_project,
+                    remove_favourite_project,
+                    saved_projects,
+                    add_saved_project,
+                    remove_saved_project,
+                    add_like,
+                    remove_like,
+                    public_user_profile,
+                    comments,
+                    add_comment,
+                    remove_comment,
+                    edit_comment,
+                    finished_project,
+                    interested_users,
+                    add_image_to_project_idea,
+                    remove_image_from_project_idea,
+                    project_groups_list,
+                    project_groups_create)
 
 app_name = "front-end"
 urlpatterns = [
@@ -56,15 +56,19 @@ urlpatterns = [
     path("comments/<int:pk>/add_comment", add_comment, name="add-comment"),
     path("comments/<int:comment_id>/remove_comment", remove_comment, name="remove-comment"),
     path("comments/<int:comment_id>/edit_comment", edit_comment, name="edit-comment"),
-    # login / register
+    # login / register / logout
     path("login/", user_login, name="login"),
     path("register/", register, name="register"),
+    path("logout/", user_logout, name="logout"),
     # user profile / public user profile
     path("user_profile/", user_profile, name="user-profile"),
     path("user_profile/<int:user_id>", public_user_profile, name="public-user-profile"),
     # about section
     path("about/", about, name="about"),
     path("completed_projects/", finished_project, name="completed-projects"),
-    path("project_groups/", project_groups, name="project-groups"),
-    path("interested_users/", interested_users, name="interested-users")
+    # groups 
+    # TODO added project_id to urls
+    path("project_groups/<int:project_id>/", project_groups_list, name="project-groups"),
+    path("project_idea/<int:idea_pk>/groups/create/", project_groups_create, name="project-groups-create"),
+    path("interested_users/<int:pk>/", interested_users, name="interested-users")
 ]

@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+{% load static %}
+
+<!-- block title and block tab to be modified to display the name of the project -->
+
+{% block tab %} Create Project Group {% endblock %}
+
+{% block content %}
+
+<div class="page-description">
+    
+    <h3 class="page-title">Create Project Group</h3>
+
+    <p>
+        Users interested in a project can create a Project Group here
+    </p>
+    <p>
+        Not part of our community yet? <a href="{% url 'front-end:register' %}">Register!</a>
+    </p>
+
+</div>
+
+
+<!-- form to be modified (no HTML) to connect front-end and back-end -->
+<form method="POST">
+  
+  {% csrf_token %}
+  <label for="project_idea">{{project_idea.title}}</label><br>
+
+
+  <label for="name">Name of Group *</label><br>
+  <input type="text" id="name" name="name" placeholder="name" required>
+
+  <label for="description">Description *</label><br>
+  <input type="description" id="description" name="description" placeholder="description" required>
+
+  <!-- disclaimer -->
+  <p class="disclaimer">
+      * are required fields
+  </p>
+
+  <div class="register-buttons">
+      <button type="submit" class="button" id="confirm-button">Create</button>
+      <button type="reset" class="button" id="cancel-button">Cancel</button>
+  </div>
+
+</form>
+{% endblock %}

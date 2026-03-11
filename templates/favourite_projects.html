@@ -28,7 +28,7 @@
                     </a>
                 </p>
                 <p class="project-owner-thumbnail">
-                    By {{ idea.author }}
+                    By <a href="{% url 'front-end:public-user-profile' idea.author.id %}">{{ idea.author.username }}</a>
                 </p>
                 <p class="project-description-thumbnail">
                     {{ idea.description|truncatewords:10 }}

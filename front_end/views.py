@@ -3,40 +3,43 @@ from django.contrib import messages
 from projects.models import ProjectIdea, ProjectIdeaComment, Tag, ImageProject
 from front_end.form import RegisterForm
 from users.serializers import UserSerializer
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from projects.serializers.serializer_project_idea_serializer import ProjectIdeaSerializer
+from projects.serializers.serializer_project_group_serializer import ProjectGroupSerializer
+from projects.serializers.serializer_image_project import ImageProjectSerializer
 from django.shortcuts import get_object_or_404
-from users.models import User
+from django.contrib.auth import get_user_model
 
 # Create your views here.
+
+User = get_user_model()
 
 def home(request):
     if request.user.is_authenticated:
         ideas = ProjectIdea.objects.all()
-        serializer = ProjectIdeaSerializer(ideas, many=True)
-        return render(request, "home.html", context={"ideas": serializer.data})
+        return render(request, "home.html", context={"ideas": ideas})
     return render(request, "home.html")
 
-@login_required(login_url="front-end:login")
 def project_ideas(request):
     ideas = ProjectIdea.objects.all()
-    serializer = ProjectIdeaSerializer(ideas, many=True)
-    return render(request, "project_ideas.html", context={"ideas": serializer.data})
+    return render(request, "project_ideas.html", context={"ideas": ideas})
 
-@login_required(login_url="front-end:login")
 def project_details(request, pk):
     idea = get_object_or_404(ProjectIdea, pk=pk)
-    serializer = ProjectIdeaSerializer(idea)
-    # check if the user has favourited the idea
-    has_favourited = idea in request.user.favorite_projects.all()
-    has_saved = idea in request.user.interested_projects.all()
-    has_liked = request.user in idea.likes.all()
+    if request.user.is_authenticated:
+        has_favourited = idea in request.user.favorite_projects.all()
+        has_saved = idea in request.user.interested_projects.all()
+        has_liked = request.user in idea.likes.all()
+    else:
+        has_favourited = None
+        has_saved = None
+        has_liked = None
     return render(
         request,
         "project_details.html",
         context={
-            "idea": serializer.data,
+            "idea": idea,
             "has_favourited": has_favourited,
             "has_saved": has_saved,
             "has_liked": has_liked,
@@ -53,25 +56,41 @@ def user_login(request):
         if user is not None:
             login(request, user)
             return redirect("front-end:home")
+        else:
+            messages.error(request, "Invalid username or password!")
         # TODO: process user errors
     return render(request, "login.html")
 
+
+def user_logout(request):
+    logout(request)
+    messages.success(request, "You have been logged out successfully.")
+    return redirect("front-end:home")
+
 def register(request):
-    registration_form = RegisterForm()
     if request.method == "POST":
         serializer = UserSerializer(data=request.POST)
         if serializer.is_valid():
-            serializer.save()
+            user = serializer.save()
+            if request.FILES.get('profile_picture'):
+                user.image = request.FILES.get('profile_picture')
+                user.save()
+            messages.success(request, "Registration successful! Please log in.")
             return redirect("front-end:login")
         else:
-            # TODO: process user errors
-            return redirect("front-end:register")
+            # Check for specific errors
+            if 'username' in serializer.errors:
+                messages.error(request, "Username already exists. Please choose a different username.")
+            else:
+                messages.error(request, "Registration failed. Please check your information.")
+    
+    registration_form = RegisterForm()
     return render(request, "register.html", {"form": registration_form})
 
 @login_required(login_url="front-end:login")
 def user_profile(request):
     user = request.user
-    return render(request, "user_profile.html", context={"user": user})
+    return render(request, "user_profile.html", context={"user_profile": user})
 
 def about(request):
     return render(request, "about.html")
@@ -84,34 +103,33 @@ def create_project(request):
         description = request.POST.get('description').strip()
         tags = request.POST.getlist('tags')  # Get list of selected tag IDs
         images = request.FILES.getlist('images')  # Get uploaded images
-
+        print(images)
         # Validate required fields
         if not title:
             messages.error(request, 'Title and description are required.')
             return redirect('front-end:create-project')
-        print(tags)
+        
         data = {
             'title': title,
             'description': description,
             'tags': tags,
+    
         }
-
+        
         serializer = ProjectIdeaSerializer(data=data)
 
         serializer.is_valid(raise_exception=True)
 
         project_idea = serializer.save(author=request.user)
-        print(project_idea)
-
-        # -----------------TODO : Check images for create project ----------------
-
+            
         # Handle image uploads
         for image in images:
-            ImageProject.objects.create(
+            project_image = ImageProject.objects.create(
                 image=image,
                 project_idea=project_idea
             )
-
+            project_idea.images_projects.add(project_image)
+            
         messages.success(request, 'Project created successfully!')
         return redirect("front-end:project-details", pk=project_idea.id)
 
@@ -172,12 +190,12 @@ def remove_like(request, pk):
 
 @login_required(login_url="front-end:login")
 def public_user_profile(request, user_id):
-    profile_user = get_object_or_404(User, id=user_id)
+    profile_user = get_object_or_404(User, pk=user_id)
     return render(
         request,
         "user_profile.html",
         context={
-            "profile_user": profile_user
+            "user_profile": profile_user
         }
     )
 
@@ -230,11 +248,8 @@ def edit_comment(request, comment_id):
 def finished_project(request):
     return render(request, "completed_projects.html")
 
-def project_groups(request):
+def project_groups_list(request):
     return render(request, "project_groups.html")
-
-def interested_users(request):
-    return render(request, "interested_users.html")
 
 @login_required()
 def add_image_to_project_idea(request, idea_pk):
@@ -281,3 +296,37 @@ def remove_image_from_project_idea(request, idea_pk, image_pk):
     image.delete()
 
     return redirect("front-end:project-details", pk=idea_pk)
+@login_required(login_url="front-end:login")
+def project_groups_create(request, idea_pk):
+    name = request.POST.get('name').strip()
+    description = request.POST.get('description').strip()
+        
+    data = {"name":name,
+            "descrption": description}
+    
+    project_idea = ProjectIdea.objects.get(id=idea_pk)
+   
+    context = {"request": request,
+                "project_idea": project_idea}
+    serializer = ProjectGroupSerializer(data=request.POST, context=context)
+
+    serializer.is_valid(raise_exception=True)
+
+    group = serializer.save()
+    return render(request, "project_groups_create.html")
+
+
+@login_required(login_url="front-end:login")
+def interested_users(request, pk):
+    if request.method == 'GET':
+        idea = get_object_or_404(ProjectIdea, pk=pk)
+        interested_users = idea.user_interested_project_idea.all()
+        print(interested_users)
+
+        return render(request, "interested_users.html",
+                        context={
+                            "idea": idea,
+                            "interested_users": interested_users,
+            
+                        }
+        )

@@ -205,3 +205,4 @@ STORAGES = {
 HOST = "http://127.0.0.1:8000/"
 
 DEFAULT_PROFILE_IMAGE_URL = f"{MEDIA_URL}profile_images/default.jpg"
+

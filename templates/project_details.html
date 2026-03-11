@@ -15,9 +15,9 @@
 <!-- info of the project section -->
 <!-- images are only a placeholder -->
 <div class="images-row">
-  {% for image_data in idea.images_projects %}
+  {% for image_data in idea.images_projects.all %}
   <div>
-    <img src="{{  image_data.image  }}">
+    <img src="{{  image_data.image.url  }}">
     {% if author_id ==  user_id %}
       <a href="{% url 'front-end:remove-image-from-project' idea.id image_data.id  %}">Delete Image</a>
     {% endif %}
@@ -39,12 +39,11 @@
 
 
 <div class="project-actions">
-
   <!-- where the likes will go -->
   <div class="likes-button">
     <div class="button">{{ like_count }} Likes</div>
   </div>
-
+  {%  if user.is_authenticated  %}
   <!-- buttons with add/remove project from favourites -->
   {% if has_favourited %}
     <form action="{% url 'front-end:remove-favourite' idea.id %}" method="POST">
@@ -83,6 +82,7 @@
         <button type="submit" class="button">Add Like</button>
     </form>
   {% endif %}
+  {% endif %}
 </div>
 
 <div>
@@ -96,14 +96,16 @@
   <a href="{% url 'front-end:comments' idea.id %}">Comments</a>
 </p>
 
+{%  if user.is_authenticated  %}
 <!-- section with buttons for opening the page with interested users and groups -->
 <div class="project-details-buttons">
   <div class="button-left">
-    <div class="project-details-button-tag"><a href="{% url 'front-end:interested-users' %}">INTERESTED USERS</a></div>
+    <div class="project-details-button-tag"><a href="{% url 'front-end:interested-users' idea.id %}">INTERESTED USERS</a></div>
   </div>
   <div class="button-right">
-    <div class="project-details-button-tag"><a href="{% url 'front-end:project-groups' %}">GROUPS WORKING ON IT</a></div>
+    <div class="project-details-button-tag"><a href="{% url 'front-end:project-groups' idea.id %}">GROUPS WORKING ON IT</a></div>
   </div>
 </div>
+{% endif %}
 
 {% endblock %}
