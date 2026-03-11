@@ -109,6 +109,16 @@ class UserProfileViewTests(TestCase):
         """Checks the correct respresentation of default image after PUT request."""
         self.client.credentials(HTTP_AUTHORIZATION=f"Token {self.token_image_user}")
 
+         # Get the current user data
+        user = User.objects.get(id=self.image_user.id)
+        
+        # If user has an image, delete it first to test default
+        if user.image:
+            user.image.delete()
+            user.image = None
+            user.save()
+        
+        # Now send the PUT request
         self.image_user_data["image"] = None
         response = self.client.put(self.url(self.image_user.id), data=self.image_user_data, format="json")
 
