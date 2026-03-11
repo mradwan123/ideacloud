@@ -77,12 +77,25 @@ class UserSerializer(serializers.ModelSerializer):
     
     def validate_username(self, value):
         """
-        Validate username only on creation (POST), not on update (PUT/PATCH)
+        Validate username uniqueness:
+        - For new users (POST): Check if username exists at all
+        - For updates (PUT/PATCH): Check if username exists for a DIFFERENT user
         """
-        # Check if this is a create operation (no instance)
+        # Check if any user has this username
+        existing_user = User.objects.filter(username=value).first()
+        
+        # If this is a new user (no instance)
         if not self.instance:
-            if User.objects.filter(username=value).exists():
+            if existing_user:
                 raise serializers.ValidationError('Error: Duplicate username.')
+        
+        # If this is an update (has instance)
+        else:
+            # If username exists AND it belongs to a DIFFERENT user
+            if existing_user and existing_user.id != self.instance.id:
+                raise serializers.ValidationError('Error: This username is already taken by another user.')
+        
+        # Always return the value
         return value
                 
 
