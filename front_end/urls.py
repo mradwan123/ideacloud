@@ -24,7 +24,8 @@ from .views import (
     add_comment,
     remove_comment,
     edit_comment,
-    finished_project,
+    finished_project_list,
+    finished_project_detail,
     project_groups_list,
     project_groups_create,
     interested_users
@@ -33,10 +34,12 @@ from .views import (
 app_name = "front-end"
 urlpatterns = [
     path("", home, name="home"),
-    # project related links (project ideas, project details, create project)
+    # project related links (project ideas, project details, create project, finished project list and details)
     path("project_ideas/", project_ideas, name="project-ideas"),
     path("project_details/<int:pk>", project_details, name="project-details"),
     path("create_project/", create_project, name="create-project"),
+    path("finished_projects/", finished_project_list, name="finished-projects"),
+    path("finished_project_details/<int:pk>", finished_project_detail, name="finished-project-details"),
     # favourite
     path("favourite_projects/", favourite_projects, name="favourite-projects"),
     path("project_details/<int:pk>/add_favourite", add_favourite_project, name="add-favourite"),
@@ -62,7 +65,6 @@ urlpatterns = [
     path("user_profile/<int:user_id>", public_user_profile, name="public-user-profile"),
     # about section
     path("about/", about, name="about"),
-    path("completed_projects/", finished_project, name="completed-projects"),
     # groups 
     # TODO added project_id to urls
     path("project_groups/<int:project_id>/", project_groups_list, name="project-groups"),

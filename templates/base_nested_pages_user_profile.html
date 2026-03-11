@@ -19,6 +19,7 @@
             {% if request.user.is_authenticated %}
                 <div class="nav-tag"><a href="{% url 'front-end:home' %}">HOME</a></div>
                 <div class="nav-tag"><a href="{% url 'front-end:project-ideas' %}">PROJECT IDEAS</a></div>
+                <div class="nav-tag"><a href="{% url 'front-end:finished-project' %}">FINISHED PROJECTS</a></div>
                 <div class="nav-tag"><a href="{% url 'front-end:user-profile' %}">USER PROFILE</a></div>
                 <div class="nav-tag"><a href="{% url 'front-end:logout' %}">LOGOUT</a></div>
                 <div class="nav-tag"><a href="{% url 'front-end:about' %}">ABOUT</a></div>

@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from django.contrib import messages
-from projects.models import ProjectIdea, ProjectIdeaComment, Tag, ImageProject
+from projects.models import ProjectIdea, ProjectIdeaComment, Tag, ImageProject, FinishedProject
 from front_end.form import RegisterForm
 from users.serializers import UserSerializer
 from django.contrib.auth import authenticate, login, logout
@@ -239,8 +239,13 @@ def edit_comment(request, comment_id):
         return redirect("front-end:comments", pk=comment.project_idea.id)
     return render(request, "edit_comment.html", context={"comment": comment})
 
-def finished_project(request):
-    return render(request, "completed_projects.html")
+def finished_project_detail(request, pk):
+    idea = FinishedProject.objects.filter(pk=pk).first()
+    return render(request, "finished_projects_details.html", context={"idea": idea})
+
+def finished_project_list(request):
+    ideas = FinishedProject.objects.all()
+    return render(request, "finished_projects.html", context={"ideas": ideas})
 
 def project_groups_list(request):
     return render(request, "project_groups.html")
