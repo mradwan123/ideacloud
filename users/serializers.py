@@ -76,9 +76,15 @@ class UserSerializer(serializers.ModelSerializer):
         return super().to_internal_value(data)
     
     def validate_username(self, value):
-        if User.objects.filter(username=value).exists():
-            raise serializers.ValidationError('Error: Duplicate username.')
+        """
+        Validate username only on creation (POST), not on update (PUT/PATCH)
+        """
+        # Check if this is a create operation (no instance)
+        if not self.instance:
+            if User.objects.filter(username=value).exists():
+                raise serializers.ValidationError('Error: Duplicate username.')
         return value
+                
 
     def validate_password(self, value):
         """Changed name of built in and checking here"""
