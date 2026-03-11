@@ -1,34 +1,34 @@
 from django.urls import path
 from django.conf import settings
 from django.conf.urls.static import static
-from .views import (
-    home,
-    project_ideas,
-    project_details,
-    user_login,
-    user_logout,
-    register,
-    user_profile,
-    about,
-    create_project,
-    favourite_projects,
-    add_favourite_project,
-    remove_favourite_project,
-    saved_projects,
-    add_saved_project,
-    remove_saved_project,
-    add_like,
-    remove_like,
-    public_user_profile,
-    comments,
-    add_comment,
-    remove_comment,
-    edit_comment,
-    finished_project,
-    project_groups_list,
-    project_groups_create,
-    interested_users
-)
+from .views import (home,
+                    project_ideas,
+                    project_details,
+                    user_login,
+                    user_logout,
+                    register,
+                    user_profile,
+                    about,
+                    create_project,
+                    favourite_projects,
+                    add_favourite_project,
+                    remove_favourite_project,
+                    saved_projects,
+                    add_saved_project,
+                    remove_saved_project,
+                    add_like,
+                    remove_like,
+                    public_user_profile,
+                    comments,
+                    add_comment,
+                    remove_comment,
+                    edit_comment,
+                    finished_project,
+                    interested_users,
+                    add_image_to_project_idea,
+                    remove_image_from_project_idea,
+                    project_groups_list,
+                    project_groups_create)
 
 app_name = "front-end"
 urlpatterns = [
@@ -37,6 +37,9 @@ urlpatterns = [
     path("project_ideas/", project_ideas, name="project-ideas"),
     path("project_details/<int:pk>", project_details, name="project-details"),
     path("create_project/", create_project, name="create-project"),
+    # handle project images
+    path("project_details/<int:idea_pk>/add_image_to_project", add_image_to_project_idea, name="add-image-to-project"),
+    path("project_details/<int:idea_pk>/remove_image_from_project/<int:image_pk>", remove_image_from_project_idea, name="remove-image-from-project"),
     # favourite
     path("favourite_projects/", favourite_projects, name="favourite-projects"),
     path("project_details/<int:pk>/add_favourite", add_favourite_project, name="add-favourite"),

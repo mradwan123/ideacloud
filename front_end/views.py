@@ -27,10 +27,14 @@ def project_ideas(request):
 
 def project_details(request, pk):
     idea = get_object_or_404(ProjectIdea, pk=pk)
-    # check if the user has favourited the idea
-    has_favourited = idea in request.user.favorite_projects.all()
-    has_saved = idea in request.user.interested_projects.all()
-    has_liked = request.user in idea.likes.all()
+    if request.user.is_authenticated:
+        has_favourited = idea in request.user.favorite_projects.all()
+        has_saved = idea in request.user.interested_projects.all()
+        has_liked = request.user in idea.likes.all()
+    else:
+        has_favourited = None
+        has_saved = None
+        has_liked = None
     return render(
         request,
         "project_details.html",
@@ -39,7 +43,9 @@ def project_details(request, pk):
             "has_favourited": has_favourited,
             "has_saved": has_saved,
             "has_liked": has_liked,
-            "like_count": idea.likes.count()
+            "like_count": idea.likes.count(),
+            "user_id": request.user.id,
+            "author_id": idea.author.id,
         })
 
 def user_login(request):
@@ -57,9 +63,9 @@ def user_login(request):
 
 
 def user_logout(request):
-        logout(request)
-        messages.success(request, "You have been logged out successfully.")
-        return redirect("front-end:home")
+    logout(request)
+    messages.success(request, "You have been logged out successfully.")
+    return redirect("front-end:home")
 
 def register(request):
     if request.method == "POST":
@@ -245,6 +251,51 @@ def finished_project(request):
 def project_groups_list(request):
     return render(request, "project_groups.html")
 
+@login_required()
+def add_image_to_project_idea(request, idea_pk):
+    try:
+        project_idea = ProjectIdea.objects.get(id=idea_pk)
+    except ProjectIdea.DoesNotExist:
+        return redirect("front-end:project-ideas")
+
+    if project_idea.author.id != request.user.id:
+        return redirect("front-end:project-details", pk=idea_pk)
+    
+    project_image = request.FILES.get("project-image")
+    print(project_image)
+    print(request.FILES)
+    if not project_image:
+        return redirect("front-end:project-details", pk=idea_pk)
+    
+    try:
+        ImageProject.objects.create(image=project_image, project_idea=project_idea)
+    except Exception:
+        # TODO: some errorhanding if the image entry doesnt work
+        pass
+
+    return redirect("front-end:project-details", pk=idea_pk)
+
+@login_required()
+def remove_image_from_project_idea(request, idea_pk, image_pk):
+    try:
+        project_idea = ProjectIdea.objects.get(id=idea_pk)
+    except ProjectIdea.DoesNotExist:
+        return redirect("front-end:project-ideas")
+
+    if project_idea.author.id != request.user.id:
+        return redirect("front-end:project-details", pk=idea_pk)
+    
+    try:
+        image = ImageProject.objects.get(id=image_pk)
+    except ImageProject.DoesNotExist:
+        return redirect("front-end:project-details", pk=idea_pk)
+
+    if image.project_idea.id != idea_pk:
+        return redirect("front-end:project-details", pk=idea_pk)
+    
+    image.delete()
+
+    return redirect("front-end:project-details", pk=idea_pk)
 @login_required(login_url="front-end:login")
 def project_groups_create(request, idea_pk):
     name = request.POST.get('name').strip()
