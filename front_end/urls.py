@@ -1,34 +1,36 @@
 from django.urls import path
 from django.conf import settings
 from django.conf.urls.static import static
-from .views import (home,
-                    project_ideas,
-                    project_details,
-                    user_login,
-                    user_logout,
-                    register,
-                    user_profile,
-                    about,
-                    create_project,
-                    favourite_projects,
-                    add_favourite_project,
-                    remove_favourite_project,
-                    saved_projects,
-                    add_saved_project,
-                    remove_saved_project,
-                    add_like,
-                    remove_like,
-                    public_user_profile,
-                    comments,
-                    add_comment,
-                    remove_comment,
-                    edit_comment,
-                    finished_project,
-                    interested_users,
-                    add_image_to_project_idea,
-                    remove_image_from_project_idea,
-                    project_groups_list,
-                    project_groups_create)
+from .views import (
+    home,
+    project_ideas,
+    project_details,
+    user_login,
+    user_logout,
+    register,
+    user_profile,
+    about,
+    create_project,
+    favourite_projects,
+    add_favourite_project,
+    remove_favourite_project,
+    saved_projects,
+    add_saved_project,
+    remove_saved_project,
+    add_like,
+    remove_like,
+    public_user_profile,
+    comments,
+    add_comment,
+    remove_comment,
+    edit_comment,
+    finished_project,
+    project_groups,
+    add_image_to_project_idea,
+    remove_image_from_project_idea,
+    create_new_project_group,
+    interested_users
+)
 
 app_name = "front-end"
 urlpatterns = [
@@ -66,9 +68,9 @@ urlpatterns = [
     # about section
     path("about/", about, name="about"),
     path("completed_projects/", finished_project, name="completed-projects"),
-    # groups 
+    # groups
     # TODO added project_id to urls
-    path("project_groups/<int:project_id>/", project_groups_list, name="project-groups"),
-    path("project_idea/<int:idea_pk>/groups/create/", project_groups_create, name="project-groups-create"),
-    path("interested_users/<int:pk>/", interested_users, name="interested-users")
+    path("project_groups/<int:pk>/", project_groups, name="project-groups"),
+    path("project_groups/<int:pk>/create_new_project_group/", create_new_project_group, name="create-new-project-group"),
+    path("interested_users/", interested_users, name="interested-users")
 ]
