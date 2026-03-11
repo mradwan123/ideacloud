@@ -1,6 +1,7 @@
 from django.urls import path
 from django.conf import settings
 from django.conf.urls.static import static
+<<<<<<< HEAD
 from .views import (
     home,
     project_ideas,
@@ -26,6 +27,8 @@ from .views import (
     edit_comment,
     finished_project,
     project_groups,
+    add_image_to_project_idea,
+    remove_image_from_project_idea,
     create_new_project_group,
     interested_users
 )
@@ -37,6 +40,9 @@ urlpatterns = [
     path("project_ideas/", project_ideas, name="project-ideas"),
     path("project_details/<int:pk>", project_details, name="project-details"),
     path("create_project/", create_project, name="create-project"),
+    # handle project images
+    path("project_details/<int:idea_pk>/add_image_to_project", add_image_to_project_idea, name="add-image-to-project"),
+    path("project_details/<int:idea_pk>/remove_image_from_project/<int:image_pk>", remove_image_from_project_idea, name="remove-image-from-project"),
     # favourite
     path("favourite_projects/", favourite_projects, name="favourite-projects"),
     path("project_details/<int:pk>/add_favourite", add_favourite_project, name="add-favourite"),
