@@ -298,6 +298,7 @@ def remove_image_from_project_idea(request, idea_pk, image_pk):
     image.delete()
 
     return redirect("front-end:project-details", pk=idea_pk)
+ 
 @login_required(login_url="front-end:login")
 def create_new_project_group(request, pk):
     idea = get_object_or_404(ProjectIdea, pk=pk)
@@ -329,3 +330,4 @@ def interested_users(request, pk):
                 "interested_users": interested_users,
             }
         )
+
