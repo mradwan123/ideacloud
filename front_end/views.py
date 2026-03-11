@@ -3,7 +3,7 @@ from django.contrib import messages
 from projects.models import ProjectIdea, ProjectIdeaComment, Tag, ImageProject, ProjectGroup
 from front_end.form import RegisterForm
 from users.serializers import UserSerializer
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from projects.serializers.serializer_project_idea_serializer import ProjectIdeaSerializer
 from projects.serializers.serializer_project_group_serializer import ProjectGroupSerializer
@@ -21,12 +21,10 @@ def home(request):
         return render(request, "home.html", context={"ideas": ideas})
     return render(request, "home.html")
 
-@login_required(login_url="front-end:login")
 def project_ideas(request):
     ideas = ProjectIdea.objects.all()
     return render(request, "project_ideas.html", context={"ideas": ideas})
 
-@login_required(login_url="front-end:login")
 def project_details(request, pk):
     idea = get_object_or_404(ProjectIdea, pk=pk)
     # check if the user has favourited the idea
@@ -52,25 +50,35 @@ def user_login(request):
         if user is not None:
             login(request, user)
             return redirect("front-end:home")
+        else:
+            messages.error(request, "Invalid username or password!")
         # TODO: process user errors
     return render(request, "login.html")
 
+
+def user_logout(request):
+        logout(request)
+        messages.success(request, "You have been logged out successfully.")
+        return redirect("front-end:home")
+
 def register(request):
-    registration_form = RegisterForm()
     if request.method == "POST":
-        print(request.FILES)
         serializer = UserSerializer(data=request.POST)
-        print(serializer.is_valid(), serializer.errors)
         if serializer.is_valid():
             user = serializer.save()
-            print(user)
-            user.image = request.FILES.get('profile_picture')
-            user.save()
-            
+            if request.FILES.get('profile_picture'):
+                user.image = request.FILES.get('profile_picture')
+                user.save()
+            messages.success(request, "Registration successful! Please log in.")
             return redirect("front-end:login")
         else:
-            # TODO: process user errors
-            return redirect("front-end:register")
+            # Check for specific errors
+            if 'username' in serializer.errors:
+                messages.error(request, "Username already exists. Please choose a different username.")
+            else:
+                messages.error(request, "Registration failed. Please check your information.")
+    
+    registration_form = RegisterForm()
     return render(request, "register.html", {"form": registration_form})
 
 @login_required(login_url="front-end:login")
