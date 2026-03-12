@@ -36,9 +36,15 @@ def project_details(request, pk):
         has_favourited = None
         has_saved = None
         has_liked = None
+        
+    try:
+        author_id = idea.author.id
+    except Exception:
+        author_id = 0
     return render(
         request,
         "project_details.html",
+        
         context={
             "idea": idea,
             "has_favourited": has_favourited,
@@ -46,7 +52,7 @@ def project_details(request, pk):
             "has_liked": has_liked,
             "like_count": idea.likes.count(),
             "user_id": request.user.id,
-            "author_id": idea.author.id,
+            "author_id": author_id, 
         })
 
 def user_login(request):

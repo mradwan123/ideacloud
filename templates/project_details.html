@@ -9,8 +9,12 @@
 
 <div class="project-details-general-info">
   <h3> {{ idea.title }} </h3>
-  <h4>By <a>{{ idea.author }}</a></h4>
-</div>
+  {% if idea.author %}
+     <h4>By <a>{{ idea.author }}</a></h4>
+      {% else %}
+      <h4>User Deleted</h4>
+      {% endif %} 
+  </div>
 
 <!-- info of the project section -->
 <!-- images are only a placeholder -->
