@@ -23,9 +23,13 @@
                     {{ idea.title }}
                 </a>
             </p>
+            {% if idea.project_group.owner %}
             <p class="project-owner-thumbnail">
                 By <a href="{% url 'front-end:public-user-profile' idea.project_group.owner.id %}">{{ idea.project_group.owner.username }}</a>
             </p>
+            {% else %}
+            <h4>Deleted User</h4>
+            {% endif %}
             <p class="project-description-thumbnail">
                 {{ idea.description|truncatewords:10 }}
             </p>

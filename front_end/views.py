@@ -23,7 +23,6 @@ def home(request):
 
 def project_ideas(request):
     ideas = ProjectIdea.objects.all()
-    print(ideas[0].author.id)
     return render(request, "project_ideas.html", context={"ideas": ideas})
 
 def project_details(request, pk):
@@ -36,11 +35,11 @@ def project_details(request, pk):
         has_favourited = None
         has_saved = None
         has_liked = None
-        
-    try:
+     
+    author_id = 0   
+    if idea.author:
         author_id = idea.author.id
-    except Exception:
-        author_id = 0
+        
     return render(
         request,
         "project_details.html",
@@ -110,7 +109,6 @@ def create_project(request):
         description = request.POST.get('description').strip()
         tags = request.POST.getlist('tags')  # Get list of selected tag IDs
         images = request.FILES.getlist('images')  # Get uploaded images
-        print(images)
         # Validate required fields
         if not title:
             messages.error(request, 'Title and description are required.')
@@ -276,8 +274,7 @@ def add_image_to_project_idea(request, idea_pk):
         return redirect("front-end:project-details", pk=idea_pk)
     
     project_image = request.FILES.get("project-image")
-    print(project_image)
-    print(request.FILES)
+
     if not project_image:
         return redirect("front-end:project-details", pk=idea_pk)
     
