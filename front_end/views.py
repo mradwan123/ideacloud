@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from django.contrib import messages
-from projects.models import ProjectIdea, ProjectIdeaComment, Tag, ImageProject, ProjectGroup
+from projects.models import ProjectIdea, ProjectIdeaComment, Tag, ImageProject, ProjectGroup, FinishedProject
 from front_end.form import RegisterForm
 from users.serializers import UserSerializer
 from django.contrib.auth import authenticate, login, logout
@@ -252,8 +252,13 @@ def edit_comment(request, comment_id):
         return redirect("front-end:comments", pk=comment.project_idea.id)
     return render(request, "edit_comment.html", context={"comment": comment})
 
-def finished_project(request):
-    return render(request, "completed_projects.html")
+def finished_project_detail(request, pk):
+    idea = FinishedProject.objects.filter(pk=pk).first()
+    return render(request, "finished_projects_details.html", context={"idea": idea})
+
+def finished_project_list(request):
+    ideas = FinishedProject.objects.all()
+    return render(request, "finished_projects.html", context={"ideas": ideas})
 
 def project_groups(request, pk):
     idea = get_object_or_404(ProjectIdea, pk=pk)
@@ -329,12 +334,11 @@ def interested_users(request, pk):
     if request.method == 'GET':
         idea = get_object_or_404(ProjectIdea, pk=pk)
         interested_users = idea.user_interested_project_idea.all()
-        return render(
-            request,
-            "interested_users.html",
-            context={
-                "idea": idea,
-                "interested_users": interested_users,
-            }
-        )
 
+        return render(request, "interested_users.html",
+                        context={
+                            "idea": idea,
+                            "interested_users": interested_users,
+            
+                        }
+        )

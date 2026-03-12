@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block tab %} Project Ideas {% endblock %}
+
+{% block content %}
+
+<!-- display of the projects to be made -->
+
+<!-- project ideas displayed -->
+<div class="page-description">
+    <h3 class="page-title">All Projects</h3>
+</div>
+
+
+<div class="ideas-grid">
+    {% for idea in ideas %}
+    <div class="idea-card">
+        <!-- <img src="{% static 'images/image_placeholder.jpg' %}"> -->
+        <div class="caption">
+            <p class="project-title">
+                <a href="{% url 'front-end:finished-project-details' idea.id %}">
+                    {{ idea.title }}
+                </a>
+            </p>
+            <p class="project-owner-thumbnail">
+                By <a href="{% url 'front-end:public-user-profile' idea.project_group.owner.id %}">{{ idea.project_group.owner.username }}</a>
+            </p>
+            <p class="project-description-thumbnail">
+                {{ idea.description|truncatewords:10 }}
+            </p>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+
+<!-- maybe 'more' button? -->
+<p class="more-projects">
+    More Projects
+</p>
+
+{% endblock %}
