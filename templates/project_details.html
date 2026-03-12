@@ -9,8 +9,12 @@
 
 <div class="project-details-general-info">
   <h3> {{ idea.title }} </h3>
-  <h4>By <a>{{ idea.author }}</a></h4>
-</div>
+  {% if idea.author %}
+     <h4>By <a>{{ idea.author }}</a></h4>
+      {% else %}
+      <h4>User Deleted</h4>
+      {% endif %} 
+  </div>
 
 <!-- info of the project section -->
 <!-- images are only a placeholder -->
@@ -82,8 +86,8 @@
         <button type="submit" class="button">Add Like</button>
     </form>
   {% endif %}
-  {% endif %}
 </div>
+  {% endif %}
 
 <div>
   <p>
@@ -92,9 +96,11 @@
 </div>
 
 <!-- link to the pages of the project comments (if any)-->
+  {% if user.is_authenticated %}
 <p class="comments">
   <a href="{% url 'front-end:comments' idea.id %}">Comments</a>
 </p>
+  
 
 {%  if user.is_authenticated  %}
 <!-- section with buttons for opening the page with interested users and groups -->
@@ -107,5 +113,5 @@
   </div>
 </div>
 {% endif %}
-
+{% endif %}
 {% endblock %}

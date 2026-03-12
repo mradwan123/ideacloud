@@ -12,26 +12,23 @@
     <h3 class="page-title">All Projects</h3>
 </div>
 
-<div class="new-project-button">
-  <a href="{% url 'front-end:create-project' %}" class="button">New Project +</a>
-</div>
 
 <div class="ideas-grid">
     {% for idea in ideas %}
     <div class="idea-card">
-        <img src="{% static 'images/image_placeholder.jpg' %}">
+        <!-- <img src="{% static 'images/image_placeholder.jpg' %}"> -->
         <div class="caption">
             <p class="project-title">
-                <a href="{% url 'front-end:project-details' idea.id %}">
+                <a href="{% url 'front-end:finished-project-details' idea.id %}">
                     {{ idea.title }}
                 </a>
             </p>
-            {% if idea.author %}
+            {% if idea.project_group.owner %}
             <p class="project-owner-thumbnail">
-                By <a href="{% url 'front-end:public-user-profile' idea.author.id %}">{{ idea.author.username }}</a>
-            </p> 
+                By <a href="{% url 'front-end:public-user-profile' idea.project_group.owner.id %}">{{ idea.project_group.owner.username }}</a>
+            </p>
             {% else %}
-            <h4>User Deleted</h4>
+            <h4>Deleted User</h4>
             {% endif %}
             <p class="project-description-thumbnail">
                 {{ idea.description|truncatewords:10 }}
@@ -41,10 +38,9 @@
     {% endfor %}
 </div>
 
-<!-- maybe 'more' button?
+<!-- maybe 'more' button? -->
 <p class="more-projects">
     More Projects
 </p>
--->
 
 {% endblock %}

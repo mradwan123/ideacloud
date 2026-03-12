@@ -6,7 +6,7 @@
 {% block content %}
 
 <div class="user-profile">
-    <h3 class="page-title"> {{ user.username }}'s Profile</h3>
+    <h3 class="page-title"> {{ user_profile.username }}'s Profile</h3>
     <div class="columns">
         <div class="column-left">
             <!-- user description will be replaced by value-->
@@ -24,9 +24,9 @@
         <div class="column-right">
             <div class="profile-img">
                 {% if user_profile.image %}
-                    <img src="{{ user.image.url }}">
+                    <img src="{{ user_profile.image.url }}">
                 {% else %}
-                    <img src="../static/images/profile-pic.avif">
+                    <img src="../static/images/default_profile_picture.jpg">
                 {% endif %}
             </div>
             <div class="profile-links">
@@ -42,7 +42,7 @@
                 <!-- probably the permissions will determine which user sees what-->
                 <div class="user-info"><a href="{% url 'front-end:favourite-projects' %}">Favourite Projects</a></div>
                 <div class="user-info"><a href="{% url 'front-end:saved-projects' %}">Interested Projects</a></div>
-                <div class="user-info"><a href="{% url 'front-end:completed-projects' %}">Completed Projects</a></div>
+                <div class="user-info"><a href="{% url 'front-end:finished-projects' %}">Finished Projects</a></div>
             </div>
         </div>
     </div>

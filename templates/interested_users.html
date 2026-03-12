@@ -22,6 +22,11 @@
     <div class="group-box">
         <div class="user-info">
             <h4>{{ user.username }}</h4>
+            {% if user.available %}
+            <h4>✅ User is available for collaboration</h4>
+            {% else %}
+            <h4>🛑 User is unavailable for collaboration at this time</h4>
+            {% endif %}
    {% endfor %}      
 {% endif %}
 {% endblock %}
