@@ -23,6 +23,7 @@ def home(request):
 
 def project_ideas(request):
     ideas = ProjectIdea.objects.all()
+    print(ideas[0].author.id)
     return render(request, "project_ideas.html", context={"ideas": ideas})
 
 def project_details(request, pk):
