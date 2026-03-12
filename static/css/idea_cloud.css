@@ -264,16 +264,17 @@ label {
 }
 
 .images-row {
-    display: flex;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
     gap: 1rem;
     width: 100%;
     margin-bottom: 2rem;
 }
 
 .images-row img {
-    width: calc((100% - 2rem) / 3);
+    width: calc((100% - 2rem));
     height: 20rem;
-    object-fit: cover;
+    object-fit: contain;
     display: block;
     border-radius: 0.5rem;
 }
