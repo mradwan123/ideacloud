@@ -322,12 +322,11 @@ def interested_users(request, pk):
     if request.method == 'GET':
         idea = get_object_or_404(ProjectIdea, pk=pk)
         interested_users = idea.user_interested_project_idea.all()
-        return render(
-            request,
-            "interested_users.html",
-            context={
-                "idea": idea,
-                "interested_users": interested_users,
-            }
-        )
 
+        return render(request, "interested_users.html",
+                        context={
+                            "idea": idea,
+                            "interested_users": interested_users,
+            
+                        }
+        )
