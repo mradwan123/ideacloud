@@ -24,7 +24,8 @@ from .views import (
     add_comment,
     remove_comment,
     edit_comment,
-    finished_project,
+    finished_project_list,
+    finished_project_detail,
     project_groups,
     add_image_to_project_idea,
     remove_image_from_project_idea,
@@ -35,13 +36,17 @@ from .views import (
 app_name = "front-end"
 urlpatterns = [
     path("", home, name="home"),
-    # project related links (project ideas, project details, create project)
+    # project related links (project ideas, project details, create project, finished project list and details)
     path("project_ideas/", project_ideas, name="project-ideas"),
     path("project_details/<int:pk>", project_details, name="project-details"),
     path("create_project/", create_project, name="create-project"),
+    path("finished_projects/", finished_project_list, name="finished-projects"),
+    path("finished_project_details/<int:pk>", finished_project_detail, name="finished-project-details"),
+
     # handle project images
     path("project_details/<int:idea_pk>/add_image_to_project", add_image_to_project_idea, name="add-image-to-project"),
     path("project_details/<int:idea_pk>/remove_image_from_project/<int:image_pk>", remove_image_from_project_idea, name="remove-image-from-project"),
+
     # favourite
     path("favourite_projects/", favourite_projects, name="favourite-projects"),
     path("project_details/<int:pk>/add_favourite", add_favourite_project, name="add-favourite"),
@@ -67,9 +72,10 @@ urlpatterns = [
     path("user_profile/<int:user_id>", public_user_profile, name="public-user-profile"),
     # about section
     path("about/", about, name="about"),
-    path("completed_projects/", finished_project, name="completed-projects"),
+
     # groups
     path("project_groups/<int:pk>/", project_groups, name="project-groups"),
     path("project_groups/<int:pk>/create_new_project_group/", create_new_project_group, name="create-new-project-group"),
+
     path("interested_users/<int:pk>/", interested_users, name="interested-users")
 ]

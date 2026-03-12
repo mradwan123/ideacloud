@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from django.contrib import messages
-from projects.models import ProjectIdea, ProjectIdeaComment, Tag, ImageProject, ProjectGroup
+from projects.models import ProjectIdea, ProjectIdeaComment, Tag, ImageProject, ProjectGroup, FinishedProject
 from front_end.form import RegisterForm
 from users.serializers import UserSerializer
 from django.contrib.auth import authenticate, login, logout
@@ -23,6 +23,7 @@ def home(request):
 
 def project_ideas(request):
     ideas = ProjectIdea.objects.all()
+    print(ideas[0].author.id)
     return render(request, "project_ideas.html", context={"ideas": ideas})
 
 def project_details(request, pk):
@@ -35,9 +36,15 @@ def project_details(request, pk):
         has_favourited = None
         has_saved = None
         has_liked = None
+     
+    author_id = 0   
+    if idea.author:
+        author_id = idea.author.id
+        
     return render(
         request,
         "project_details.html",
+        
         context={
             "idea": idea,
             "has_favourited": has_favourited,
@@ -45,7 +52,7 @@ def project_details(request, pk):
             "has_liked": has_liked,
             "like_count": idea.likes.count(),
             "user_id": request.user.id,
-            "author_id": idea.author.id,
+            "author_id": author_id, 
         })
 
 def user_login(request):
@@ -103,7 +110,6 @@ def create_project(request):
         description = request.POST.get('description').strip()
         tags = request.POST.getlist('tags')  # Get list of selected tag IDs
         images = request.FILES.getlist('images')  # Get uploaded images
-        print(images)
         # Validate required fields
         if not title:
             messages.error(request, 'Title and description are required.')
@@ -245,8 +251,13 @@ def edit_comment(request, comment_id):
         return redirect("front-end:comments", pk=comment.project_idea.id)
     return render(request, "edit_comment.html", context={"comment": comment})
 
-def finished_project(request):
-    return render(request, "completed_projects.html")
+def finished_project_detail(request, pk):
+    idea = FinishedProject.objects.filter(pk=pk).first()
+    return render(request, "finished_projects_details.html", context={"idea": idea})
+
+def finished_project_list(request):
+    ideas = FinishedProject.objects.all()
+    return render(request, "finished_projects.html", context={"ideas": ideas})
 
 def project_groups(request, pk):
     idea = get_object_or_404(ProjectIdea, pk=pk)
@@ -264,8 +275,7 @@ def add_image_to_project_idea(request, idea_pk):
         return redirect("front-end:project-details", pk=idea_pk)
     
     project_image = request.FILES.get("project-image")
-    print(project_image)
-    print(request.FILES)
+
     if not project_image:
         return redirect("front-end:project-details", pk=idea_pk)
     
@@ -322,12 +332,11 @@ def interested_users(request, pk):
     if request.method == 'GET':
         idea = get_object_or_404(ProjectIdea, pk=pk)
         interested_users = idea.user_interested_project_idea.all()
-        return render(
-            request,
-            "interested_users.html",
-            context={
-                "idea": idea,
-                "interested_users": interested_users,
-            }
-        )
 
+        return render(request, "interested_users.html",
+                        context={
+                            "idea": idea,
+                            "interested_users": interested_users,
+            
+                        }
+        )
