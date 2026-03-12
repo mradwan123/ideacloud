@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from django.contrib import messages
-from projects.models import ProjectIdea, ProjectIdeaComment, Tag, ImageProject
+from projects.models import ProjectIdea, ProjectIdeaComment, Tag, ImageProject, ProjectGroup
 from front_end.form import RegisterForm
 from users.serializers import UserSerializer
 from django.contrib.auth import authenticate, login, logout
@@ -27,10 +27,14 @@ def project_ideas(request):
 
 def project_details(request, pk):
     idea = get_object_or_404(ProjectIdea, pk=pk)
-    # check if the user has favourited the idea
-    has_favourited = idea in request.user.favorite_projects.all()
-    has_saved = idea in request.user.interested_projects.all()
-    has_liked = request.user in idea.likes.all()
+    if request.user.is_authenticated:
+        has_favourited = idea in request.user.favorite_projects.all()
+        has_saved = idea in request.user.interested_projects.all()
+        has_liked = request.user in idea.likes.all()
+    else:
+        has_favourited = None
+        has_saved = None
+        has_liked = None
     return render(
         request,
         "project_details.html",
@@ -39,7 +43,9 @@ def project_details(request, pk):
             "has_favourited": has_favourited,
             "has_saved": has_saved,
             "has_liked": has_liked,
-            "like_count": idea.likes.count()
+            "like_count": idea.likes.count(),
+            "user_id": request.user.id,
+            "author_id": idea.author.id,
         })
 
 def user_login(request):
@@ -57,9 +63,9 @@ def user_login(request):
 
 
 def user_logout(request):
-        logout(request)
-        messages.success(request, "You have been logged out successfully.")
-        return redirect("front-end:home")
+    logout(request)
+    messages.success(request, "You have been logged out successfully.")
+    return redirect("front-end:home")
 
 def register(request):
     if request.method == "POST":
@@ -77,7 +83,7 @@ def register(request):
                 messages.error(request, "Username already exists. Please choose a different username.")
             else:
                 messages.error(request, "Registration failed. Please check your information.")
-    
+
     registration_form = RegisterForm()
     return render(request, "register.html", {"form": registration_form})
 
@@ -102,20 +108,20 @@ def create_project(request):
         if not title:
             messages.error(request, 'Title and description are required.')
             return redirect('front-end:create-project')
-        
+
         data = {
             'title': title,
             'description': description,
             'tags': tags,
-    
+
         }
-        
+
         serializer = ProjectIdeaSerializer(data=data)
 
         serializer.is_valid(raise_exception=True)
 
         project_idea = serializer.save(author=request.user)
-            
+
         # Handle image uploads
         for image in images:
             project_image = ImageProject.objects.create(
@@ -123,7 +129,7 @@ def create_project(request):
                 project_idea=project_idea
             )
             project_idea.images_projects.add(project_image)
-            
+
         messages.success(request, 'Project created successfully!')
         return redirect("front-end:project-details", pk=project_idea.id)
 
@@ -242,28 +248,74 @@ def edit_comment(request, comment_id):
 def finished_project(request):
     return render(request, "completed_projects.html")
 
-def project_groups_list(request):
-    return render(request, "project_groups.html")
+def project_groups(request, pk):
+    idea = get_object_or_404(ProjectIdea, pk=pk)
+    groups = idea.project_group_project_idea.all()
+    return render(request, "project_groups.html", context={"idea": idea, "groups": groups})
 
-@login_required(login_url="front-end:login")
-def project_groups_create(request, idea_pk):
-    name = request.POST.get('name').strip()
-    description = request.POST.get('description').strip()
-        
-    data = {"name":name,
-            "descrption": description}
+@login_required()
+def add_image_to_project_idea(request, idea_pk):
+    try:
+        project_idea = ProjectIdea.objects.get(id=idea_pk)
+    except ProjectIdea.DoesNotExist:
+        return redirect("front-end:project-ideas")
+
+    if project_idea.author.id != request.user.id:
+        return redirect("front-end:project-details", pk=idea_pk)
     
-    project_idea = ProjectIdea.objects.get(id=idea_pk)
-   
-    context = {"request": request,
-                "project_idea": project_idea}
-    serializer = ProjectGroupSerializer(data=request.POST, context=context)
+    project_image = request.FILES.get("project-image")
+    print(project_image)
+    print(request.FILES)
+    if not project_image:
+        return redirect("front-end:project-details", pk=idea_pk)
+    
+    try:
+        ImageProject.objects.create(image=project_image, project_idea=project_idea)
+    except Exception:
+        # TODO: some errorhanding if the image entry doesnt work
+        pass
 
-    serializer.is_valid(raise_exception=True)
+    return redirect("front-end:project-details", pk=idea_pk)
 
-    group = serializer.save()
-    return render(request, "project_groups_create.html")
+@login_required()
+def remove_image_from_project_idea(request, idea_pk, image_pk):
+    try:
+        project_idea = ProjectIdea.objects.get(id=idea_pk)
+    except ProjectIdea.DoesNotExist:
+        return redirect("front-end:project-ideas")
 
+    if project_idea.author.id != request.user.id:
+        return redirect("front-end:project-details", pk=idea_pk)
+    
+    try:
+        image = ImageProject.objects.get(id=image_pk)
+    except ImageProject.DoesNotExist:
+        return redirect("front-end:project-details", pk=idea_pk)
+
+    if image.project_idea.id != idea_pk:
+        return redirect("front-end:project-details", pk=idea_pk)
+    
+    image.delete()
+
+    return redirect("front-end:project-details", pk=idea_pk)
+ 
+@login_required(login_url="front-end:login")
+def create_new_project_group(request, pk):
+    idea = get_object_or_404(ProjectIdea, pk=pk)
+    if request.method == "POST":
+        if request.user != idea.author and not request.user.is_staff:
+            return redirect("front-end:project-groups", pk=pk)
+        name = request.POST.get("name")
+        description = request.POST.get("description")
+        if name:
+            group = ProjectGroup.objects.create(
+                name=name,
+                description=description,
+                project_idea=idea,
+                owner=request.user
+            )
+            group.members.add(request.user)
+    return redirect("front-end:project-groups", pk=pk)
 
 @login_required(login_url="front-end:login")
 def interested_users(request, pk):

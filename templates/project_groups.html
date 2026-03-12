@@ -13,26 +13,63 @@
         Here are all the groups currently working on this project.
     </p>
 
-</div>
+{% if request.user == idea.author or request.user.is_staff %}
 
-{% if groups %}
-
-    {% for group in groups %}
-    <!-- group lists with name of the group and name of the member -->
-    <div class="group-box">
-        <h4>{{ group.name }}</h4>
-        <p><strong>Owner:</strong><a href="{% url 'front-end:public-user-profile' user.id %}"> {{ group.owner.username }}</a></p>
-        <p>Other members:</p>
-        {% for user in group.members.all %}
-            <p><a href="{% url 'front-end:public-user-profile' user.id %}">{{ user.username }}</a></p>
-        {% endfor %}
-        <hr>
+    <!-- add group option if user is owner of the project -->
     </div>
-    {% endfor %}
+        <p>Create a group for this project.</p>
+        <form action="{% url 'front-end:create-new-project-group' idea.id %}" method="POST">
+            {% csrf_token %}
+            <label>Group Name</label>
+            <input type="text" name="name" required>
+            <label>Description</label>
+            <textarea name="description" rows="4"></textarea>
+            <button type="submit" class="button">Create Group</button>
+        </form>
+
+        {% if groups %}
+
+        {% for group in groups %}
+        <!-- group lists with name of the group and name of the member -->
+        <div class="group-box">
+            <h4>{{ group.name }}</h4>
+            <p><strong>Owner:</strong><a href="{% url 'front-end:public-user-profile' user.id %}"> {{ group.owner.username }}</a></p>
+            <p>Other members:</p>
+            {% for user in group.members.all %}
+                <p><a href="{% url 'front-end:public-user-profile' user.id %}">{{ user.username }}</a></p>
+            {% endfor %}
+            <hr>
+        </div>
+        {% endfor %}
+
+    {% else %}
+
+        <p>No project groups yet.</p>
+
+    {% endif %}
 
 {% else %}
 
-    <p>No project groups yet.</p>
+    {% if groups %}
+
+        {% for group in groups %}
+        <!-- group lists with name of the group and name of the member -->
+        <div class="group-box">
+            <h4>{{ group.name }}</h4>
+            <p><strong>Owner:</strong><a href="{% url 'front-end:public-user-profile' user.id %}"> {{ group.owner.username }}</a></p>
+            <p>Other members:</p>
+            {% for user in group.members.all %}
+                <p><a href="{% url 'front-end:public-user-profile' user.id %}">{{ user.username }}</a></p>
+            {% endfor %}
+            <hr>
+        </div>
+        {% endfor %}
+
+    {% else %}
+
+        <p>No project groups yet.</p>
+
+    {% endif %}
 
 {% endif %}
 
