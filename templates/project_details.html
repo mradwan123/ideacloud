@@ -41,6 +41,8 @@
 </form>
 {% endif %}
 
+ 
+
 
 <div class="project-actions">
   <!-- where the likes will go -->
@@ -86,12 +88,19 @@
         <button type="submit" class="button">Add Like</button>
     </form>
   {% endif %}
-</div>
+   {% if author_id ==  user_id %}
+    <form method="POST" action="{% url 'front-end:delete-project' idea.id %}" onsubmit="return confirm('Are you sure you want to delete this project? This cannot be undone.');">
+    {% csrf_token %}
+    <button type="submit" class="button delete-button">Delete Project</button>
+  </form>
   {% endif %}
-
+</div>
+{% endif %}
+    <!-- button delete project from databsae -->
+ 
 <div>
   <p>
-    {{ idea.description }}
+    Description: {{ idea.description }}
   </p>
 </div>
 

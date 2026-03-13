@@ -183,6 +183,14 @@ def remove_saved_project(request, pk):
     return redirect("front-end:project-details", pk=pk)
 
 @login_required(login_url="front-end:login")
+def delete_project(request, pk):
+    idea = get_object_or_404(ProjectIdea, pk=pk)
+    if request.method == "POST":
+        idea.delete()
+        return redirect("front-end:project-ideas")
+    return redirect("front-end:project-ideas")
+
+@login_required(login_url="front-end:login")
 def add_like(request, pk):
     idea = get_object_or_404(ProjectIdea, pk=pk)
     idea.likes.add(request.user)
