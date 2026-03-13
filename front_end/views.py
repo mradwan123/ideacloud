@@ -18,7 +18,16 @@ User = get_user_model()
 def home(request):
     if request.user.is_authenticated:
         ideas = ProjectIdea.objects.all()
-        return render(request, "home.html", context={"ideas": ideas})
+
+        idea_list = []
+        for idea in ideas:
+            images = idea.images_projects.all()
+            idea_info = {"idea": idea}
+            if images:
+                idea_info["image"] = images[0]
+            idea_list.append(idea_info)
+
+        return render(request, "home.html", context={"ideas": idea_list})
     return render(request, "home.html")
 
 def project_ideas(request):
