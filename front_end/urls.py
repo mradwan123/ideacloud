@@ -16,6 +16,7 @@ from .views import (
     remove_favourite_project,
     saved_projects,
     add_saved_project,
+    delete_project,
     remove_saved_project,
     add_like,
     remove_like,
@@ -36,17 +37,15 @@ from .views import (
 app_name = "front-end"
 urlpatterns = [
     path("", home, name="home"),
-    # project related links (project ideas, project details, create project, finished project list and details)
+    # project related links (project ideas, project details, project images,  create project, finished project list and details)
     path("project_ideas/", project_ideas, name="project-ideas"),
     path("project_details/<int:pk>", project_details, name="project-details"),
     path("create_project/", create_project, name="create-project"),
     path("finished_projects/", finished_project_list, name="finished-projects"),
     path("finished_project_details/<int:pk>", finished_project_detail, name="finished-project-details"),
-
     # handle project images
     path("project_details/<int:idea_pk>/add_image_to_project", add_image_to_project_idea, name="add-image-to-project"),
     path("project_details/<int:idea_pk>/remove_image_from_project/<int:image_pk>", remove_image_from_project_idea, name="remove-image-from-project"),
-
     # favourite
     path("favourite_projects/", favourite_projects, name="favourite-projects"),
     path("project_details/<int:pk>/add_favourite", add_favourite_project, name="add-favourite"),
@@ -55,6 +54,8 @@ urlpatterns = [
     path("saved_projects/", saved_projects, name="saved-projects"),
     path("project_details/<int:pk>/add_saved", add_saved_project, name="add-saved"),
     path("project_details/<int:pk>/remove_saved", remove_saved_project, name="remove-saved"),
+    #delete 
+    path("delete_project/<int:pk>", delete_project, name="delete-project"),
     # like
     path("project_details/<int:pk>/add_like", add_like, name="add-like"),
     path("project_details/<int:pk>/remove_like", remove_like, name="remove-like"),

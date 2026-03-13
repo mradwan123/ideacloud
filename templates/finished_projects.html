@@ -2,7 +2,6 @@
 {% load static %}
 
 {% block tab %} Finished Projects {% endblock %}
-
 {% block content %}
 
 <!-- display of the projects to be made -->
@@ -15,7 +14,8 @@
     </p>
 </div>
 
-<div class="ideas-grid">
+<div class="group-box">
+
     {% for idea in ideas %}
     <div class="idea-card">
         <!-- <img src="{% static 'images/image_placeholder.jpg' %}"> -->
@@ -41,9 +41,9 @@
 </div>
 
 <!-- maybe 'more' button?
-<p class="more-projects">
+  <p class="more-projects">
     More Projects
-</p>
+  </p>
 -->
 
 {% endblock %}
