@@ -346,10 +346,10 @@ def remove_image_from_project_idea(request, idea_pk, image_pk):
 
 @login_required(login_url="front-end:login")
 def create_new_project_group(request, pk):
+    if request.user.is_anonymous:
+        return redirect("front-end:project-groups", pk=pk)
     idea = get_object_or_404(ProjectIdea, pk=pk)
-    if request.method == "POST":
-        if request.user != idea.author and not request.user.is_staff:
-            return redirect("front-end:project-groups", pk=pk)
+    if request.method == "POST" and request.user.is_authenticated:
         name = request.POST.get("name")
         description = request.POST.get("description")
         if name:
