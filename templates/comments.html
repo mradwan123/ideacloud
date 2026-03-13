@@ -35,7 +35,7 @@
 
     {% for comment in comments %}
         <div class="comment-box">
-            {% if comment.user.profile_picture %}
+            {% if comment.user.image %}
                 <img src="{{ comment.user.image.url }}">
             {% else %}
                 <img src="../media/profile_images/default.jpg">
