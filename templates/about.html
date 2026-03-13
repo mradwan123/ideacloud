@@ -98,7 +98,7 @@
     <div style="display: flex; gap: 20px; overflow-x: auto; padding: 20px 0; justify-content: center;">
         
         <div class="team-box" style="display: flex; flex-direction: column; align-items: center; gap: 10px; padding: 20px; border: 1px solid #ddd; border-radius: 8px; background-color: #f9f9f9; min-width: 180px; text-align: center;">
-            <img src="{% static 'images/profile-pic.avif' %}" style="width: 80px; height: 80px; border-radius: 50%; object-fit: cover;">
+            <img src="{{ comment.user.image.url }}" style="width: 80px; height: 80px; border-radius: 50%; object-fit: cover;">
             <div class="name-and-description">
                 <h4 style="margin: 0 0 5px 0; color: #2c3e50; font-size: 14px;">Alaa Ali Omer Karoum</h4>
                 <h5 style="margin: 0; color: #7f8c8d; font-weight: normal; font-size: 12px;">Back-End Developer</h5>

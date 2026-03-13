@@ -53,15 +53,15 @@ def project_details(request, pk):
         has_favourited = None
         has_saved = None
         has_liked = None
-     
-    author_id = 0   
+
+    author_id = 0
     if idea.author:
         author_id = idea.author.id
-        
+
     return render(
         request,
         "project_details.html",
-        
+
         context={
             "idea": idea,
             "has_favourited": has_favourited,
@@ -69,7 +69,7 @@ def project_details(request, pk):
             "has_liked": has_liked,
             "like_count": idea.likes.count(),
             "user_id": request.user.id,
-            "author_id": author_id, 
+            "author_id": author_id,
         })
 
 def user_login(request):
@@ -308,12 +308,12 @@ def add_image_to_project_idea(request, idea_pk):
 
     if project_idea.author.id != request.user.id:
         return redirect("front-end:project-details", pk=idea_pk)
-    
+
     project_image = request.FILES.get("project-image")
 
     if not project_image:
         return redirect("front-end:project-details", pk=idea_pk)
-    
+
     try:
         ImageProject.objects.create(image=project_image, project_idea=project_idea)
     except Exception:
@@ -331,7 +331,7 @@ def remove_image_from_project_idea(request, idea_pk, image_pk):
 
     if project_idea.author.id != request.user.id:
         return redirect("front-end:project-details", pk=idea_pk)
-    
+
     try:
         image = ImageProject.objects.get(id=image_pk)
     except ImageProject.DoesNotExist:
@@ -339,11 +339,11 @@ def remove_image_from_project_idea(request, idea_pk, image_pk):
 
     if image.project_idea.id != idea_pk:
         return redirect("front-end:project-details", pk=idea_pk)
-    
+
     image.delete()
 
     return redirect("front-end:project-details", pk=idea_pk)
- 
+
 @login_required(login_url="front-end:login")
 def create_new_project_group(request, pk):
     idea = get_object_or_404(ProjectIdea, pk=pk)
@@ -368,10 +368,11 @@ def interested_users(request, pk):
         idea = get_object_or_404(ProjectIdea, pk=pk)
         interested_users = idea.user_interested_project_idea.all()
 
-        return render(request, "interested_users.html",
-                        context={
-                            "idea": idea,
-                            "interested_users": interested_users,
-            
-                        }
+        return render(
+            request,
+            "interested_users.html",
+            context={
+                "idea": idea,
+                "interested_users": interested_users,
+            }
         )
