@@ -13,7 +13,7 @@
         Here are all the groups currently working on this project.
     </p>
 
-{% if request.user == idea.author or request.user.is_staff %}
+{% if request.user.is_authenticated %}
 
     <!-- add group option if user is owner of the project -->
     </div>
@@ -33,10 +33,14 @@
         <!-- group lists with name of the group and name of the member -->
         <div class="group-box">
             <h4>{{ group.name }}</h4>
-            <p><strong>Owner:</strong><a href="{% url 'front-end:public-user-profile' user.id %}"> {{ group.owner.username }}</a></p>
+            {%  if group.owner  %}
+            <p><strong>Owner:</strong><a href="{% url 'front-end:public-user-profile' group.owner.id %}"> {{ group.owner.username }}</a></p>
+            {%  else  %}
+            <p><strong>Owner:</strong> Deleted User</p>
+            {%  endif  %}
             <p>Other members:</p>
-            {% for user in group.members.all %}
-                <p><a href="{% url 'front-end:public-user-profile' user.id %}">{{ user.username }}</a></p>
+            {% for member in group.members.all %}
+                <p><a href="{% url 'front-end:public-user-profile' member.id %}">{{ member.username }}</a></p>
             {% endfor %}
             <hr>
         </div>
@@ -56,10 +60,14 @@
         <!-- group lists with name of the group and name of the member -->
         <div class="group-box">
             <h4>{{ group.name }}</h4>
-            <p><strong>Owner:</strong><a href="{% url 'front-end:public-user-profile' user.id %}"> {{ group.owner.username }}</a></p>
+            {%  if group.owner  %}
+            <p><strong>Owner:</strong><a href="{% url 'front-end:public-user-profile' group.owner.id %}"> {{ group.owner.username }}</a></p>
+            {%  else  %}
+            <p><strong>Owner:</strong> Deleted User</p>
+            {%  endif  %}
             <p>Other members:</p>
-            {% for user in group.members.all %}
-                <p><a href="{% url 'front-end:public-user-profile' user.id %}">{{ user.username }}</a></p>
+            {% for member in group.members.all %}
+                <p><a href="{% url 'front-end:public-user-profile' member.id %}">{{ member.username }}</a></p>
             {% endfor %}
             <hr>
         </div>

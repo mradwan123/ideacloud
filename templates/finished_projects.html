@@ -1,8 +1,7 @@
 {% extends 'base.html' %}
 {% load static %}
 
-{% block tab %} Finished Project Ideas {% endblock %}
-
+{% block tab %} Finished Projects {% endblock %}
 {% block content %}
 
 <!-- display of the projects to be made -->
@@ -10,10 +9,13 @@
 <!-- project ideas displayed -->
 <div class="page-description">
     <h3 class="page-title">Finished Projects</h3>
+    <p>
+        All the finished projects from our community.
+    </p>
 </div>
 
-
 <div class="group-box">
+
     {% for idea in ideas %}
     <div class="idea-card">
         <!-- <img src="{% static 'images/image_placeholder.jpg' %}"> -->
@@ -38,9 +40,10 @@
     {% endfor %}
 </div>
 
-<!-- maybe 'more' button? -->
- <p class="more-projects"></p>
-     More Projects
-</p>
+<!-- maybe 'more' button?
+  <p class="more-projects">
+    More Projects
+  </p>
+-->
 
 {% endblock %}
