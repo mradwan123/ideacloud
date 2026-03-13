@@ -65,12 +65,12 @@
   {% if has_saved %}
     <form action="{% url 'front-end:remove-saved' idea.id %}" method="POST">
         {% csrf_token %}
-        <button type="submit" class="button">Remove from Saved</button>
+        <button type="submit" class="button">Remove from Interested</button>
     </form>
   {% else %}
     <form action="{% url 'front-end:add-saved' idea.id %}" method="POST">
         {% csrf_token %}
-        <button type="submit" class="button">Add to Saved</button>
+        <button type="submit" class="button">Add to Interested</button>
     </form>
   {% endif %}
 

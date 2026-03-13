@@ -18,12 +18,30 @@ User = get_user_model()
 def home(request):
     if request.user.is_authenticated:
         ideas = ProjectIdea.objects.all()
-        return render(request, "home.html", context={"ideas": ideas})
+
+        idea_list = []
+        for idea in ideas:
+            images = idea.images_projects.all()
+            idea_info = {"idea": idea}
+            if images:
+                idea_info["image"] = images[0]
+            idea_list.append(idea_info)
+
+        return render(request, "home.html", context={"ideas": idea_list})
     return render(request, "home.html")
 
 def project_ideas(request):
     ideas = ProjectIdea.objects.all()
-    return render(request, "project_ideas.html", context={"ideas": ideas})
+
+    idea_list = []
+    for idea in ideas:
+        images = idea.images_projects.all()
+        idea_info = {"idea": idea}
+        if images:
+            idea_info["image"] = images[0]
+        idea_list.append(idea_info)
+
+    return render(request, "project_ideas.html", context={"ideas": idea_list})
 
 def project_details(request, pk):
     idea = get_object_or_404(ProjectIdea, pk=pk)
@@ -149,7 +167,16 @@ def create_project(request):
 def favourite_projects(request):
     user = request.user
     favourites = user.favorite_projects.all()
-    return render(request, "favourite_projects.html", context={"favourites": favourites})
+
+    idea_list = []
+    for idea in favourites:
+        images = idea.images_projects.all()
+        idea_info = {"idea": idea}
+        if images:
+            idea_info["image"] = images[0]
+        idea_list.append(idea_info)
+
+    return render(request, "favourite_projects.html", context={"favourites": idea_list})
 
 @login_required(login_url="front-end:login")
 def add_favourite_project(request, pk):
@@ -167,7 +194,16 @@ def remove_favourite_project(request, pk):
 def saved_projects(request):
     user = request.user
     saved = user.interested_projects.all()
-    return render(request, "saved_projects.html", context={"saved": saved})
+
+    idea_list = []
+    for idea in saved:
+        images = idea.images_projects.all()
+        idea_info = {"idea": idea}
+        if images:
+            idea_info["image"] = images[0]
+        idea_list.append(idea_info)
+
+    return render(request, "saved_projects.html", context={"saved": idea_list})
 
 @login_required(login_url="front-end:login")
 def add_saved_project(request, pk):

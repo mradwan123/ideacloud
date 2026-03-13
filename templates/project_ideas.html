@@ -19,22 +19,26 @@
 <div class="ideas-grid">
     {% for idea in ideas %}
     <div class="idea-card">
+        {%  if idea.image  %}
+        <img src="{{ idea.image.image.url }}">
+        {% else %}
         <img src="{% static 'images/image_placeholder.jpg' %}">
+        {% endif %}
         <div class="caption">
             <p class="project-title">
-                <a href="{% url 'front-end:project-details' idea.id %}">
-                    {{ idea.title }}
+                <a href="{% url 'front-end:project-details' idea.idea.id %}">
+                    {{ idea.idea.title }}
                 </a>
             </p>
-            {% if idea.author %}
+            {% if idea.idea.author %}
             <p class="project-owner-thumbnail">
-                By <a href="{% url 'front-end:public-user-profile' idea.author.id %}">{{ idea.author.username }}</a>
+                By <a href="{% url 'front-end:public-user-profile' idea.idea.author.id %}">{{ idea.idea.author.username }}</a>
             </p> 
             {% else %}
             <h4>User Deleted</h4>
             {% endif %}
             <p class="project-description-thumbnail">
-                {{ idea.description|truncatewords:10 }}
+                {{ idea.idea.description|truncatewords:10 }}
             </p>
         </div>
     </div>
