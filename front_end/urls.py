@@ -31,7 +31,10 @@ from .views import (
     add_image_to_project_idea,
     remove_image_from_project_idea,
     create_new_project_group,
-    interested_users
+    interested_users,
+    group_details,
+    join_group,
+    leave_group,
 )
 
 app_name = "front-end"
@@ -77,6 +80,9 @@ urlpatterns = [
     # groups
     path("project_groups/<int:pk>/", project_groups, name="project-groups"),
     path("project_groups/<int:pk>/create_new_project_group/", create_new_project_group, name="create-new-project-group"),
+    path("group_details/<group_id>/", group_details, name="group-details"),
+    path("group_details/<group_id>/join_group/", join_group, name="join-group"),
+    path("group_details/<group_id>/leave_group/", leave_group, name="leave-group"),
 
-    path("interested_users/<int:pk>/", interested_users, name="interested-users")
+    path("interested_users/<int:pk>/", interested_users, name="interested-users"),
 ]

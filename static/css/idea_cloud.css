@@ -528,3 +528,7 @@ label {
 .edit-comment-form a {
     color: black;
 }
+
+li a {
+    color: #788192;
+}

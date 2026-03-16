@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block tab %} Log In {% endblock %}
+
+{% block content %}
+
+<div class="page-description">
+    
+    <h3 class="page-title">Project Group: {{  group.name  }}</h3>
+
+    {%  if group.owner  %}
+    <p><strong>Owner:</strong><a href="{% url 'front-end:public-user-profile' group.owner.id %}"> {{ group.owner.username }}</a></p>
+    {%  else  %}
+    <p><strong>Owner:</strong> Deleted User</p>
+    {%  endif  %}
+
+    {%  if group.owner  %}
+    <p><strong>Branched from Project Idea:</strong><a href="{% url 'front-end:project-details' group.project_idea.id %}"> {{ group.project_idea.title }}</a></p>
+    {%  else  %}
+    <p><strong>Owner:</strong> Deleted Project Idea</p>
+    {%  endif  %}
+
+    <p>
+        {{  group.description  }}
+    </p>
+
+    <h3 class="page-title">Members</h3>
+    <div style="display: flex; flex-wrap: wrap;">
+    <ul>
+    {% for member in group.members.all %}
+    <li>
+        <a href="{% url 'front-end:public-user-profile' member.id %}"><strong>{{ member.username }}</strong></a>
+    </li>
+    {% endfor %}
+    </ul>
+    </div>
+    {%  if request.user not in group.members.all  %}
+    <a href="{% url 'front-end:join-group' group.id %}"> Join Group</a>
+    {%  endif  %}
+    {%  if group.owner != request.user %}
+    {%  if request.user in group.members.all  %}
+    <a href="{% url 'front-end:leave-group' group.id %}"> Leave Group</a>
+    {%  endif  %}
+    {%  endif  %}
+
+
+</div>
+
+
+{% endblock %}
