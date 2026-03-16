@@ -15,11 +15,7 @@
     <p><strong>Owner:</strong> Deleted User</p>
     {%  endif  %}
 
-    {%  if group.owner  %}
     <p><strong>Branched from Project Idea:</strong><a href="{% url 'front-end:project-details' group.project_idea.id %}"> {{ group.project_idea.title }}</a></p>
-    {%  else  %}
-    <p><strong>Owner:</strong> Deleted Project Idea</p>
-    {%  endif  %}
 
     <p>
         {{  group.description  }}
