@@ -43,11 +43,11 @@ urlpatterns = [
     # Listing all comments on a ProjectIdea or create a new one
     path("project-ideas/<int:idea_pk>/project-comments/", ProjectIdeaCommentList.as_view(), name="project-idea-comments-list"),
     # Access to methods related to a specific comment connected to a specific idea
-    path("project-ideas/<int:idea_pk>/project-comments/<int:comment_pk>", ProjectIdeaCommentDetail.as_view(), name="project-idea-comments-detail"),
+    path("project-ideas/<int:idea_pk>/project-comments/<int:comment_pk>/", ProjectIdeaCommentDetail.as_view(), name="project-idea-comments-detail"),
 
     ## FinishedProjectComments
     # Listing all comments on a FinishedProject or create a new one
-    path("finished-projects/project-comments/", FinishedProjectCommentList.as_view(), name="finished-project-idea-comments-list"),
+    path("finished-projects/<int:finished_pk>/project-comments/", FinishedProjectCommentList.as_view(), name="finished-project-comments-list"),
     # Access to methods related to a specific comment connected to a specific FinishedProject
-    path("finished-projects/<int:finished_pk>/project-comments/<int:comment_pk>", FinishedProjectCommentDetail.as_view(), name="finished-project-comments-detail"),
+    path("finished-projects/<int:finished_pk>/project-comments/<int:comment_pk>/", FinishedProjectCommentDetail.as_view(), name="finished-project-comments-detail"),
 ]
