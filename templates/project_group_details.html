@@ -31,11 +31,10 @@
     {% endfor %}
     </ul>
     </div>
+    {%  if group.owner != request.user %}
     {%  if request.user not in group.members.all  %}
     <a href="{% url 'front-end:join-group' group.id %}"> Join Group</a>
-    {%  endif  %}
-    {%  if group.owner != request.user %}
-    {%  if request.user in group.members.all  %}
+    {%  else  %}
     <a href="{% url 'front-end:leave-group' group.id %}"> Leave Group</a>
     {%  endif  %}
     {%  endif  %}
