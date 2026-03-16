@@ -1,6 +1,6 @@
 from django.test import TestCase
 from django.contrib.auth import get_user_model
-from projects.models import ProjectIdea, ImageProject, ProjectIdeaComment, Tag
+from projects.models import ProjectIdea, ImageProject, ProjectComment, Tag
 from projects.serializers.serializer_project_idea_serializer import ProjectIdeaSerializer
 
 User = get_user_model()
@@ -24,8 +24,8 @@ class ProjectIdeaSerializerTests(TestCase):
             image="project_images/test.jpg"
         )
         # create test comment
-        self.comment = ProjectIdeaComment.objects.create(
-            user=self.user,
+        self.comment = ProjectComment.objects.create(
+            author=self.user,
             project_idea=self.project_idea,
             content="Nice Idea!"
         )

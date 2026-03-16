@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from django.contrib import messages
-from projects.models import ProjectIdea, ProjectIdeaComment, Tag, ImageProject, ProjectGroup, FinishedProject
+from projects.models import ProjectIdea, ProjectComment, Tag, ImageProject, ProjectGroup, FinishedProject
 from front_end.form import RegisterForm
 from users.serializers import UserSerializer
 from django.contrib.auth import authenticate, login, logout
@@ -267,7 +267,7 @@ def add_comment(request, pk):
     if request.method == "POST":
         content = request.POST.get("content", "").strip()
         if content:
-            ProjectIdeaComment.objects.create(
+            ProjectComment.objects.create(
                 user=request.user,
                 project_idea=idea,
                 content=content
@@ -276,14 +276,14 @@ def add_comment(request, pk):
 
 @login_required(login_url="front-end:login")
 def remove_comment(request, comment_id):
-    comment = get_object_or_404(ProjectIdeaComment, pk=comment_id)
+    comment = get_object_or_404(ProjectComment, pk=comment_id)
     if request.user == comment.user or request.user.is_staff:
         comment.delete()
     return redirect("front-end:comments", pk=comment.project_idea.id)
 
 @login_required(login_url="front-end:login")
 def edit_comment(request, comment_id):
-    comment = get_object_or_404(ProjectIdeaComment, pk=comment_id)
+    comment = get_object_or_404(ProjectComment, pk=comment_id)
     if request.user != comment.user and not request.user.is_staff:
         return redirect("front-end:comments", pk=comment.project_idea.id)
     if request.method == "POST":
