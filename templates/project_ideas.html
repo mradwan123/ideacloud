@@ -12,9 +12,11 @@
     <h3 class="page-title">All Projects</h3>
 </div>
 
+{% if user.is_authenticated %}
 <div class="new-project-button">
   <a href="{% url 'front-end:create-project' %}" class="button">New Project +</a>
 </div>
+{% endif %}
 
 <div class="ideas-grid">
     {% for idea in ideas %}

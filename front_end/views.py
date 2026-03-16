@@ -247,6 +247,16 @@ def public_user_profile(request, user_id):
             "user_profile": profile_user
         }
     )
+    
+@login_required(login_url="front-end:login")
+def user_availability(request, user_id):
+    user  = get_object_or_404(User, pk=user_id)
+    if not user.available:
+        user.available = True
+    else:
+        user.available = False
+    user.save()
+    return redirect("front-end:public-user-profile", user_id=user.id)
 
 @login_required(login_url="front-end:login")
 def comments(request, pk):

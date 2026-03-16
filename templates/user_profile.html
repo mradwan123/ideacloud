@@ -31,12 +31,12 @@
             </div>
             <div class="profile-links">
                 <!-- availability takes a boolean to display different images-->
-                <div class="user-info">
-                    Available
+            
+                <div class="user-info"><a href="{% url 'front-end:user-availability' user_profile.id %}">Availability</a></div>
                 {% if user_profile.available == True %}
-                    <img src="../static/images/available.svg">
+                    <img src="../static/images/available.svg" id="image-available">
                 {% else %}
-                    <img src="../static/images/unavailable.svg">
+                    <img src="../static/images/unavailable.svg" id="image-unavailable">
                 {% endif %}
                 </div>
                 <!-- probably the permissions will determine which user sees what-->
