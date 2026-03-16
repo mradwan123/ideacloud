@@ -6,7 +6,7 @@ from projects.views.view_project_group import ProjectGroupList, ProjectGroupDeta
 from projects.views.view_project_idea_images import AddProjectIdeaImage, RemoveProjectIdeaImage
 from projects.views.view_finished_project import FinishedProjectList, FinishedProjectDetail
 from projects.views.view_likes import ProjectIdeaToggleLike, FinishedProjectToggleLike
-from projects.views.project_idea_comment_views import ProjectIdeaCommentListCreateView
+from projects.views.view_project_comment import ProjectIdeaCommentList, ProjectIdeaCommentDetail, FinishedProjectCommentList, FinishedProjectCommentDetail
 
 app_name = "projects"
 urlpatterns = [
@@ -37,6 +37,17 @@ urlpatterns = [
     path("project-ideas/<int:idea_pk>/like/", ProjectIdeaToggleLike.as_view(), name="project-idea-like"),
     # Toggling a user's like on Finished Projects
     path("finished-projects/<int:project_pk>/like/", FinishedProjectToggleLike.as_view(), name="finished-project-like"),
-    ## ProjectComments
-    path("project-comments/", ProjectIdeaCommentListCreateView.as_view(), name="project-comments")
+
+    ### ProjectComments
+    ## ProjectIdeaComments
+    # Listing all comments on a ProjectIdea or create a new one
+    path("project-ideas/<int:idea_pk>/project-comments/", ProjectIdeaCommentList.as_view(), name="project-idea-comments-list"),
+    # Access to methods related to a specific comment connected to a specific idea
+    path("project-ideas/<int:idea_pk>/project-comments/<int:comment_pk>", ProjectIdeaCommentDetail.as_view(), name="project-idea-comments-detail"),
+
+    ## FinishedProjectComments
+    # Listing all comments on a FinishedProject or create a new one
+    path("finished-projects/project-comments/", FinishedProjectCommentList.as_view(), name="finished-project-idea-comments-list"),
+    # Access to methods related to a specific comment connected to a specific FinishedProject
+    path("finished-projects/<int:finished_pk>/project-comments/<int:comment_pk>", FinishedProjectCommentDetail.as_view(), name="finished-project-comments-detail"),
 ]
