@@ -41,7 +41,14 @@
 </form>
 {% endif %}
 
- 
+ <!-- Tags -->
+   <div class="tags-container">        
+        {% for tag in idea.tags.all %}
+            <label for="tag-{{ tag.id }}" class="tag-btn">{{ tag.name }}</label>
+        {% empty %}
+            <p class="no-tags">No tags available. Contact admin to add tags.</p>
+        {% endfor %}
+    </div>
 
 
 <div class="project-actions">
