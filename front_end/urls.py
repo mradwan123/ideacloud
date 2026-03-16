@@ -35,6 +35,7 @@ from .views import (
     group_details,
     join_group,
     leave_group,
+    user_availability, 
 )
 
 app_name = "front-end"
@@ -74,6 +75,8 @@ urlpatterns = [
     # user profile / public user profile
     path("user_profile/", user_profile, name="user-profile"),
     path("user_profile/<int:user_id>", public_user_profile, name="public-user-profile"),
+    # user available yes/no
+    path("user_profile/<int:user_id>/availability/", user_availability, name="user-availability"),
     # about section
     path("about/", about, name="about"),
 

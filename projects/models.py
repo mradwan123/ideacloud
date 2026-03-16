@@ -31,22 +31,43 @@ class ProjectIdea(models.Model):
         author_name = self.author.username if self.author else "Deleted User"
         return f"Project: '{self.title}' Submitted by: '{author_name}' Created on: {self.created_on}"
 
-class ProjectIdeaComment(models.Model):
-    user = models.ForeignKey(
+
+class ProjectComment(models.Model):
+    """This represents comments on either a ProjectIdea or a FinishedProject"""
+    author = models.ForeignKey(
         User, on_delete=models.CASCADE,
-        related_name='user_project_idea_comments'
+        related_name='user_project_comments'
     )
     project_idea = models.ForeignKey(
-        ProjectIdea,
+        # in ' ' so django waits for the models to be loaded before trying to use them
+        'ProjectIdea',
         on_delete=models.CASCADE,
-        related_name='project_idea_comments'
+        related_name='project_idea_comments',
+        null=True, blank=True,
+    )
+    finished_project = models.ForeignKey(
+        'FinishedProject',
+        on_delete=models.CASCADE,
+        null=True, blank=True,
+        related_name='finished_project_comments'
     )
     content = models.CharField(max_length=500)
     created_on = models.DateTimeField(null=False, editable=False, default=timezone.now)
     updated_on = models.DateTimeField(auto_now=True, editable=False)
 
+    class Meta:
+        # Q allows us to chain binary operators on filters
+        # we do this so we can check, that the comment is attached to either a ProjectIdea OR a FinishedProject
+        constraints = [
+            models.CheckConstraint(
+                condition=(models.Q(project_idea__isnull=False, finished_project__isnull=True) | models.Q(project_idea__isnull=True, finished_project__isnull=False)),
+                name='comment_must_belong_to_idea_or_finished_project'
+            )
+        ]
+
     def __str__(self):
-        return f"Comment by {self.user} on {self.project_idea}"
+        connected_model = self.project_idea if self.project_idea else self.finished_project
+        return f"Comment by {self.author.username} on {connected_model}"
 
 
 class ProjectGroup(models.Model):
@@ -108,7 +129,7 @@ class ImageProject(models.Model):
 
     def __str__(self):
         return f"Name: '{self.image.name}' Project Idea: '{self.project_idea.id}'"
-    
+
     def delete(self, *args, **kwargs):
         if os.path.isfile(self.image.path):
             os.remove(self.image.path)

@@ -532,3 +532,15 @@ label {
 li a {
     color: #788192;
 }
+
+/*--- Image avialability ---*/
+
+#image-available {
+    width: 5%;
+    height: 5%;
+}
+
+#image-unavailable {
+    width: 5%;
+    height: 5%;
+}

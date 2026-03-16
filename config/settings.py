@@ -11,7 +11,7 @@ https://docs.djangoproject.com/en/6.0/ref/settings/
 """
 
 from pathlib import Path
-import os
+import os, sys
 from dotenv import load_dotenv
 import dj_database_url
 
@@ -87,6 +87,9 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'config.wsgi.application'
 
+# To improve CI and testing speed, adding the following code:
+if 'test' in sys.argv or os.getenv('GITHUB_ACTIONS'):
+    PASSWORD_HASHERS = ['django.contrib.auth.hashers.MD5PasswordHasher']
 
 # Database
 # https://docs.djangoproject.com/en/6.0/ref/settings/#databases
