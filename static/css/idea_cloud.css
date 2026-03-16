@@ -529,6 +529,10 @@ label {
     color: black;
 }
 
+li a {
+    color: #788192;
+}
+
 /*--- Image avialability ---*/
 
 #image-available {

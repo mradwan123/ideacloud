@@ -312,6 +312,7 @@ def finished_project_list(request):
     ideas = FinishedProject.objects.all()
     return render(request, "finished_projects.html", context={"ideas": ideas})
 
+@login_required(login_url="front-end:login")
 def project_groups(request, pk):
     idea = get_object_or_404(ProjectIdea, pk=pk)
     groups = idea.project_group_project_idea.all()
@@ -394,3 +395,43 @@ def interested_users(request, pk):
                 "interested_users": interested_users,
             }
         )
+
+@login_required(login_url="front-end:login")
+def group_details(request, group_id):
+    try:
+        project_group = ProjectGroup.objects.get(id=group_id)
+    except ProjectGroup.DoesNotExist:
+        return redirect("front-end:group-details", group_id=group_id)
+    
+    return render(request, "project_group_details.html", context={"group": project_group})
+
+@login_required()
+def join_group(request, group_id):
+    try:
+        project_group = ProjectGroup.objects.get(id=group_id)
+    except ProjectGroup.DoesNotExist:
+        return redirect("front-end:group-details", group_id=group_id)
+    
+    if request.user in project_group.members.all():
+        return redirect("front-end:group-details", group_id=group_id)
+    
+    project_group.members.add(request.user)
+
+    return redirect("front-end:group-details", group_id=group_id)
+
+@login_required()
+def leave_group(request, group_id):
+    try:
+        project_group = ProjectGroup.objects.get(id=group_id)
+    except ProjectGroup.DoesNotExist:
+        return redirect("front-end:group-details", group_id=group_id)
+    
+    if request.user == project_group.owner:
+        return redirect("front-end:group-details", group_id=group_id)
+    
+    if request.user not in project_group.members.all():
+        return redirect("front-end:group-details", group_id=group_id)
+
+    project_group.members.remove(request.user)
+    
+    return redirect("front-end:group-details", group_id=group_id)

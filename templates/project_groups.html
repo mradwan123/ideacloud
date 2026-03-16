@@ -32,16 +32,20 @@
         {% for group in groups %}
         <!-- group lists with name of the group and name of the member -->
         <div class="group-box">
-            <h4>{{ group.name }}</h4>
+            <h4><a href="{% url 'front-end:group-details' group.id %}">{{ group.name }}</a></h4>
             {%  if group.owner  %}
             <p><strong>Owner:</strong><a href="{% url 'front-end:public-user-profile' group.owner.id %}"> {{ group.owner.username }}</a></p>
             {%  else  %}
             <p><strong>Owner:</strong> Deleted User</p>
             {%  endif  %}
             <p>Other members:</p>
+            <ul>
             {% for member in group.members.all %}
-                <p><a href="{% url 'front-end:public-user-profile' member.id %}">{{ member.username }}</a></p>
+            <li>
+                <a href="{% url 'front-end:public-user-profile' member.id %}">{{ member.username }}</a>
+            </li>
             {% endfor %}
+            </ul>
             <hr>
         </div>
         {% endfor %}
