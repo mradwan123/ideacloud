@@ -56,14 +56,11 @@ class ProjectComment(models.Model):
     updated_on = models.DateTimeField(auto_now=True, editable=False)
 
     class Meta:
+        # Q allows us to chain binary operators on filters
+        # we do this so we can check, that the comment is attached to either a ProjectIdea OR a FinishedProject
         constraints = [
             models.CheckConstraint(
-                # Q allows us to chain binary operators on filters
-                # we do this so we can check, that the comment is attached to either a ProjectIdea OR a FinishedProject
-                check=(
-                    models.Q(project_idea__isnull=False, finished_project__isnull=True) |
-                    models.Q(project_idea__isnull=True, finished_project__isnull=False)
-                ),
+                condition=(models.Q(project_idea__isnull=False, finished_project__isnull=True) | models.Q(project_idea__isnull=True, finished_project__isnull=False)),
                 name='comment_must_belong_to_idea_or_finished_project'
             )
         ]
@@ -132,7 +129,7 @@ class ImageProject(models.Model):
 
     def __str__(self):
         return f"Name: '{self.image.name}' Project Idea: '{self.project_idea.id}'"
-    
+
     def delete(self, *args, **kwargs):
         if os.path.isfile(self.image.path):
             os.remove(self.image.path)
