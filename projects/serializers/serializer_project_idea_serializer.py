@@ -3,7 +3,7 @@ from projects.models import ProjectIdea, Tag
 from django.contrib.auth import get_user_model
 from projects.serializers.serializer_profanity_validator import ProfanityValidator
 from projects.serializers.serializer_image_project import ImageProjectSerializer
-from projects.serializers.serializer_project_idea_comment import ProjectIdeaCommentSerializer
+from projects.serializers.serializer_project_comment import ProjectCommentSerializer
 
 User = get_user_model()
 
@@ -11,7 +11,7 @@ class ProjectIdeaSerializer(serializers.ModelSerializer):
     # we're nesting the serializers here; the variale names HAVE to be the related_name of the model
     # read_only set to true because we wouldn't change anything from here
     images_projects = ImageProjectSerializer(many=True, read_only=True)
-    project_idea_comments = ProjectIdeaCommentSerializer(many=True, read_only=True)
+    project_idea_comments = ProjectCommentSerializer(many=True, read_only=True)
 
     # these are the annotated values from the queryset in the ProjectIdea views
     likes_count = serializers.IntegerField(read_only=True)
