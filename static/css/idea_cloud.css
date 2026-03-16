@@ -528,3 +528,15 @@ label {
 .edit-comment-form a {
     color: black;
 }
+
+/*--- Image avialability ---*/
+
+#image-available {
+    width: 5%;
+    height: 5%;
+}
+
+#image-unavailable {
+    width: 5%;
+    height: 5%;
+}
