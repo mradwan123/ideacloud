@@ -5,12 +5,40 @@
 
 {% block content %}
 
+
 <!-- display of the projects to be made -->
 
 <!-- project ideas displayed -->
 <div class="page-description">
     <h3 class="page-title">All Projects</h3>
 </div>
+
+{% if user.is_authenticated %}
+<!-- search project ideas button -->
+
+    <div class="row justify-content-center">
+        <div class="col-lg-14 col-md-30">    
+            <form role="search" method="POST" action="{% url 'front-end:search-projects' %}">
+            {% csrf_token %}
+            <div class="search-wrapper">
+                <input
+                    class="search-input-large"
+                    type="search"
+                    placeholder="Search Project Ideas in IdeaCloud..."
+                    name="title"
+                    value="{{ search_term }}"
+                    required aria-label="Search"
+                    style="font-size: 20pt"
+                >
+            <button class="btn btn-primary btn-lg px-5" type="submit" style="font-size: 20pt;">
+                Search
+            </button>
+        </div>
+    </form>
+</div>
+{% endif %}
+
+<!-- end search project ideas button -->
 
 {% if user.is_authenticated %}
 <div class="new-project-button">
@@ -40,7 +68,7 @@
             <h4>User Deleted</h4>
             {% endif %}
             <p class="project-description-thumbnail">
-                {{ idea.idea.description|truncatewords:10 }}
+                {{ idea.idea.description }}
             </p>
         </div>
     </div>

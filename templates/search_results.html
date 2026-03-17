@@ -1,0 +1,77 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block tab %}Search Results{% endblock %}
+
+{% block content %}
+
+<div class="page-description">
+    {% if search_term %}
+        <h3 class="page-title">Search Results for "{{ search_term }}"</h3>
+    {% else %}
+        <h3 class="page-title">Search Projects</h3>
+    {% endif %}
+</div>
+
+
+<!-- Search Form -->
+<div class="search-container">
+    <form role="search" method="POST" action="{% url 'front-end:search-projects' %}">
+        {% csrf_token %}
+        <div class="search-wrapper">
+            <input
+                class="search-input-large"
+                type="search"
+                placeholder="Search Project Ideas in IdeaCloud..."
+                name="title"
+                value="{{ search_term|default:'' }}"
+                required aria-label="Search"
+                style="font-size: 20pt"
+            >
+            <button class="search-button-large" type="submit" style="font-size: 20pt">
+                Search
+            </button>
+        </div>
+    </form>
+</div>
+
+<!-- Back to All Projects Link -->
+<div style="margin: 1rem 0;">
+    <a href="{% url 'front-end:project-ideas' %}">← Back to All Projects</a>
+</div>
+
+<!-- Results Grid -->
+<div class="ideas-grid">
+    {% for idea in ideas %}
+    <div class="idea-card">
+        {% if idea.image %}
+        <a href="{% url 'front-end:project-details' idea.idea.id %}"><img src="{{ idea.image.image.url }}"></a>
+        {% else %}
+        <a href="{% url 'front-end:project-details' idea.idea.id %}"><img src="{% static 'images/image_placeholder.jpg' %}"></a>
+        {% endif %}
+        <div class="caption">
+            <p class="project-title">
+                <a href="{% url 'front-end:project-details' idea.idea.id %}">
+                    {{ idea.idea.title }}
+                </a>
+            </p>
+            {% if idea.idea.author %}
+            <p class="project-owner-thumbnail">
+                By <a href="{% url 'front-end:public-user-profile' idea.idea.author.id %}">{{ idea.idea.author.username }}</a>
+            </p>
+            {% else %}
+            <h4>User Deleted</h4>
+            {% endif %}
+            <p class="project-description-thumbnail">
+                {{ idea.idea.description|truncatewords:10 }}
+            </p>
+        </div>
+    </div>
+    {% empty %}
+        {% if search_term %}
+        <p>No results found.</p>
+        {% endif %}
+    {% endfor %}
+</div>
+
+{% endblock %}

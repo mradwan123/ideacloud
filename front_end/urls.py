@@ -36,6 +36,7 @@ from .views import (
     join_group,
     leave_group,
     user_availability, 
+    search_projects,
 )
 
 app_name = "front-end"
@@ -47,6 +48,8 @@ urlpatterns = [
     path("create_project/", create_project, name="create-project"),
     path("finished_projects/", finished_project_list, name="finished-projects"),
     path("finished_project_details/<int:pk>", finished_project_detail, name="finished-project-details"),
+    # search projects
+    path("search_projects/", search_projects, name="search-projects"),
     # handle project images
     path("project_details/<int:idea_pk>/add_image_to_project", add_image_to_project_idea, name="add-image-to-project"),
     path("project_details/<int:idea_pk>/remove_image_from_project/<int:image_pk>", remove_image_from_project_idea, name="remove-image-from-project"),
