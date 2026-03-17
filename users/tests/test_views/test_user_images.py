@@ -32,12 +32,12 @@ class UserProfileViewTests(TestCase):
     def setUp(self):
         self.user = User.objects.create_user(username='testuser',
                                              email='test@example.com',
-                                             password='testpass123',
+                                             password='Testpass123',
                                              description='test desc')
         self.image_user_data = {'username': 'imgtestuser',
                                 'email': 'imgtest@example.com',
                                 'image': self._create_test_image(),
-                                'password': 'testpass123',
+                                'password': 'Testpass123',
                                 'description': 'test desc'}
         serializer = UserSerializer(data=self.image_user_data)
         serializer.is_valid()
@@ -45,7 +45,7 @@ class UserProfileViewTests(TestCase):
         self.new_user_data = {'username': 'testuser2',
                               'email': 'test2@example.com',
                               'image': self._create_test_image(),
-                              'password': 'testpass123',
+                              'password': 'Testpass123',
                               'description': 'test desc'}
 
         request = type('Request', (), {'user': self.user})()
