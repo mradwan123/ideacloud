@@ -68,7 +68,7 @@
             <h4>User Deleted</h4>
             {% endif %}
             <p class="project-description-thumbnail">
-                {{ idea.idea.description }}
+                {{ idea.idea.description|truncatewords:10 }}
             </p>
         </div>
     </div>
