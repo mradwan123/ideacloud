@@ -13,7 +13,6 @@ from config.settings import DEFAULT_PROFILE_IMAGE_URL
 from config.image_helper.validate_image import is_image_valid
 import os
 
-
 User = get_user_model()
 
 class PastDateValidator:
@@ -33,6 +32,24 @@ class ProjectUsersRepresentationSerializer(serializers.ModelSerializer):
         fields = ['id', 'title']
 
 class UserSerializer(serializers.ModelSerializer):
+    """
+    Serializes User profile data with input sanitization, base64-to-image conversion, 
+    and read-only favorite/interested project relations.
+
+
+    Args:
+        serializers (_type_): _description_
+
+    Raises:
+        ValidationError: _description_
+        serializers.ValidationError: _description_
+        serializers.ValidationError: _description_
+        serializers.ValidationError: _description_
+        ValidationError: _description_
+
+    Returns:
+        _type_: _description_
+    """
 
     # From Abstract
     username = serializers.CharField(required=True, max_length=100)
@@ -65,7 +82,6 @@ class UserSerializer(serializers.ModelSerializer):
         if 'description' in data:
             data['description'] = strip_tags(data['description']).strip()
             
-        
         # Handle base64 image if present. Check to see if image is URL. 
         if data.get("image"):
             try:
@@ -94,11 +110,10 @@ class UserSerializer(serializers.ModelSerializer):
             # If username exists AND it belongs to a DIFFERENT user
             if existing_user and existing_user.id != self.instance.id:
                 raise serializers.ValidationError('Error: This username is already taken by another user.')
-        
+       
         # Always return the value
         return value
-                
-
+               
     def validate_password(self, value):
         """Changed name of built in and checking here"""
         try:
@@ -122,6 +137,7 @@ class UserSerializer(serializers.ModelSerializer):
         read_only_fields = ['id', 'created_on']
 
     def create(self, validated_data):
+        '''Overriding create user with this function'''
         user = User.objects.create_user(**validated_data)
         return user
 
@@ -133,6 +149,7 @@ class UserSerializer(serializers.ModelSerializer):
     }
     
     def validate_image(self, value):
+        '''Image vaidation for jpg to be base64 format in seriliazer'''
         if value and not is_image_valid(value):
             raise ValidationError("Image could not be saved. Has to be jpg in base64 format.")
         
@@ -147,6 +164,7 @@ class UserSerializer(serializers.ModelSerializer):
         return representation
     
     def update(self, instance, validated_data):
+        '''To send updated version'''
         if "image" in validated_data.keys():
             if instance.image and not instance.image.path.endswith("default.jpg") and os.path.isfile(instance.image.path):
                 os.remove(instance.image.path)
