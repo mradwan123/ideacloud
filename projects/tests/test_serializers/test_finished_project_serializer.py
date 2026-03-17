@@ -3,7 +3,7 @@ from django.contrib.auth import get_user_model
 from projects.models import FinishedProject, ProjectGroup, ProjectIdea, ImageProject, Tag
 from projects.serializers.serializer_project_idea_serializer import ProjectIdeaSerializer
 from projects.serializers.serializer_finished_projects import FinishedProjectSerializer
-from rest_framework.exceptions import ValidationError
+from rest_framework.exceptions import ValidationError, PermissionDenied
 
 
 User = get_user_model()
@@ -67,6 +67,9 @@ class FinishedProjectSerializerTests(TestCase):
 
     def test_tags_and_likes_are_saved(self):
         """Verify that M2M IDs are correctly converted to database relations"""
+        # remove the finished project created in setUp so this group is free again
+        FinishedProject.objects.all().delete()
+
         data = {
             "title": "Title",
             "description": "Description",
@@ -106,6 +109,22 @@ class FinishedProjectSerializerTests(TestCase):
 
         self.assertEqual(serializer.data['likes_count'], 1)
         self.assertEqual(serializer.data['has_liked'], True)
+
+    def test_prevent_duplicate_finished_project(self):
+        """Verify a group cannot submit a second finished project"""
+        # setUp already created one finished project for self.project_group
+        data = {
+            "title": "Second Attempt",
+            "description": "Should fail",
+            "tags": ["python"],
+            "project_group": self.project_group.pk
+        }
+        serializer = FinishedProjectSerializer(data=data, context=self.context)
+        self.assertTrue(serializer.is_valid())
+
+        with self.assertRaises(ValidationError) as error:
+            serializer.save()
+        self.assertIn("already submitted their version", str(error.exception.detail[0]))
 
     def test_to_representation_titles_the_title(self):
         """Verify that title is converted to a titled version in representation"""
@@ -152,6 +171,21 @@ class FinishedProjectSerializerTests(TestCase):
         serializer = FinishedProjectSerializer(data=data, context=self.context2)
         self.assertTrue(serializer.is_valid())
         # author is read-only so we pass it here
-        with self.assertRaises(ValidationError) as error:
+        with self.assertRaises(PermissionDenied) as error:
             project = serializer.save()
-        self.assertIn("User is not allowed to publish this Finished Group.", str(error.exception.detail))
+        self.assertIn("Only the Project Group owner can publish a finished project.", str(error.exception.detail))
+
+    def test_update_finished_project_non_owner_fail(self):
+        """Verify user2 cannot edit a finished project owned by user1's group"""
+        data = {"title": "Modified Title"}
+
+        serializer = FinishedProjectSerializer(
+            instance=self.finished_project, 
+            data=data, 
+            context=self.context2, 
+            partial=True
+        )
+        self.assertTrue(serializer.is_valid())
+
+        with self.assertRaises(PermissionDenied):
+            serializer.save()
