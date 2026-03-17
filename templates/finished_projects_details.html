@@ -10,14 +10,16 @@
 <div class="project-details-general-info">
 
   <h3> {{ idea.title }} </h3>
-  <h4>By <a>{{ idea.project_group.owner.username }}</a> and {{ idea.project_group.name }} </h4>
+  {%  if idea.project_group.owner  %}
+  <h4>By <a href="{% url 'front-end:public-user-profile' idea.project_group.owner.id %}">{{ idea.project_group.owner.username }}</a> and <a href="{% url 'front-end:project-details' idea.project_group.id %}">{{ idea.project_group.name }}</a> </h4>
+  {%  else  %}
+  <h4>By Deleted User and <a href="{% url 'front-end:project-details' idea.project_group.id %}">{{ idea.project_group.name }}</a> </h4>
+  {%  endif  %}
 </div>
 
 <!-- info of the project section -->
 <!-- images are only a placeholder -->
 <div class="images-row">
-  <img src="../static/images/image_placeholder.jpg">
-  <img src="../static/images/image_placeholder.jpg">
   <img src="../static/images/image_placeholder.jpg">
 </div>
 

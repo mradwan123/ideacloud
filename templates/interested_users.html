@@ -18,11 +18,11 @@
 <!-- username and status (available/busy) of the interested users -->
 
 {% if interested_users %}
-    {% for user in interested_users %}
+    {% for interested_user in interested_users %}
     <div class="group-box">
         <div class="user-info">
-            <h4>{{ user.username }}</h4>
-            {% if user.available %}
+            <h4><a href="{% url 'front-end:public-user-profile' interested_user.id %}">{{ interested_user.username }}</a></h4>
+            {% if interested_user.available %}
             <h4>✅ User is available for collaboration</h4>
             {% else %}
             <h4>🛑 User is unavailable for collaboration at this time</h4>
