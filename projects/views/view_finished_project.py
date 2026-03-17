@@ -42,25 +42,26 @@ class FinishedProjectList(APIView):
         query_params:   sort - how the return data should be sorted (e.g., ?sort=title; "-" makes it descending
                         tag  - filter for multiple tags (e.g., ?tags=python,django)
         """
+        # sort like specified in the 'sort' instruction from the URL (e.g. /project-ideas/?sort=title); default to '-created_on'
+        sort_by = request.query_params.get('sort', '-finished_on')
 
         # .getlist() gets multiple values like ?tag=python&tag=automation
-        # tags = request.query_params.getlist('tag')
+        tags = request.query_params.getlist('tag')
 
-        # queryset = _get_queryset_with_like_data(request.user)
+        queryset = _get_queryset_with_like_data(request.user)
 
-        # if tags:
-        #     # get all project ideas from the db that match certain tags
-        #     # .distinct() ensures we don't get the same project twice if it matches multiple tags
-        #     # tags__name__in: tags    : looks in the tags field of the ProjectIdea model
-        #     #               __name    : checks the name field of the Tag model (through the relationship)
-        #     #                 __in    : field lookup; checks if the name is found anywhere inside the tags list we provide
-        #     queryset = queryset.filter(tags__name__in=tags).distinct()
+        if tags:
+            # get all project ideas from the db that match certain tags
+            # .distinct() ensures we don't get the same project twice if it matches multiple tags
+            # tags__name__in: tags    : looks in the tags field of the ProjectIdea model
+            #               __name    : checks the name field of the Tag model (through the relationship)
+            #                 __in    : field lookup; checks if the name is found anywhere inside the tags list we provide
+            queryset = queryset.filter(tags__name__in=tags).distinct()
 
         # order the queryset as dictated by sort_by
-        # queryset = queryset.order_by(sort_by)
+        queryset = queryset.order_by(sort_by)
 
         # serialization (object -> json)
-        queryset = FinishedProject.objects.all()
         serializer = FinishedProjectSerializer(queryset, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
@@ -79,7 +80,6 @@ class FinishedProjectList(APIView):
         # this ensures the post is linked to the right person safely and automatically
         serializer.save()
         return Response(serializer.data, status=status.HTTP_201_CREATED)
-        # TODO handle not group owner request in API errors, status should be 401
 
 
 class FinishedProjectDetail(APIView):
@@ -140,7 +140,7 @@ class FinishedProjectDetail(APIView):
 
         if self._is_protected(finished_project):
             return Response(
-                {"detail": "This finished project has likes or groups connected and therefore can't be deleted."},
+                {"detail": "This finished project has likes connected and therefore can't be deleted."},
                 status=status.HTTP_409_CONFLICT
             )
 

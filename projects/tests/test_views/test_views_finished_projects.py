@@ -24,9 +24,14 @@ class FinishedProjectsListTests(APITestCase):
         self.project_group = ProjectGroup.objects.create(
             name='Test Group',
             project_idea=self.project_idea,
-            owner=self.user1  # TODO create another user that is not project idea owner, and is group owner
+            owner=self.user1
         )
-
+        # create a second group
+        self.project_group2 = ProjectGroup.objects.create(
+            name='Test Group 2',
+            project_idea=self.project_idea,
+            owner=self.user2  # Different owner
+        )
         # create a finished project
         self.finished_project = FinishedProject.objects.create(
             title="Finished Project Title",
@@ -42,16 +47,17 @@ class FinishedProjectsListTests(APITestCase):
     ## GET
     def test_get_all_finished_projects(self):
         """
-        Verify that anyone can see all project ideas
-        Also verify that data structure stays intact so we don't have to test for it every test
+        Verify that anyone can see all finished projects.
+        Also verifies that annotated fields (likes_count, has_liked) are present.
         """
-        # make sure we are not logged in
+        # ensure we are not logged in to test the 'has_liked=False' guest logic
         self.client.logout()
-        # creating additional project
-        finished_project_2 = FinishedProject.objects.create(
-            title="Finished Project Title",
+
+        # create a second finished project using the second group 
+        FinishedProject.objects.create(
+            title="Second Finished Project",
             description="Testing views",
-            project_group=self.project_group
+            project_group=self.project_group2
         )
 
         response = self.client.get(self.url_list)
@@ -59,33 +65,24 @@ class FinishedProjectsListTests(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(len(response.data), 2)
 
-        # we use 1 here as the view returns in reverse order sorted by creation time and our setup finished_project comes second in this order
-        # this also verifies that the default sorting is working as intended
-        finished_project = response.data[1]
-
-        # verify base fields
-        self.assertEqual(finished_project["title"], "Finished Project Title")
-        self.assertEqual(finished_project["description"], "Testing views")
-
-        # verify nested M2M data
         finished_project = response.data[0]
 
-        self.assertIn("python", finished_project["tags"])
+        self.assertEqual(finished_project["title"], "Second Finished Project")
 
-        # verify annotated fields
-        # self.assertEqual(finished_project["likes_count"], 0)
-        # self.assertEqual(finished_project["has_liked"], False)
+        # verify annotated fields from _get_queryset_with_like_data
+        self.assertEqual(finished_project["likes_count"], 0)
+        self.assertEqual(finished_project["has_liked"], False)
 
     ## POST
     def test_create_finished_project_authenticated_user(self):
-        """Verify that a logged in user can create a ProjectIdea"""
-        self.client.force_authenticate(user=self.user1)
+        """Verify that a logged in user can create a FinishedProject for a group they own"""
+        self.client.force_authenticate(user=self.user2)
 
         data = {
-            "title": "Entirely new idea",
+            "title": "Entirely New Finished Project",
             "description": "Entirely new description",
             "tags": ["automation"],
-            "project_group": self.project_group.id
+            "project_group": self.project_group2.id
         }
         response = self.client.post(self.url_list, data, format="json")
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
@@ -120,6 +117,21 @@ class FinishedProjectsListTests(APITestCase):
 
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
+    def test_create_duplicate_finished_project_ftest_get_all_finished_projectsail(self):
+        """Verify that a group cannot submit a second finished project"""
+        self.client.force_authenticate(user=self.user1)
+
+        # self.project_group already has a finished project from setUp
+        data = {
+            "title": "Double Submit",
+            "description": "Should fail",
+            "project_group": self.project_group.id,
+            "tags": ["python"]
+        }
+        response = self.client.post(self.url_list, data, format="json")
+
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertIn("already submitted their version", str(response.data))
 
 class FinishedProjectDetailTests(APITestCase):
     def setUp(self):
@@ -233,8 +245,8 @@ class FinishedProjectDetailTests(APITestCase):
             "project_group": self.project_group.id
         }
         response = self.client.patch(self.url_detail, data, format="json")
-        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
-        self.assertIn("User is not allowed to edit description/title of this Finished Group.", str(response.data))
+        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
+        self.assertIn("You are not the owner", str(response.data))
 
     ## DELETE
     def test_delete_finished_project_as_guest(self):
@@ -258,7 +270,7 @@ class FinishedProjectDetailTests(APITestCase):
         """Makes sure that the view rejects banned words correctly (via serializer)"""
         self.client.force_authenticate(user=self.user1)
         data = {
-            "title": "Fuck Great New Idea",
+            "title": "Fuck This Project",
             "description": "Entirely new description",
             "tags": ["automation"],
             "project_group": self.project_group.id
@@ -266,4 +278,4 @@ class FinishedProjectDetailTests(APITestCase):
 
         response = self.client.patch(self.url_detail, data, format='json')
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
-        # self.assertIn("Profanity", str(response.data))
+        self.assertIn("title", str(response.data))
