@@ -6,7 +6,7 @@ class User(AbstractUser):
     '''
     Docstring for User class:
     Custom User model extending and adding to the AbstractUser by Django.
-    Standard User fields plus(image, description, created_on, finsihed_projects)
+    Standard User fields plus (email, image, description, created_on, finsihed_projects)
     '''
     email = models.EmailField(unique=True)
     image = models.ImageField(upload_to='profile_images/', null=True)
