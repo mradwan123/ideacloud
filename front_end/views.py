@@ -109,11 +109,7 @@ def register(request):
                 error_list.append(f"{key}: {value[0]}")
 
             messages.error(request, str(" ".join(error_list)))
-            # if 'username' in serializer.errors:
-            #     messages.error(request, "Username already exists. Please choose a different username.")
-            # else:
-            #     messages.error(request, "Registration failed. Please check your information.")
-
+            
     registration_form = RegisterForm()
     return render(request, "register.html", {"form": registration_form})
 
