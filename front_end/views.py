@@ -253,12 +253,16 @@ def public_user_profile(request, user_id):
 @login_required(login_url="front-end:login")
 def user_availability(request, user_id):
     user  = get_object_or_404(User, pk=user_id)
-    if not user.available:
-        user.available = True
+    if request.user == user:
+        if not user.available:
+            user.available = True
+        else:
+            user.available = False
+        user.save()
+        return redirect("front-end:public-user-profile", user_id=user.id)
     else:
-        user.available = False
-    user.save()
-    return redirect("front-end:public-user-profile", user_id=user.id)
+        messages.error(request, "User cannot access other user's availability. Why would you try this, user?")
+        return redirect("front-end:public-user-profile", user_id=user.id)
 
 @login_required(login_url="front-end:login")
 def comments(request, pk):
