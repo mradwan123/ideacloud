@@ -261,7 +261,7 @@ def user_availability(request, user_id):
 @login_required(login_url="front-end:login")
 def comments(request, pk):
     idea = get_object_or_404(ProjectIdea, pk=pk)
-    comments = idea.project_idea_comments.all().select_related("user")
+    comments = idea.project_idea_comments.all()
     return render(
         request,
         "comments.html",
@@ -278,7 +278,7 @@ def add_comment(request, pk):
         content = request.POST.get("content", "").strip()
         if content:
             ProjectComment.objects.create(
-                user=request.user,
+                author=request.user,
                 project_idea=idea,
                 content=content
             )

@@ -35,16 +35,16 @@
 
     {% for comment in comments %}
         <div class="comment-box">
-            {% if comment.user.image %}
-                <img src="{{ comment.user.image.url }}">
+            {% if comment.author.image %}
+                <a href="{% url 'front-end:public-user-profile' comment.author.id %}"><img src="{{ comment.author.image.url }}"></a>
             {% else %}
-                <img src="../media/profile_images/default.jpg">
+                <a href="{% url 'front-end:public-user-profile' comment.author.id %}"><img src="../media/profile_images/default.jpg"></a>
             {% endif %}
 
             <div class="name-and-comment">
                 <h4>
-                    <a href="{% url 'front-end:public-user-profile' comment.user.id %}">
-                        {{ comment.user.username }}
+                    <a href="{% url 'front-end:public-user-profile' comment.author.id %}">
+                        {{ comment.author.username }}
                     </a>
                 </h4>
                 <p>
