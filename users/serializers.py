@@ -87,13 +87,36 @@ class UserSerializer(serializers.ModelSerializer):
         # If this is a new user (no instance)
         if not self.instance:
             if existing_user:
-                raise serializers.ValidationError('Error: Duplicate username.')
+                raise serializers.ValidationError('Duplicate username.')
         
         # If this is an update (has instance)
         else:
             # If username exists AND it belongs to a DIFFERENT user
             if existing_user and existing_user.id != self.instance.id:
-                raise serializers.ValidationError('Error: This username is already taken by another user.')
+                raise serializers.ValidationError('This username is already taken by another user.')
+        
+        # Always return the value
+        return value
+                
+    def validate_email(self, value):
+        """
+        Validate username uniqueness:
+        - For new users (POST): Check if email exists at all
+        - For updates (PUT/PATCH): Check if email exists for a DIFFERENT user
+        """
+        # Check if any user has this username
+        existing_email = User.objects.filter(email=value).first()
+        
+        # If this is a new user (no instance)
+        if not self.instance:
+            if existing_email:
+                raise serializers.ValidationError('Duplicate email.')
+        
+        # If this is an update (has instance)
+        else:
+            # If email exists AND it belongs to a DIFFERENT user
+            if existing_email and existing_email.id != self.instance.id:
+                raise serializers.ValidationError('This email is already taken by another user.')
         
         # Always return the value
         return value
@@ -105,6 +128,11 @@ class UserSerializer(serializers.ModelSerializer):
             django_validate_password(value)
         except ValidationError as error:
             raise serializers.ValidationError(error.message)
+
+        if not any(v.islower() for v in value):
+            raise serializers.ValidationError("Password needs lower case letter.")
+        if not any(v.isupper() for v in value):
+            raise serializers.ValidationError("Password needs upper case letter.")
         return value
 
     # def to_representation(self, instance):
