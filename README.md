@@ -155,7 +155,7 @@ We designed the API to be easily consumed by any frontend or mobile application.
 	Import it into Postman to test all available endpoints, complete with example request bodies and authorization headers. (You will have to create tokens for the users manually and add them in the variables tab)
 
 **Interactive Documentation:** 
-	Once the local server is running, you can explore the Open API endpoints interactively via Swagger UI at `http://127.0.0.1:8000/swagger/`.
+	Once the local server is running, you can explore the Open API endpoints interactively via Swagger UI at `http://127.0.0.1:8000/swagger-api/`.
 
 ---
 

@@ -27,9 +27,9 @@
             "method": "GET",
             "header": [],
             "url": {
-              "raw": "{{host_address}}projects_api/project-ideas/{{idea_pk}}/project-groups/",
+              "raw": "{{host_address}}projects-api/project-ideas/{{idea_pk}}/project-groups/",
               "host": [
-                "{{host_address}}projects_api"
+                "{{host_address}}projects-api"
               ],
               "path": [
                 "project-ideas",
@@ -53,12 +53,12 @@
               }
             ],
             "url": {
-              "raw": "{{host_address}}/projects_api/project-ideas/{{idea_pk}}/project-groups/",
+              "raw": "{{host_address}}/projects-api/project-ideas/{{idea_pk}}/project-groups/",
               "host": [
                 "{{host_address}}"
               ],
               "path": [
-                "projects_api",
+                "projects-api",
                 "project-ideas",
                 "{{idea_pk}}",
                 "project-groups",
@@ -74,12 +74,12 @@
             "method": "GET",
             "header": [],
             "url": {
-              "raw": "{{host_address}}/projects_api/project-ideas/{{invalid_id}}/project-groups/",
+              "raw": "{{host_address}}/projects-api/project-ideas/{{invalid_id}}/project-groups/",
               "host": [
                 "{{host_address}}"
               ],
               "path": [
-                "projects_api",
+                "projects-api",
                 "project-ideas",
                 "{{invalid_id}}",
                 "project-groups",
@@ -104,12 +104,12 @@
               }
             },
             "url": {
-              "raw": "{{host_address}}/projects_api/project-ideas/1/project-groups/",
+              "raw": "{{host_address}}/projects-api/project-ideas/1/project-groups/",
               "host": [
                 "{{host_address}}"
               ],
               "path": [
-                "projects_api",
+                "projects-api",
                 "project-ideas",
                 "1",
                 "project-groups",
@@ -140,12 +140,12 @@
               }
             },
             "url": {
-              "raw": "{{host_address}}/projects_api/project-ideas/{{idea_pk}}/project-groups/",
+              "raw": "{{host_address}}/projects-api/project-ideas/{{idea_pk}}/project-groups/",
               "host": [
                 "{{host_address}}"
               ],
               "path": [
-                "projects_api",
+                "projects-api",
                 "project-ideas",
                 "{{idea_pk}}",
                 "project-groups",
@@ -172,12 +172,12 @@
             "method": "GET",
             "header": [],
             "url": {
-              "raw": "{{host_address}}/projects_api/project-ideas/{{idea_pk}}/project-groups/{{group_pk}}/",
+              "raw": "{{host_address}}/projects-api/project-ideas/{{idea_pk}}/project-groups/{{group_pk}}/",
               "host": [
                 "{{host_address}}"
               ],
               "path": [
-                "projects_api",
+                "projects-api",
                 "project-ideas",
                 "{{idea_pk}}",
                 "project-groups",
@@ -200,12 +200,12 @@
               }
             ],
             "url": {
-              "raw": "{{host_address}}/projects_api/project-ideas/{{idea_pk}}/project-groups/{{group_pk}}/",
+              "raw": "{{host_address}}/projects-api/project-ideas/{{idea_pk}}/project-groups/{{group_pk}}/",
               "host": [
                 "{{host_address}}"
               ],
               "path": [
-                "projects_api",
+                "projects-api",
                 "project-ideas",
                 "{{idea_pk}}",
                 "project-groups",
@@ -222,12 +222,12 @@
             "method": "GET",
             "header": [],
             "url": {
-              "raw": "{{host_address}}/projects_api/project-ideas/{{invalid_id}}/project-groups/{{group_pk}}/",
+              "raw": "{{host_address}}/projects-api/project-ideas/{{invalid_id}}/project-groups/{{group_pk}}/",
               "host": [
                 "{{host_address}}"
               ],
               "path": [
-                "projects_api",
+                "projects-api",
                 "project-ideas",
                 "{{invalid_id}}",
                 "project-groups",
@@ -244,12 +244,12 @@
             "method": "GET",
             "header": [],
             "url": {
-              "raw": "{{host_address}}/projects_api/project-ideas/{{idea_pk}}/project-groups/{{invalid_id}}/",
+              "raw": "{{host_address}}/projects-api/project-ideas/{{idea_pk}}/project-groups/{{invalid_id}}/",
               "host": [
                 "{{host_address}}"
               ],
               "path": [
-                "projects_api",
+                "projects-api",
                 "project-ideas",
                 "{{idea_pk}}",
                 "project-groups",
@@ -275,12 +275,12 @@
               }
             },
             "url": {
-              "raw": "{{host_address}}/projects_api/project-ideas/{{idea_pk}}/project-groups/{{group_pk}}/",
+              "raw": "{{host_address}}/projects-api/project-ideas/{{idea_pk}}/project-groups/{{group_pk}}/",
               "host": [
                 "{{host_address}}"
               ],
               "path": [
-                "projects_api",
+                "projects-api",
                 "project-ideas",
                 "{{idea_pk}}",
                 "project-groups",
@@ -312,12 +312,12 @@
               }
             },
             "url": {
-              "raw": "{{host_address}}/projects_api/project-ideas/{{idea_pk}}/project-groups/{{group_pk}}/",
+              "raw": "{{host_address}}/projects-api/project-ideas/{{idea_pk}}/project-groups/{{group_pk}}/",
               "host": [
                 "{{host_address}}"
               ],
               "path": [
-                "projects_api",
+                "projects-api",
                 "project-ideas",
                 "{{idea_pk}}",
                 "project-groups",
@@ -349,12 +349,12 @@
               }
             },
             "url": {
-              "raw": "{{host_address}}/projects_api/project-ideas/{{idea_pk}}/project-groups/{{group_pk}}/",
+              "raw": "{{host_address}}/projects-api/project-ideas/{{idea_pk}}/project-groups/{{group_pk}}/",
               "host": [
                 "{{host_address}}"
               ],
               "path": [
-                "projects_api",
+                "projects-api",
                 "project-ideas",
                 "{{idea_pk}}",
                 "project-groups",
@@ -380,12 +380,12 @@
               }
             },
             "url": {
-              "raw": "{{host_address}}/projects_api/project-ideas/{{idea_pk}}/project-groups/{{group_pk}}/",
+              "raw": "{{host_address}}/projects-api/project-ideas/{{idea_pk}}/project-groups/{{group_pk}}/",
               "host": [
                 "{{host_address}}"
               ],
               "path": [
-                "projects_api",
+                "projects-api",
                 "project-ideas",
                 "{{idea_pk}}",
                 "project-groups",
@@ -417,12 +417,12 @@
               }
             },
             "url": {
-              "raw": "{{host_address}}/projects_api/project-ideas/{{idea_pk}}/project-groups/{{group_pk}}/",
+              "raw": "{{host_address}}/projects-api/project-ideas/{{idea_pk}}/project-groups/{{group_pk}}/",
               "host": [
                 "{{host_address}}"
               ],
               "path": [
-                "projects_api",
+                "projects-api",
                 "project-ideas",
                 "{{idea_pk}}",
                 "project-groups",
@@ -454,12 +454,12 @@
               }
             },
             "url": {
-              "raw": "{{host_address}}/projects_api/project-ideas/{{idea_pk}}/project-groups/{{group_pk}}/",
+              "raw": "{{host_address}}/projects-api/project-ideas/{{idea_pk}}/project-groups/{{group_pk}}/",
               "host": [
                 "{{host_address}}"
               ],
               "path": [
-                "projects_api",
+                "projects-api",
                 "project-ideas",
                 "{{idea_pk}}",
                 "project-groups",
@@ -485,12 +485,12 @@
               }
             },
             "url": {
-              "raw": "{{host_address}}/projects_api/project-ideas/{{idea_pk}}/project-groups/{{group_pk}}/",
+              "raw": "{{host_address}}/projects-api/project-ideas/{{idea_pk}}/project-groups/{{group_pk}}/",
               "host": [
                 "{{host_address}}"
               ],
               "path": [
-                "projects_api",
+                "projects-api",
                 "project-ideas",
                 "{{idea_pk}}",
                 "project-groups",
@@ -522,12 +522,12 @@
               }
             },
             "url": {
-              "raw": "{{host_address}}/projects_api/project-ideas/{{idea_pk}}/project-groups/{{group_pk}}/",
+              "raw": "{{host_address}}/projects-api/project-ideas/{{idea_pk}}/project-groups/{{group_pk}}/",
               "host": [
                 "{{host_address}}"
               ],
               "path": [
-                "projects_api",
+                "projects-api",
                 "project-ideas",
                 "{{idea_pk}}",
                 "project-groups",
@@ -559,12 +559,12 @@
               }
             },
             "url": {
-              "raw": "{{host_address}}/projects_api/project-ideas/{{idea_pk}}/project-groups/{{group_pk}}/",
+              "raw": "{{host_address}}/projects-api/project-ideas/{{idea_pk}}/project-groups/{{group_pk}}/",
               "host": [
                 "{{host_address}}"
               ],
               "path": [
-                "projects_api",
+                "projects-api",
                 "project-ideas",
                 "{{idea_pk}}",
                 "project-groups",
@@ -596,12 +596,12 @@
               }
             },
             "url": {
-              "raw": "{{host_address}}/projects_api/project-ideas/{{idea_pk}}/project-groups/{{group_pk}}/",
+              "raw": "{{host_address}}/projects-api/project-ideas/{{idea_pk}}/project-groups/{{group_pk}}/",
               "host": [
                 "{{host_address}}"
               ],
               "path": [
-                "projects_api",
+                "projects-api",
                 "project-ideas",
                 "{{idea_pk}}",
                 "project-groups",
@@ -629,12 +629,12 @@
             "method": "POST",
             "header": [],
             "url": {
-              "raw": "{{host_address}}/projects_api/project-ideas/{{idea_pk}}/project-groups/{{group_pk}}/toggle-membership/",
+              "raw": "{{host_address}}/projects-api/project-ideas/{{idea_pk}}/project-groups/{{group_pk}}/toggle-membership/",
               "host": [
                 "{{host_address}}"
               ],
               "path": [
-                "projects_api",
+                "projects-api",
                 "project-ideas",
                 "{{idea_pk}}",
                 "project-groups",
@@ -658,12 +658,12 @@
               }
             ],
             "url": {
-              "raw": "{{host_address}}/projects_api/project-ideas/{{idea_pk}}/project-groups/{{group_pk}}/toggle-membership/",
+              "raw": "{{host_address}}/projects-api/project-ideas/{{idea_pk}}/project-groups/{{group_pk}}/toggle-membership/",
               "host": [
                 "{{host_address}}"
               ],
               "path": [
-                "projects_api",
+                "projects-api",
                 "project-ideas",
                 "{{idea_pk}}",
                 "project-groups",
@@ -687,12 +687,12 @@
               }
             ],
             "url": {
-              "raw": "{{host_address}}/projects_api/project-ideas/{{idea_pk}}/project-groups/{{group_pk}}/toggle-membership/",
+              "raw": "{{host_address}}/projects-api/project-ideas/{{idea_pk}}/project-groups/{{group_pk}}/toggle-membership/",
               "host": [
                 "{{host_address}}"
               ],
               "path": [
-                "projects_api",
+                "projects-api",
                 "project-ideas",
                 "{{idea_pk}}",
                 "project-groups",
@@ -716,12 +716,12 @@
               }
             ],
             "url": {
-              "raw": "{{host_address}}/projects_api/project-ideas/{{idea_pk}}/project-groups/{{group_pk}}/toggle-membership/",
+              "raw": "{{host_address}}/projects-api/project-ideas/{{idea_pk}}/project-groups/{{group_pk}}/toggle-membership/",
               "host": [
                 "{{host_address}}"
               ],
               "path": [
-                "projects_api",
+                "projects-api",
                 "project-ideas",
                 "{{idea_pk}}",
                 "project-groups",
@@ -773,12 +773,12 @@
               }
             ],
             "url": {
-              "raw": "{{host_address}}/projects_api/project-ideas/{{idea_pk}}/like/",
+              "raw": "{{host_address}}/projects-api/project-ideas/{{idea_pk}}/like/",
               "host": [
                 "{{host_address}}"
               ],
               "path": [
-                "projects_api",
+                "projects-api",
                 "project-ideas",
                 "{{idea_pk}}",
                 "like",
@@ -801,12 +801,12 @@
               }
             ],
             "url": {
-              "raw": "{{host_address}}/projects_api/project-ideas/{{idea_pk}}/like/",
+              "raw": "{{host_address}}/projects-api/project-ideas/{{idea_pk}}/like/",
               "host": [
                 "{{host_address}}"
               ],
               "path": [
-                "projects_api",
+                "projects-api",
                 "project-ideas",
                 "{{idea_pk}}",
                 "like",
@@ -828,12 +828,12 @@
               }
             ],
             "url": {
-              "raw": "{{host_address}}/projects_api/project-ideas/{{idea_pk}}/like/",
+              "raw": "{{host_address}}/projects-api/project-ideas/{{idea_pk}}/like/",
               "host": [
                 "{{host_address}}"
               ],
               "path": [
-                "projects_api",
+                "projects-api",
                 "project-ideas",
                 "{{idea_pk}}",
                 "like",
@@ -855,12 +855,12 @@
               }
             ],
             "url": {
-              "raw": "{{host_address}}/projects_api/project-ideas/{{idea_pk}}/like/",
+              "raw": "{{host_address}}/projects-api/project-ideas/{{idea_pk}}/like/",
               "host": [
                 "{{host_address}}"
               ],
               "path": [
-                "projects_api",
+                "projects-api",
                 "project-ideas",
                 "{{idea_pk}}",
                 "like",
@@ -882,12 +882,12 @@
               }
             ],
             "url": {
-              "raw": "{{host_address}}/projects_api/project-ideas/{{invalid_id}}/like/",
+              "raw": "{{host_address}}/projects-api/project-ideas/{{invalid_id}}/like/",
               "host": [
                 "{{host_address}}"
               ],
               "path": [
-                "projects_api",
+                "projects-api",
                 "project-ideas",
                 "{{invalid_id}}",
                 "like",
@@ -920,12 +920,12 @@
               }
             ],
             "url": {
-              "raw": "{{host_address}}/projects_api/finished-project/1/like/",
+              "raw": "{{host_address}}/projects-api/finished-project/1/like/",
               "host": [
                 "{{host_address}}"
               ],
               "path": [
-                "projects_api",
+                "projects-api",
                 "finished-project",
                 "1",
                 "like",
@@ -947,12 +947,12 @@
               }
             ],
             "url": {
-              "raw": "{{host_address}}/projects_api/finished-project/{{idea_pk}}/like/",
+              "raw": "{{host_address}}/projects-api/finished-project/{{idea_pk}}/like/",
               "host": [
                 "{{host_address}}"
               ],
               "path": [
-                "projects_api",
+                "projects-api",
                 "finished-project",
                 "{{idea_pk}}",
                 "like",
@@ -974,12 +974,12 @@
               }
             ],
             "url": {
-              "raw": "{{host_address}}/projects_api/finished-project/{{idea_pk}}/like/",
+              "raw": "{{host_address}}/projects-api/finished-project/{{idea_pk}}/like/",
               "host": [
                 "{{host_address}}"
               ],
               "path": [
-                "projects_api",
+                "projects-api",
                 "finished-project",
                 "{{idea_pk}}",
                 "like",
@@ -1001,12 +1001,12 @@
               }
             ],
             "url": {
-              "raw": "{{host_address}}/projects_api/finished-project/{{idea_pk}}/like/",
+              "raw": "{{host_address}}/projects-api/finished-project/{{idea_pk}}/like/",
               "host": [
                 "{{host_address}}"
               ],
               "path": [
-                "projects_api",
+                "projects-api",
                 "finished-project",
                 "{{idea_pk}}",
                 "like",
@@ -1028,12 +1028,12 @@
               }
             ],
             "url": {
-              "raw": "{{host_address}}/projects_api/finished-project/{{invalid_id}}/like/",
+              "raw": "{{host_address}}/projects-api/finished-project/{{invalid_id}}/like/",
               "host": [
                 "{{host_address}}"
               ],
               "path": [
-                "projects_api",
+                "projects-api",
                 "finished-project",
                 "{{invalid_id}}",
                 "like",
@@ -1082,12 +1082,12 @@
               }
             },
             "url": {
-              "raw": "{{host_address}}/projects_api/test_image/",
+              "raw": "{{host_address}}/projects-api/test_image/",
               "host": [
                 "{{host_address}}"
               ],
               "path": [
-                "projects_api",
+                "projects-api",
                 "test_image",
                 ""
               ]
@@ -1096,7 +1096,7 @@
           "response": []
         },
         {
-          "name": "/users_api/",
+          "name": "/users-api/users/",
           "request": {
             "method": "POST",
             "header": [],
@@ -1110,12 +1110,13 @@
               }
             },
             "url": {
-              "raw": "{{host_address}}/users_api/",
+              "raw": "{{host_address}}/users-api/users/",
               "host": [
                 "{{host_address}}"
               ],
               "path": [
-                "users_api",
+                "users-api",
+                "users",
                 ""
               ]
             }
@@ -1144,12 +1145,12 @@
               }
             },
             "url": {
-              "raw": "{{host_address}}/projects_api/project-ideas/{{idea_pk}}/add-image/",
+              "raw": "{{host_address}}/projects-api/project-ideas/{{idea_pk}}/add-image/",
               "host": [
                 "{{host_address}}"
               ],
               "path": [
-                "projects_api",
+                "projects-api",
                 "project-ideas",
                 "{{idea_pk}}",
                 "add-image",
@@ -1180,12 +1181,12 @@
               }
             },
             "url": {
-              "raw": "{{host_address}}/projects_api/project-ideas/{{idea_pk}}/add-image/",
+              "raw": "{{host_address}}/projects-api/project-ideas/{{idea_pk}}/add-image/",
               "host": [
                 "{{host_address}}"
               ],
               "path": [
-                "projects_api",
+                "projects-api",
                 "project-ideas",
                 "{{idea_pk}}",
                 "add-image",
@@ -1217,12 +1218,12 @@
               }
             },
             "url": {
-              "raw": "{{host_address}}/projects_api/project-ideas/{{idea_pk}}/remove-image/",
+              "raw": "{{host_address}}/projects-api/project-ideas/{{idea_pk}}/remove-image/",
               "host": [
                 "{{host_address}}"
               ],
               "path": [
-                "projects_api",
+                "projects-api",
                 "project-ideas",
                 "{{idea_pk}}",
                 "remove-image",
@@ -1253,12 +1254,12 @@
               }
             },
             "url": {
-              "raw": "{{host_address}}/projects_api/project-ideas/{{idea_pk}}/remove-image/",
+              "raw": "{{host_address}}/projects-api/project-ideas/{{idea_pk}}/remove-image/",
               "host": [
                 "{{host_address}}"
               ],
               "path": [
-                "projects_api",
+                "projects-api",
                 "project-ideas",
                 "{{idea_pk}}",
                 "remove-image",
@@ -1290,12 +1291,12 @@
             "method": "GET",
             "header": [],
             "url": {
-              "raw": "{{host_address}}/projects_api/project-ideas/",
+              "raw": "{{host_address}}/projects-api/project-ideas/",
               "host": [
                 "{{host_address}}"
               ],
               "path": [
-                "projects_api",
+                "projects-api",
                 "project-ideas",
                 ""
               ]
@@ -1315,12 +1316,12 @@
               }
             ],
             "url": {
-              "raw": "{{host_address}}/projects_api/project-ideas/",
+              "raw": "{{host_address}}/projects-api/project-ideas/",
               "host": [
                 "{{host_address}}"
               ],
               "path": [
-                "projects_api",
+                "projects-api",
                 "project-ideas",
                 ""
               ]
@@ -1343,12 +1344,12 @@
               }
             },
             "url": {
-              "raw": "{{host_address}}/projects_api/project-ideas/",
+              "raw": "{{host_address}}/projects-api/project-ideas/",
               "host": [
                 "{{host_address}}"
               ],
               "path": [
-                "projects_api",
+                "projects-api",
                 "project-ideas",
                 ""
               ]
@@ -1377,12 +1378,12 @@
               }
             },
             "url": {
-              "raw": "{{host_address}}/projects_api/project-ideas/",
+              "raw": "{{host_address}}/projects-api/project-ideas/",
               "host": [
                 "{{host_address}}"
               ],
               "path": [
-                "projects_api",
+                "projects-api",
                 "project-ideas",
                 ""
               ]
@@ -1407,12 +1408,12 @@
             "method": "GET",
             "header": [],
             "url": {
-              "raw": "{{host_address}}/projects_api/project-ideas/{{idea_pk}}/",
+              "raw": "{{host_address}}/projects-api/project-ideas/{{idea_pk}}/",
               "host": [
                 "{{host_address}}"
               ],
               "path": [
-                "projects_api",
+                "projects-api",
                 "project-ideas",
                 "{{idea_pk}}",
                 ""
@@ -1433,12 +1434,12 @@
               }
             ],
             "url": {
-              "raw": "{{host_address}}/projects_api/project-ideas/{{idea_pk}}/",
+              "raw": "{{host_address}}/projects-api/project-ideas/{{idea_pk}}/",
               "host": [
                 "{{host_address}}"
               ],
               "path": [
-                "projects_api",
+                "projects-api",
                 "project-ideas",
                 "{{idea_pk}}",
                 ""
@@ -1453,12 +1454,12 @@
             "method": "GET",
             "header": [],
             "url": {
-              "raw": "{{host_address}}/projects_api/project-ideas/{{invalid_id}}/",
+              "raw": "{{host_address}}/projects-api/project-ideas/{{invalid_id}}/",
               "host": [
                 "{{host_address}}"
               ],
               "path": [
-                "projects_api",
+                "projects-api",
                 "project-ideas",
                 "{{invalid_id}}",
                 ""
@@ -1482,12 +1483,12 @@
               }
             },
             "url": {
-              "raw": "{{host_address}}/projects_api/project-ideas/{{idea_pk}}/",
+              "raw": "{{host_address}}/projects-api/project-ideas/{{idea_pk}}/",
               "host": [
                 "{{host_address}}"
               ],
               "path": [
-                "projects_api",
+                "projects-api",
                 "project-ideas",
                 "{{idea_pk}}",
                 ""
@@ -1517,12 +1518,12 @@
               }
             },
             "url": {
-              "raw": "{{host_address}}/projects_api/project-ideas/{{invalid_id}}/",
+              "raw": "{{host_address}}/projects-api/project-ideas/{{invalid_id}}/",
               "host": [
                 "{{host_address}}"
               ],
               "path": [
-                "projects_api",
+                "projects-api",
                 "project-ideas",
                 "{{invalid_id}}",
                 ""
@@ -1552,12 +1553,12 @@
               }
             },
             "url": {
-              "raw": "{{host_address}}/projects_api/project-ideas/1/",
+              "raw": "{{host_address}}/projects-api/project-ideas/1/",
               "host": [
                 "{{host_address}}"
               ],
               "path": [
-                "projects_api",
+                "projects-api",
                 "project-ideas",
                 "1",
                 ""
@@ -1587,12 +1588,12 @@
               }
             },
             "url": {
-              "raw": "{{host_address}}/projects_api/project-ideas/{{idea_pk}}/",
+              "raw": "{{host_address}}/projects-api/project-ideas/{{idea_pk}}/",
               "host": [
                 "{{host_address}}"
               ],
               "path": [
-                "projects_api",
+                "projects-api",
                 "project-ideas",
                 "{{idea_pk}}",
                 ""
@@ -1622,12 +1623,12 @@
               }
             },
             "url": {
-              "raw": "{{host_address}}/projects_api/project-ideas/{{idea_pk}}/",
+              "raw": "{{host_address}}/projects-api/project-ideas/{{idea_pk}}/",
               "host": [
                 "{{host_address}}"
               ],
               "path": [
-                "projects_api",
+                "projects-api",
                 "project-ideas",
                 "{{idea_pk}}",
                 ""
@@ -1642,12 +1643,12 @@
             "method": "DELETE",
             "header": [],
             "url": {
-              "raw": "{{host_address}}/projects_api/project-ideas/{{idea_pk}}/",
+              "raw": "{{host_address}}/projects-api/project-ideas/{{idea_pk}}/",
               "host": [
                 "{{host_address}}"
               ],
               "path": [
-                "projects_api",
+                "projects-api",
                 "project-ideas",
                 "{{idea_pk}}",
                 ""
@@ -1668,12 +1669,12 @@
               }
             ],
             "url": {
-              "raw": "{{host_address}}/projects_api/project-ideas/{{invalid_id}}/",
+              "raw": "{{host_address}}/projects-api/project-ideas/{{invalid_id}}/",
               "host": [
                 "{{host_address}}"
               ],
               "path": [
-                "projects_api",
+                "projects-api",
                 "project-ideas",
                 "{{invalid_id}}",
                 ""
@@ -1694,12 +1695,12 @@
               }
             ],
             "url": {
-              "raw": "{{host_address}}/projects_api/project-ideas/{{idea_pk}}/",
+              "raw": "{{host_address}}/projects-api/project-ideas/{{idea_pk}}/",
               "host": [
                 "{{host_address}}"
               ],
               "path": [
-                "projects_api",
+                "projects-api",
                 "project-ideas",
                 "{{idea_pk}}",
                 ""
@@ -1720,12 +1721,12 @@
               }
             ],
             "url": {
-              "raw": "{{host_address}}/projects_api/project-ideas/{{idea_pk}}/",
+              "raw": "{{host_address}}/projects-api/project-ideas/{{idea_pk}}/",
               "host": [
                 "{{host_address}}"
               ],
               "path": [
-                "projects_api",
+                "projects-api",
                 "project-ideas",
                 "{{idea_pk}}",
                 ""
@@ -1746,12 +1747,12 @@
               }
             ],
             "url": {
-              "raw": "{{host_address}}/projects_api/project-ideas/{{idea_pk}}/",
+              "raw": "{{host_address}}/projects-api/project-ideas/{{idea_pk}}/",
               "host": [
                 "{{host_address}}"
               ],
               "path": [
-                "projects_api",
+                "projects-api",
                 "project-ideas",
                 "{{idea_pk}}",
                 ""
@@ -1777,7 +1778,7 @@
           "response": []
         },
         {
-          "name": "users_api/ [ALL USERS]",
+          "name": "users-api/ [ALL USERS]",
           "request": {
             "method": "GET",
             "header": [
@@ -1796,12 +1797,13 @@
               }
             ],
             "url": {
-              "raw": "{{host_address}}/users_api/",
+              "raw": "{{host_address}}/users-api/users/",
               "host": [
                 "{{host_address}}"
               ],
               "path": [
-                "users_api",
+                "users-api",
+                "users",
                 ""
               ]
             }
@@ -1809,7 +1811,7 @@
           "response": []
         },
         {
-          "name": "users_api/ [GUEST]",
+          "name": "users-api/ [GUEST]",
           "request": {
             "method": "POST",
             "header": [],
@@ -1823,12 +1825,13 @@
               }
             },
             "url": {
-              "raw": "{{host_address}}/users_api/",
+              "raw": "{{host_address}}/users-api/users/",
               "host": [
                 "{{host_address}}"
               ],
               "path": [
-                "users_api",
+                "users-api",
+                "users",
                 ""
               ]
             }
@@ -1836,7 +1839,7 @@
           "response": []
         },
         {
-          "name": "users_api/ [USER]",
+          "name": "users-api/ [USER]",
           "request": {
             "method": "POST",
             "header": [],
@@ -1850,12 +1853,13 @@
               }
             },
             "url": {
-              "raw": "{{host_address}}/users_api/",
+              "raw": "{{host_address}}/users-api/users/",
               "host": [
                 "{{host_address}}"
               ],
               "path": [
-                "users_api",
+                "users-api",
+                "users",
                 ""
               ]
             }
@@ -1874,7 +1878,7 @@
           "response": []
         },
         {
-          "name": "users_api/id/ [USER]",
+          "name": "users-api/id/ [USER]",
           "request": {
             "method": "GET",
             "header": [
@@ -1899,12 +1903,13 @@
               }
             ],
             "url": {
-              "raw": "{{host_address}}/users_api/{{user_id}}",
+              "raw": "{{host_address}}/users-api/users/{{user_id}}",
               "host": [
                 "{{host_address}}"
               ],
               "path": [
-                "users_api",
+                "users-api",
+                "users",
                 "{{user_id}}"
               ]
             }
@@ -1912,7 +1917,7 @@
           "response": []
         },
         {
-          "name": "users_api/id/ [USER] w/o image",
+          "name": "users-api/id/ [USER] w/o image",
           "request": {
             "method": "PUT",
             "header": [
@@ -1946,12 +1951,13 @@
               }
             },
             "url": {
-              "raw": "{{host_address}}/users_api/{{user_id}}/",
+              "raw": "{{host_address}}/users-api/users/{{user_id}}/",
               "host": [
                 "{{host_address}}"
               ],
               "path": [
-                "users_api",
+                "users-api",
+                "users",
                 "{{user_id}}",
                 ""
               ]
@@ -1960,7 +1966,7 @@
           "response": []
         },
         {
-          "name": "users_api/id/ [USER] with image",
+          "name": "users-api/id/ [USER] with image",
           "request": {
             "method": "PUT",
             "header": [
@@ -1994,12 +2000,13 @@
               }
             },
             "url": {
-              "raw": "{{host_address}}/users_api/{{user_id}}/",
+              "raw": "{{host_address}}/users-api/users/{{user_id}}/",
               "host": [
                 "{{host_address}}"
               ],
               "path": [
-                "users_api",
+                "users-api",
+                "users",
                 "{{user_id}}",
                 ""
               ]
@@ -2008,7 +2015,7 @@
           "response": []
         },
         {
-          "name": "users_api/id/ [USER]",
+          "name": "users-api/id/ [USER]",
           "request": {
             "method": "PATCH",
             "header": [
@@ -2042,12 +2049,13 @@
               }
             },
             "url": {
-              "raw": "{{host_address}}/users_api/{{user_id}}/",
+              "raw": "{{host_address}}/users-api/users/{{user_id}}/",
               "host": [
                 "{{host_address}}"
               ],
               "path": [
-                "users_api",
+                "users-api",
+                "users",
                 "{{user_id}}",
                 ""
               ]
@@ -2056,7 +2064,7 @@
           "response": []
         },
         {
-          "name": "users_api/id/ [USER][ADMIN]",
+          "name": "users-api/id/ [USER][ADMIN]",
           "request": {
             "method": "DELETE",
             "header": [
@@ -2090,12 +2098,13 @@
               }
             },
             "url": {
-              "raw": "{{host_address}}/users_api/{{user_id}}/",
+              "raw": "{{host_address}}/users-api/users/{{user_id}}/",
               "host": [
                 "{{host_address}}"
               ],
               "path": [
-                "users_api",
+                "users-api",
+                "users",
                 "{{user_id}}",
                 ""
               ]
@@ -2115,7 +2124,7 @@
           "response": []
         },
         {
-          "name": "users_api/login/ [USER]",
+          "name": "users-api/login/ [USER]",
           "request": {
             "method": "POST",
             "header": [
@@ -2143,12 +2152,13 @@
               }
             },
             "url": {
-              "raw": "{{host_address}}/users_api/login/",
+              "raw": "{{host_address}}/users-api/users/login/",
               "host": [
                 "{{host_address}}"
               ],
               "path": [
-                "users_api",
+                "users-api",
+                "users",
                 "login",
                 ""
               ]
@@ -2158,7 +2168,7 @@
           "response": []
         },
         {
-          "name": "users_api/logout",
+          "name": "users-api/logout",
           "request": {
             "method": "DELETE",
             "header": [
@@ -2170,12 +2180,13 @@
               }
             ],
             "url": {
-              "raw": "{{host_address}}/users_api/logout/",
+              "raw": "{{host_address}}/users-api/users/logout/",
               "host": [
                 "{{host_address}}"
               ],
               "path": [
-                "users_api",
+                "users-api",
+                "users",
                 "logout",
                 ""
               ]
@@ -3147,12 +3158,12 @@
             "method": "GET",
             "header": [],
             "url": {
-              "raw": "{{host_address}}/projects_api/finished-projects/",
+              "raw": "{{host_address}}/projects-api/finished-projects/",
               "host": [
                 "{{host_address}}"
               ],
               "path": [
-                "projects_api",
+                "projects-api",
                 "finished-projects",
                 ""
               ]
@@ -3166,12 +3177,12 @@
             "method": "GET",
             "header": [],
             "url": {
-              "raw": "{{host_address}}/projects_api/finished-projects/?tag=python&tag=automation",
+              "raw": "{{host_address}}/projects-api/finished-projects/?tag=python&tag=automation",
               "host": [
                 "{{host_address}}"
               ],
               "path": [
-                "projects_api",
+                "projects-api",
                 "finished-projects",
                 ""
               ],
@@ -3226,12 +3237,12 @@
               }
             ],
             "url": {
-              "raw": "{{host_address}}/projects_api/finished-projects/",
+              "raw": "{{host_address}}/projects-api/finished-projects/",
               "host": [
                 "{{host_address}}"
               ],
               "path": [
-                "projects_api",
+                "projects-api",
                 "finished-projects",
                 ""
               ]
@@ -3254,12 +3265,12 @@
               }
             },
             "url": {
-              "raw": "{{host_address}}/projects_api/finished-projects/",
+              "raw": "{{host_address}}/projects-api/finished-projects/",
               "host": [
                 "{{host_address}}"
               ],
               "path": [
-                "projects_api",
+                "projects-api",
                 "finished-projects",
                 ""
               ]
@@ -3288,12 +3299,12 @@
               }
             },
             "url": {
-              "raw": "{{host_address}}/projects_api/finished-projects/",
+              "raw": "{{host_address}}/projects-api/finished-projects/",
               "host": [
                 "{{host_address}}"
               ],
               "path": [
-                "projects_api",
+                "projects-api",
                 "finished-projects",
                 ""
               ]
@@ -3357,12 +3368,12 @@
             "method": "GET",
             "header": [],
             "url": {
-              "raw": "{{host_address}}/projects_api/finished-projects/{{finished_pk}}/",
+              "raw": "{{host_address}}/projects-api/finished-projects/{{finished_pk}}/",
               "host": [
                 "{{host_address}}"
               ],
               "path": [
-                "projects_api",
+                "projects-api",
                 "finished-projects",
                 "{{finished_pk}}",
                 ""
