@@ -33,22 +33,10 @@ class ProjectUsersRepresentationSerializer(serializers.ModelSerializer):
 
 class UserSerializer(serializers.ModelSerializer):
     """
-    Serializes User profile data with input sanitization, base64-to-image conversion, 
+    Serializes User profile data with input sanitization, base64-to-image conversion.
     and read-only favorite/interested project relations.
 
-
-    Args:
-        serializers (_type_): _description_
-
-    Raises:
-        ValidationError: _description_
-        serializers.ValidationError: _description_
-        serializers.ValidationError: _description_
-        serializers.ValidationError: _description_
-        ValidationError: _description_
-
-    Returns:
-        _type_: _description_
+    The image data has to be entered as a jpg image in base64 byte format.
     """
 
     # From Abstract
@@ -116,11 +104,11 @@ class UserSerializer(serializers.ModelSerializer):
                 
     def validate_email(self, value):
         """
-        Validate username uniqueness:
+        Validate email uniqueness:
         - For new users (POST): Check if email exists at all
         - For updates (PUT/PATCH): Check if email exists for a DIFFERENT user
         """
-        # Check if any user has this username
+        # Check if any user has this email
         existing_email = User.objects.filter(email=value).first()
         
         # If this is a new user (no instance)

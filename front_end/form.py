@@ -26,4 +26,3 @@ class RegisterForm(forms.ModelForm):
             'description': forms.Textarea(attrs={'placeholder': 'Tell us about yourself'}),
             # image uses a default field
         }
-

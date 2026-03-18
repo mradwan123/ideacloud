@@ -56,7 +56,6 @@ class UserProfileViewTests(TestCase):
 
         self.token_user = Token.objects.create(user=self.user)
         self.token_image_user = Token.objects.create(user=self.image_user)
-        
 
     def _create_test_image(self):
         """Helper to create an image in memory"""
@@ -109,16 +108,6 @@ class UserProfileViewTests(TestCase):
         """Checks the correct respresentation of default image after PUT request."""
         self.client.credentials(HTTP_AUTHORIZATION=f"Token {self.token_image_user}")
 
-         # Get the current user data
-        user = User.objects.get(id=self.image_user.id)
-        
-        # If user has an image, delete it first to test default
-        if user.image:
-            user.image.delete()
-            user.image = None
-            user.save()
-        
-        # Now send the PUT request
         self.image_user_data["image"] = None
         response = self.client.put(self.url(self.image_user.id), data=self.image_user_data, format="json")
 
@@ -141,7 +130,7 @@ class UserProfileViewTests(TestCase):
         self.client.credentials(HTTP_AUTHORIZATION=f"Token {self.token_image_user}")
 
         response = self.client.patch(self.url(self.image_user.id), data={"image": None}, format="json")
-        
+
         self.assertEqual(response.data.get("image"), DEFAULT_PROFILE_IMAGE_URL)
 
     def test_user_patch_custom_image_representaion(self):
@@ -163,5 +152,3 @@ class UserProfileViewTests(TestCase):
         self.assertTrue(os.path.isfile(image_path))
         self.client.delete(self.url(self.image_user.id))
         self.assertFalse(os.path.isfile(image_path))
-
-
