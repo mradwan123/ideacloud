@@ -13,6 +13,8 @@
 **Idea Cloud is a collaborative web platform designed to bridge the gap between people with ideas and people able to implement those ideas. 
 It provides an environment where non-technical users can pitch project ideas, while developers and creators can form organized groups to bring those visions to life.**
 
+We initially deployed the project on [Heroku](https://infinite-forest-53358-af3c972f374b.herokuapp.com/) but won't continue the membership after the course is done.
+
 **Project Context:** This application serves as the final capstone project for a 1-year Python backend development course. It was built collaboratively by a team of 5 developers over a period of 6 weeks.
 
 This project was developed over a 6-week timee frame by a team of 5 developers.
@@ -99,14 +101,6 @@ DJANGO_SECRET_KEY=your_secret_key_here
 DJANGO_DEBUG=True
 DATABASE_URL="local"
 DB_NAME=final_project
-DB_USER=postgres
-DB_PASSWORD=postgres
-DB_HOST=localhost
-DB_PORT=5432
-```
-
-5. **Initialize the Database** Create the database in PostgreSQL before running migrations:
-```bash
 # In your psql terminal or pgAdmin
 CREATE DATABASE final_project;
 ```
@@ -183,4 +177,6 @@ We designed the API to be easily consumed by any frontend or mobile application.
 | Martina C.      | [LarkaFenrir](https://github.com/LarkaFenrir)         | Frontend                            |
 |                 | [alaakaroum](https://github.com/alaakaroum)           | Backend                             |
 
-## Licensing
+## License
+
+This project is licensed under the GNU General Public License v3.0
