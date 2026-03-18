@@ -24,11 +24,11 @@
 <div class="register-form">
     <form method="POST" enctype="multipart/form-data">
         {% csrf_token %}
-        <label>First Name *</label><br>
+        <label>First Name</label><br>
         {{ form.first_name }}<br>
-        <label>Last Name *</label><br>
+        <label>Last Name</label><br>
         {{ form.last_name }}<br>
-        <label>Username</label><br>
+        <label>Username *</label><br>
         {{ form.username }}<br>
         <label>Email *</label><br>
         {{ form.email }}<br>

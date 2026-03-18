@@ -103,11 +103,13 @@ def register(request):
             return redirect("front-end:login")
         else:
             # Check for specific errors
-            if 'username' in serializer.errors:
-                messages.error(request, "Username already exists. Please choose a different username.")
-            else:
-                messages.error(request, "Registration failed. Please check your information.")
+            error_list = []
+            for key, value in serializer.errors.items():
+                print(value[0])
+                error_list.append(f"{key}: {value[0]}")
 
+            messages.error(request, str(" ".join(error_list)))
+            
     registration_form = RegisterForm()
     return render(request, "register.html", {"form": registration_form})
 
@@ -251,17 +253,21 @@ def public_user_profile(request, user_id):
 @login_required(login_url="front-end:login")
 def user_availability(request, user_id):
     user  = get_object_or_404(User, pk=user_id)
-    if not user.available:
-        user.available = True
+    if request.user == user:
+        if not user.available:
+            user.available = True
+        else:
+            user.available = False
+        user.save()
+        return redirect("front-end:public-user-profile", user_id=user.id)
     else:
-        user.available = False
-    user.save()
-    return redirect("front-end:public-user-profile", user_id=user.id)
+        messages.error(request, "User cannot access other user's availability. Why would you try this, user?")
+        return redirect("front-end:public-user-profile", user_id=user.id)
 
 @login_required(login_url="front-end:login")
 def comments(request, pk):
     idea = get_object_or_404(ProjectIdea, pk=pk)
-    comments = idea.project_idea_comments.all().select_related("user")
+    comments = idea.project_idea_comments.all()
     return render(
         request,
         "comments.html",
@@ -278,7 +284,7 @@ def add_comment(request, pk):
         content = request.POST.get("content", "").strip()
         if content:
             ProjectComment.objects.create(
-                user=request.user,
+                author=request.user,
                 project_idea=idea,
                 content=content
             )
@@ -435,3 +441,35 @@ def leave_group(request, group_id):
     project_group.members.remove(request.user)
     
     return redirect("front-end:group-details", group_id=group_id)
+
+@login_required()
+def search_projects(request):
+    '''Search for project ideas in the project ideas page. Give fail/success messages.'''
+    if request.method == 'POST':
+        raw_query = request.POST.get("title", "").strip()
+        
+        if raw_query:
+            project_ideas = ProjectIdea.objects.filter(title__icontains=raw_query)
+            
+            # same structure as project_ideas 
+            idea_list = []
+            for idea in project_ideas:
+                images = idea.images_projects.all()
+                idea_info = {"idea": idea}
+                if images:
+                    idea_info["image"] = images[0]
+                idea_list.append(idea_info)
+            
+            if project_ideas.exists():
+                messages.success(request, f'Success!! Found {project_ideas.count()} project(s) matching "{raw_query}"')
+            else:
+                messages.warning(request, f'Leider, no projects found matching "{raw_query}" in IdeaCloud bank of wonderful ideas.')
+        else:
+            # Empty search
+            idea_list = []
+            messages.error(request, 'Please enter a search term')
+        
+        return render(request, "search_results.html", {"ideas": idea_list,"search_term": raw_query})
+    
+    # GET request - show empty search page
+    return render(request, "search_results.html")
