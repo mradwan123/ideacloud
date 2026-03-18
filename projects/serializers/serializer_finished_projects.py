@@ -2,7 +2,7 @@ from rest_framework import serializers
 from projects.models import FinishedProject, Tag, ProjectGroup
 from django.contrib.auth import get_user_model
 from projects.serializers.serializer_profanity_validator import ProfanityValidator
-from rest_framework.exceptions import ValidationError
+from rest_framework.exceptions import ValidationError, PermissionDenied
 
 
 User = get_user_model()
@@ -71,17 +71,46 @@ class FinishedProjectSerializer(serializers.ModelSerializer):
         return representation
 
     def create(self, validated_data):
+        """This method runs after is_valid(). 'validated_data' is a dictionary of the clean data sent by the user."""
         request = self.context.get('request')
-        if request and hasattr(request, 'user'):
-            project_group = validated_data['project_group']
-            if project_group.owner == request.user:
-                return super().create(validated_data)
-        raise ValidationError("User is not allowed to publish this Finished Group. User is not owner of Project Group.")
+
+        # get the specific ProjectGroup object the user is trying to link this project to
+        project_group = validated_data.get('project_group')
+
+        # this ensures we actually have a user to check against
+        if not request or not hasattr(request, 'user'):
+            raise PermissionDenied("You must be logged in to perform this action.")
+
+        # is the logged-in user the owner of the group?
+        if project_group.owner != request.user:
+            raise PermissionDenied("Only the Project Group owner can publish a finished project.")
+
+        # prevents groups from submitting the same project twice and creating duplicates
+        if FinishedProject.objects.filter(project_group=project_group).exists():
+            raise ValidationError("This group has already submitted their version of this project.")
+
+        # saves the FinishedProject instance to the database
+        return super().create(validated_data)
 
     def update(self, instance, validated_data):
+        """
+        Handles the update of an existing FinishedProject.
+            'instance' is the object currently in the DB.
+            'validated_data' contains the new changes.
+        """
         request = self.context.get('request')
-        if request and hasattr(request, 'user'):
-            project_group = validated_data['project_group']
-            if project_group.owner == request.user:
-                return super().update(instance, validated_data)
-        raise ValidationError("User is not allowed to edit description/title of this Finished Group. User is not owner of Project Group.")
+
+        # this ensures the check works even if the user only updates the title or description
+        # the instance group here is the fallback
+        project_group = validated_data.get('project_group', instance.project_group)
+
+        # ensures we actually have a user to check against
+        if not request or not hasattr(request, 'user'):
+            raise PermissionDenied("You must be logged in to perform this action.")
+
+        # is the logged-in user the owner of the group?
+        if project_group.owner != request.user:
+            raise PermissionDenied("You are not the owner of the Project Group and cannot edit this project.")
+
+        # saves the changes to the database
+        return super().update(instance, validated_data)
