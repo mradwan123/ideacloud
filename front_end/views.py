@@ -441,3 +441,35 @@ def leave_group(request, group_id):
     project_group.members.remove(request.user)
     
     return redirect("front-end:group-details", group_id=group_id)
+
+@login_required()
+def search_projects(request):
+    '''Search for project ideas in the project ideas page. Give fail/success messages.'''
+    if request.method == 'POST':
+        raw_query = request.POST.get("title", "").strip()
+        
+        if raw_query:
+            project_ideas = ProjectIdea.objects.filter(title__icontains=raw_query)
+            
+            # same structure as project_ideas 
+            idea_list = []
+            for idea in project_ideas:
+                images = idea.images_projects.all()
+                idea_info = {"idea": idea}
+                if images:
+                    idea_info["image"] = images[0]
+                idea_list.append(idea_info)
+            
+            if project_ideas.exists():
+                messages.success(request, f'Success!! Found {project_ideas.count()} project(s) matching "{raw_query}"')
+            else:
+                messages.warning(request, f'Leider, no projects found matching "{raw_query}" in IdeaCloud bank of wonderful ideas.')
+        else:
+            # Empty search
+            idea_list = []
+            messages.error(request, 'Please enter a search term')
+        
+        return render(request, "search_results.html", {"ideas": idea_list,"search_term": raw_query})
+    
+    # GET request - show empty search page
+    return render(request, "search_results.html")
