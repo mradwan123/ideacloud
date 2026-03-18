@@ -55,6 +55,12 @@ Note: The primary focus of this project is the backend architecture, API design,
 - **Cloud deployable:** 
 	- The project is easy to set up in a cloud environment as is. We used Heroku for our tests but other providers work just as well.
 
+- **Gunicorn Deployment:** 
+	- Integrated as the WSGI HTTP Server to handle multiple concurrent connections, ensuring the application remains stable and responsive under real-world traffic. 
+
+- **Whitenoise Static Serving:** 
+	- Configured for efficient static file management, allowing the Django application to serve its own assets (CSS, JS, images) directly. This simplifies the infrastructure by removing the need for a standalone Nginx server in cloud environments.
+
 ## Tech Stack
 
 | Component<br>       | Technology                    |
@@ -65,7 +71,8 @@ Note: The primary focus of this project is the backend architecture, API design,
 | **Database**        | PostgreSQL (Production/Local) |
 | **Documentation**   | Swagger, Postman              |
 | **Authentication:** | DRF Authtoken                 |
-
+| **Server (WSGI) :** | Gunicorn                      |
+| **Static Assets:**  | WhiteNoise                    |
 ---
 
 ## Setup & Installation
@@ -179,4 +186,4 @@ We designed the API to be easily consumed by any frontend or mobile application.
 
 ## License
 
-This project is licensed under the GNU General Public License v3.0
+This project is licensed under the GNU General Public License v3.0 - see the [LICENSE](./LICENSE) file for details.
