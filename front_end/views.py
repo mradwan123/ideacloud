@@ -114,6 +114,23 @@ def register(request):
     return render(request, "register.html", {"form": registration_form})
 
 @login_required(login_url="front-end:login")
+def user_delete(request, user_id):
+    user = get_object_or_404(User, pk=user_id)
+    if request.user.id != user_id:
+        messages.error(request, "You can only delete your own account.")
+        return redirect("front-end:home")
+    
+    if request.method == 'POST':
+        logout(request)
+        user.delete()
+        messages.success(request, f"Account '{user.username}' has been successfully deleted.")
+
+        return redirect("front-end:register")
+    return redirect( "front-end:user-profile")
+
+   
+
+@login_required(login_url="front-end:login")
 def user_profile(request):
     user = request.user
     return render(request, "user_profile.html", context={"user_profile": user})
