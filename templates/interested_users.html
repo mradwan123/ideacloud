@@ -23,6 +23,7 @@
         <div class="user-info">
             <h4><a href="{% url 'front-end:public-user-profile' interested_user.id %}">{{ interested_user.username }}</a></h4>
             {% if interested_user.available %}
+    
             <h4>✅ User is available for collaboration</h4>
             {% else %}
             <h4>🛑 User is unavailable for collaboration at this time</h4>

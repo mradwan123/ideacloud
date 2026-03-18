@@ -48,7 +48,10 @@ class UserAPIView(APIView):
         return Response(serializer.data, status.HTTP_200_OK)
 
     def post(self, request):
-        '''New user registration. No authentication or permissions.'''
+        '''New user registration. No authentication or permissions.
+
+        The image data has to be send as a jpg image in base64 byte format.
+        '''
         serializer = UserSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
@@ -120,7 +123,11 @@ class UserDetailView(APIView):
         return Response(serializer.data, status.HTTP_200_OK)
 
     def patch(self, request, user_id):
-        '''User can Edit partially own user details. check_object_permissions().'''
+        '''User can Edit partially own user details. check_object_permissions().
+
+        The image data has to be send as a jpg image in base64 byte format.
+        Recieving NULL (None in python) restores the default image as profile picture.
+        '''
         user = self.get_user(user_id)
         self.check_object_permissions(request, user)
 
@@ -131,7 +138,11 @@ class UserDetailView(APIView):
         return Response(serializer.errors, status.HTTP_400_BAD_REQUEST)
 
     def put(self, request, user_id):
-        '''User can Edit user's details. check_object_permission()'''
+        '''User can Edit user's details. check_object_permission()
+
+        The image data has to be send as a jpg image in base64 byte format.
+        Recieving NULL (None in python) restores the default image as profile picture.
+        '''
         user = self.get_user(user_id)
         self.check_object_permissions(request, user)
 

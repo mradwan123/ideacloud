@@ -15,7 +15,9 @@ urlpatterns = [
     path("project-ideas/", ProjectIdeaList.as_view(), name="project-idea-list"),
     # Access to methods related to a specific idea
     path("project-ideas/<int:idea_pk>/", ProjectIdeaDetail.as_view(), name="project-idea-detail"),
+    # Allows user to upload image related to a specific idea
     path("project-ideas/<int:idea_pk>/add-image/", AddProjectIdeaImage.as_view(), name="project-idea-add-image"),
+    # Allows user to delete image related to a specific idea
     path("project-ideas/<int:idea_pk>/remove-image/<image_pk>", RemoveProjectIdeaImage.as_view(), name="project-idea-remove-image"),
 
     ## ProjectGroup

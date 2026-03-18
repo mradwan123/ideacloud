@@ -9,7 +9,13 @@ from django.db import transaction
 
 class ProjectGroupList(APIView):
     """
+    project-ideas/<int:idea_pk>/project-groups/
+
     List all project groups for a specific project idea, or create a new project group.
+
+    Methods:
+        GET: Retrieve all project groups belonging to a specific project idea.
+        POST: Create a new project group for a specific project idea.
     """
 
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
@@ -53,7 +59,15 @@ class ProjectGroupList(APIView):
 
 class ProjectGroupDetail(APIView):
     """
+    project-ideas/<int:idea_pk>/project-groups/<int:group_pk>/
+
     Retrieve, update, or delete a specific project group within a project idea.
+
+    Methods:
+        GET: Retrieve details of a specific project group.
+        PUT: Fully update a specific project group.
+        PATCH: Partially update a specific project group.
+        DELETE: Delete a specific project group.
     """
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
 
