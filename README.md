@@ -18,7 +18,7 @@ It provides an environment where non-technical users can pitch project ideas, wh
 This project was developed over a 6-week timee frame by a team of 5 developers.
 Our goal was to create a robust, scalable backend using Django. It was a learning experience for all of us and there's still a lot of features that could be added.
 
-_Note: The primary focus of this project is the backend architecture, API design, and database management. The included frontend is strictly presentational to show what the website could look like.
+Note: The primary focus of this project is the backend architecture, API design, and database management. The included frontend is strictly presentational to show what the website could look like.
 
 
 ## Core Features & Functionality
@@ -50,6 +50,8 @@ _Note: The primary focus of this project is the backend architecture, API design
 - **Live API Documentation:** 
 	- Integrated Swagger so anyone can explore and test the backend endpoints directly through the browser.
 
+- **Cloud deployable:** 
+	- The project is easy to set up in a cloud environment as is. We used Heroku for our tests but other providers work just as well.
 
 ## Tech Stack
 
@@ -109,8 +111,7 @@ DB_PORT=5432
 CREATE DATABASE final_project;
 ```
 
-Then create and apply the Django migrations:
-(you may have to delete old migrations first)
+You can skip this step but if you're running into problems, try to delete the migration files and do this:
 ```bash
 python manage.py makemigrations
 python manage.py migrate
@@ -173,11 +174,13 @@ We designed the API to be easily consumed by any frontend or mobile application.
 
 ## The Team
 
-| Name      | GitHub Name                                           | Role(s) in the Project              |
-| --------- | ----------------------------------------------------- | ----------------------------------- |
-|           | [mamasitta](https://github.com/mamasitta)             | Teacher & Mentor                    |
-| Mattis M. | [SlimariusSlimus](https://github.com/SlimariusSlimus) | Backend<br>Tech Lead                |
-|           | [mradwan123](https://github.com/mradwan123)           | Scrum Master<br>Backend<br>Frontend |
-|           | [Lamarr12345](https://github.com/Lamarr12345)         | Backend<br>Frontend                 |
-|           | [LarkaFenrir](https://github.com/LarkaFenrir)         | Frontend                            |
-|           | [alaakaroum](https://github.com/alaakaroum)           | Backend                             |
+| Name            | GitHub Name                                           | Role(s) in the Project              |
+| --------------- | ----------------------------------------------------- | ----------------------------------- |
+|                 | [mamasitta](https://github.com/mamasitta)             | Teacher & Mentor                    |
+| Mattis M.       | [SlimariusSlimus](https://github.com/SlimariusSlimus) | Backend<br>Tech Lead                |
+| Muhammad Radwan | [mradwan123](https://github.com/mradwan123)           | Scrum Master<br>Backend<br>Frontend |
+| Malte R.        | [Lamarr12345](https://github.com/Lamarr12345)         | Backend<br>Frontend                 |
+| Martina C.      | [LarkaFenrir](https://github.com/LarkaFenrir)         | Frontend                            |
+|                 | [alaakaroum](https://github.com/alaakaroum)           | Backend                             |
+
+## Licensing
