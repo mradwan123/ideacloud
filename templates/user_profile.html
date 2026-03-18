@@ -17,9 +17,15 @@
             </p>
             {% else %}
             <p>
-                No description for this user.
+                No description for {{ user_profile.username }}.
             </p>
             {% endif %}
+            <p style="text-align: left;"> 
+                <br><br><br><br><br><br><br><br><br><br>
+                You are currently indicated as {% if user_profile.available %} "avaialable" to collaborate with other users on a project {% else %} "unavailable" to collaborate with other users on a project. {% endif %}
+                
+                If you would like to change your availability, please click <a href="{% url 'front-end:user-availability' user_profile.id %}">HERE</a>.
+            </p>
         </div>    
         <div class="column-right">
             <div class="profile-img">
@@ -30,13 +36,15 @@
                 {% endif %}
             </div>
             <div class="profile-links">
+             
                 <!-- availability takes a boolean to display different images-->
             
                 <div class="user-info"><a href="{% url 'front-end:user-availability' user_profile.id %}">Availability:</a>
-                {% if user_profile.available == True %}
-                    Yas! <img src="../static/images/available.svg" id="image-available">
+                {% if user_profile.available %}
+                    <img src="../static/images/available.svg" id="image-available">
                 {% else %}
-                    Nope! <img src="../static/images/unavailable.svg" id="image-unavailable">
+                    <img src="../static/images/unavailable.svg" id="image-unavailable">
+            
                 {% endif %}
                 </div>
                 </div>
