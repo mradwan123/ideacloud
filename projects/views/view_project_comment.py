@@ -18,11 +18,17 @@ class IsAuthorAndWithinTimeframe(permissions.BasePermission):
 
         # check for ownership
         if obj.author != request.user:
+            self.message = "Only the author of this comment can modify it."
             return False
 
         expiration_time = timedelta(minutes=15)
+        is_in_time = timezone.now() <= (obj.created_on + expiration_time)
         # we compare the time now (eg. 14:20) with the creation time + our limit (eg 14:00 + 15 min)
-        return timezone.now() <= (obj.created_on + expiration_time)
+        if not is_in_time:
+            self.message = f"Comment is too old now. Editing after {expiration_time} minutes is prohibited."
+            return False
+
+        return True
 
 
 class ProjectIdeaCommentList(APIView):

@@ -42,7 +42,7 @@ class FinishedProjectList(APIView):
         query_params:   sort - how the return data should be sorted (e.g., ?sort=title; "-" makes it descending
                         tag  - filter for multiple tags (e.g., ?tags=python,django)
         """
-        # sort like specified in the 'sort' instruction from the URL (e.g. /project-ideas/?sort=title); default to '-created_on'
+        # sort like specified in the 'sort' instruction from the URL (e.g. /project-ideas/?sort=title); default to '-finished_on'
         sort_by = request.query_params.get('sort', '-finished_on')
 
         # .getlist() gets multiple values like ?tag=python&tag=automation
@@ -134,7 +134,7 @@ class FinishedProjectDetail(APIView):
         finished_project = self._get_object(request, finished_pk)
         if request.user != finished_project.project_group.owner:
             return Response(
-                {"detail": "Only the author is allowed to delete the finished project"},
+                {"detail": "Only the group owner is allowed to delete the finished project"},
                 status=status.HTTP_403_FORBIDDEN
             )
 

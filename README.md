@@ -133,7 +133,7 @@ The application will be available at `http://127.0.0.1:8000/'
 
 ## Testing & Quality Assurance
 
-The backend features a comprehensive test suite with **91% code coverage**, ensuring the reliability of serializers, custom permissions, query logic, and user flows.
+The backend features a comprehensive test suite with **90% code coverage**, ensuring the reliability of serializers, custom permissions, query logic, and user flows.
 
 To execute the automated test suite and check coverage:
 
