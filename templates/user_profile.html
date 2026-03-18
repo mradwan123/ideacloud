@@ -33,10 +33,23 @@
                 <!-- availability takes a boolean to display different images-->
             
                 <div class="user-info"><a href="{% url 'front-end:user-availability' user_profile.id %}">Availability:</a>
+                {% if user_profile.available %}
+                    <h4>✅</h4>
+                    <h4>available</h4>
+                {% else %}
+                     <h4>🛑</h4>
+                    <h4>unavailable</h4>
+                   <div class="profile-links">
+                <!-- availability takes a boolean to display different images-->
+            
+                <div class="user-info"><a href="{% url 'front-end:user-availability' user_profile.id %}">Availability:</a>
                 {% if user_profile.available == True %}
                     Yas! <img src="../static/images/available.svg" id="image-available">
                 {% else %}
                     Nope! <img src="../static/images/unavailable.svg" id="image-unavailable">
+                {% endif %}
+                </div>
+                </div
                 {% endif %}
                 </div>
                 </div>
