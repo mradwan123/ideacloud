@@ -33,12 +33,12 @@ schema_view = get_schema_view(
 
 urlpatterns = [
     path("admin/", admin.site.urls),
-    path("projects_api/", include(("projects.urls", "projects"), namespace="projects")),
-    path("users_api/", include(("users.urls", "users"), namespace="users")),
+    path("projects-api/", include(("projects.urls", "projects"), namespace="projects")),
+    path("users-api/", include(("users.urls", "users"), namespace="users")),
     path("", include(("front_end.urls", "front_end"), namespace="front-end")),
     # for swagger dolcumentation
     path(
-        "swagger_api/",
+        "swagger-api/",
         include([
             path("", schema_view.with_ui("swagger", cache_timeout=0), name="swagger-ui"),
             path("schema/", schema_view.with_ui("swagger", cache_timeout=0), name="swagger-schema"),
