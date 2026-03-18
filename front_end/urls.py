@@ -37,6 +37,7 @@ from .views import (
     leave_group,
     user_availability, 
     search_projects,
+    user_delete
 )
 
 app_name = "front-end"
@@ -75,9 +76,11 @@ urlpatterns = [
     path("login/", user_login, name="login"),
     path("register/", register, name="register"),
     path("logout/", user_logout, name="logout"),
-    # user profile / public user profile
+    # user profile / public user profile / delete
     path("user_profile/", user_profile, name="user-profile"),
     path("user_profile/<int:user_id>", public_user_profile, name="public-user-profile"),
+    path("user_profile/<int:user_id>/delete/", user_delete, name="delete-user"),
+
     # user available yes/no
     path("user_profile/<int:user_id>/availability/", user_availability, name="user-availability"),
     # about section

@@ -52,6 +52,27 @@
                 <div class="user-info"><a href="{% url 'front-end:favourite-projects' %}">Favourite Projects</a></div>
                 <div class="user-info"><a href="{% url 'front-end:saved-projects' %}">Interested Projects</a></div>
                 <div class="user-info"><a href="{% url 'front-end:finished-projects' %}">Finished Projects</a></div>
+                
+                <!-- delete user-->
+                <button onclick="confirmDelete()" style="background-color: #dc2626; color: white; padding: 0.75rem 1.5rem; border: none; border-radius: 6px; cursor: pointer; font-weight: 600;">
+                Delete Account
+                </button>
+                <form id="delete-form" method="POST" action="{% url 'front-end:delete-user' user.id %}" style="display: none;">
+                {% csrf_token %}
+                </form>
+
+                    <script>
+                    function confirmDelete() {
+                        // Show confirmation popup
+                        if (confirm('Are you sure you want to delete your account from IdeaCloud, your favorite place to share projects?\n\nThis action CANNOT be undone!\n\nAll your projects, comments, and data will be permanently deleted.')) 
+                        {
+                            // If user clicks OK, submit the form
+                            document.getElementById('delete-form').submit();
+                        }
+                        // If user clicks Cancel, nothing happens
+                    }
+                    </script>
+
             </div>
         </div>
     </div>
