@@ -127,7 +127,7 @@ python manage.py collectstatic --noinput
 
 Install this plugin in the same environment as your Django application
 ```bash
-pip install django-plugin-database-url  --noinput
+pip install django-plugin-database-url 
 ```
 
 Once installed, any DATABASE_URL environment variable will be automatically used to configure your Django database setting, using dj-database-url.
@@ -197,7 +197,7 @@ We designed the API to be easily consumed by any frontend or mobile application.
 
 - `static/` & `media/`: Storage for CSS, JS, global assets, and user-uploaded content.
 
-- `Procfile` `runtime.txt` Heroku related support files storing wsgi and python config, required for cloud deployment. 
+- `Procfile` `runtime.txt`: Heroku related support files storing wsgi and python config, required for cloud deployment. 
 
 
 ## The Team
