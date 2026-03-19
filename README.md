@@ -181,7 +181,7 @@ We designed the API to be easily consumed by any frontend or mobile application.
 | Mattis M.       | [SlimariusSlimus](https://github.com/SlimariusSlimus) | Backend<br>Tech Lead                |
 | Muhammad Radwan | [mradwan123](https://github.com/mradwan123)           | Scrum Master<br>Backend<br>Frontend |
 | Malte R.        | [Lamarr12345](https://github.com/Lamarr12345)         | Backend<br>Frontend                 |
-| Martina C.      | [LarkaFenrir](https://github.com/LarkaFenrir)         | Frontend                            |
+| Martina C.      | [LarkaFenrir](https://github.com/LarkaFenrir)         | Frontend<br>Backend                 |
 |                 | [alaakaroum](https://github.com/alaakaroum)           | Backend                             |
 
 ## License
