@@ -118,17 +118,40 @@ python manage.py makemigrations
 python manage.py migrate
 ```
 
-6. **Static Files & Initial Data**
+5. **Static Files & Initial Data**
 ```bash
 python manage.py collectstatic --noinput
 ```
 
-7. **Run the Server**
+6. **Configure Environment Variables**
+
+Install this plugin in the same environment as your Django application
+```bash
+pip install django-plugin-database-url  --noinput
+```
+
+Once installed, any DATABASE_URL environment variable will be automatically used to configure your Django database setting, using dj-database-url.
+
+DATABASE_URL is specified in settings to 
+.env vairables to consider below:
+```
+DJANGO_SECRET_KEY=[input your secret key]
+DATABASE_URL=local
+DB_NAME=[input your DB name]
+DB_USER=[input your postgres username]
+DB_PASSWORD=[input your password]
+DB_HOST=localhost
+DB_PORT=5432
+
+DEBUG=True
+```
+
+6. **Run the Server**
 ```
 python manage.py runserver
 ```
 
-The application will be available at `http://127.0.0.1:8000/'
+The application will be available at localhost: `http://127.0.0.1:8000/'
 
 ---
 
@@ -164,13 +187,17 @@ We designed the API to be easily consumed by any frontend or mobile application.
 
 - `projects/`: Core business logic for managing ideas, group formation, image handling, likes, and comments.
 
-- `users/`: Custom user models, token authentication, and profile management.
+- `users/`: Custom user models, token authentication, custom permissions, and profile management.
 
 - `config/`: Main project settings, URL routing, and custom image processing helpers.
 
 - `front_end/`: Django views and templates serving the web UI.
 
+- `templates/`: Includes .html files displaying frontend views.
+
 - `static/` & `media/`: Storage for CSS, JS, global assets, and user-uploaded content.
+
+- `Procfile` `runtime.txt` Heroku related support files storing wsgi and python config, required for cloud deployment. 
 
 
 ## The Team
