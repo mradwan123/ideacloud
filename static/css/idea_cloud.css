@@ -411,10 +411,15 @@ label {
     margin-top: 3rem;
 }
 
+.new-project-button {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 1.5rem;
+    margin-right: 1rem;
 }
 
 .new-project-button a {
-    color: black;
+    color: var(--button-text);
 }
 
 .ideas-grid {
