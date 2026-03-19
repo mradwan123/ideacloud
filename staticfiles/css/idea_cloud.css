@@ -1,5 +1,62 @@
-/* colour palette https://coolors.co/12202b-647d76-f9f4f5-788192-767179 */
+/* colour palette */
 
+:root {
+    --primary:              #0B225C;
+    --primary-accent:       #061944;
+    --secondary:            #9DCBFB;
+    --secondary-accent:     #CFE3FA;
+    --tertiary:             #19252F;
+    --tertiary-accent:      #121a20;
+    --text-primary:         var(--secondary);
+    --text-primary-accent:  var(--text-secondary-accent);
+    --text-secondary:       #000000;
+    --text-secondary-accent:#3b3b3b;
+
+    /* nav bar  */
+    --navbar-bg: var(--secondary);
+    --navbar-text: var(--primary);
+    /* header */
+    --header-bg: var(--navbar-bg);
+    --header-text: var(--navbar-text);
+    /* body */
+    --body-bg: var(--tertiary);
+    --body-text: var(--secondary-accent);
+    /* footer*/
+    --footer-bg: var(--tertiary);
+    --footer-text: var(--secondary-accent);
+    /* buttons */
+    --button-bg: var(--tertiary);
+    --button-text: var(--secondary-accent);
+    /* links */
+    --link: var(--primary-accent);
+    --link-visited: var(--secondary); 
+    --link-hover: var(--secondary-accent);
+    /* tag buttons */
+    --tag: var(--primary);
+    --tag-visited: var(--primary); 
+    --tag-hover: var(--primary);
+
+
+
+
+
+
+    /* --header-bg: var(--tertiary);
+    --navbar-bg: var(--tertiary);
+    --navbar-text: #9DCBFB;
+    --body-bg: #9DCBFB;
+    --body-text: #0B225C;
+    --header-text: #9DCBFB; */
+}
+
+/* -- Base -- */
+
+html, body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    overflow-x: hidden;
+}
 
 /* -- fonts -- */
 
@@ -22,15 +79,19 @@
 /* -- links -- */
 
 a {
-    color: #F9F4F5;
+    color: var(--text-primary);
     text-decoration: none;
 }
 
-a:visited, a:hover {
-    color: #F9F4F5;
+a:visited {
+    color: var(--link-visited);
     text-decoration: none;
 }
 
+a:hover {
+    color: var(--link-hover);
+    text-decoration: none;
+}
 
 /* -- buttons -- */
 
@@ -38,13 +99,18 @@ a:visited, a:hover {
     display: inline-block;
     padding: 0.13rem 0.38rem;
     font: inherit;
-    color: black;
-    background-color: #788192;
+    background-color: var(--button-bg);
+    color: var(--button-text);
     text-decoration: none;
     border: 0.125rem solid #788192;
     border-radius: 0.19rem;
     cursor: pointer;
     line-height: normal;
+}
+
+.button:hover {
+    transform: scale(1.15);
+    transition: transform 0.3s ease-in-out;
 }
 
 .button:active {
@@ -55,52 +121,67 @@ a:visited, a:hover {
 /*  -- header -- */
 
 .header {
-    background-color: #647D76;
-    color: black;
-    padding-top: 2%;
+    background-color: var(--header-bg);
+    padding-top: 1%;
     text-align: center;
-    padding-bottom: 1%;
+    padding-bottom: 2%;
 }
 
-h1 {
-    color: #F9F4F5;
+.header h1 {
     font-size: 3rem;
-    margin-bottom: 1rem;
+    margin-bottom: 2.5rem;
     font-family: 'Nexa', serif;
     font-weight: bold;
 }
 
-h2 {
+.header h2 {
     font-size: 1.9rem;
     font-family: 'Amoera', serif;
-    color: #F9F4F5;
+    font-weight: bold;
+}
+
+.header h1,.header h2 {
+    color: var(--header-text);
 }
 
 .nav-bar {
     align-items: center;
-    background-color: #767179;
-    color: black;
+    background-color: var(--navbar-bg);
+    color: var(--navbar-text);
     display: flex;
     font-size: 1.1rem;
     font-family: 'Merriweather', serif;
     justify-content: center;
     width: auto;
     border-radius: 0 0 0.625rem 0.625rem;
+    font-weight: bold;
 }
 
 .nav-tag {
-    padding-top: 1rem;
-    padding-left: 2rem;
-    padding-right: 2rem;
-    padding-bottom: 1rem;
+    padding-top: 0rem;
+    padding-left: 1.75rem;
+    padding-right: 1.75rem;
+    padding-bottom: 2rem;
 }
 
+.nav-tag a{
+    color: var(--navbar-text);
+    display: inline-block;
+    transition: transform 0.2s ease, color 0.2s ease;
+}
+
+.nav-tag:hover a, 
+.nav-tag a:hover,
+.nav-tag a:active {
+    color: var(--navbar-text) !important;
+    transform: scale(1.1);
+}
 
 /*  -- body -- */
 
 body {
-    background-color: #12202B;
-    color: #F9F4F5;
+    background-color: var(--body-bg);
+    color: var(--body-text);
     font-family: 'Merriweather', serif;
 }
 
@@ -125,7 +206,8 @@ p {
 
 footer {
     align-items: center;
-    color: #F9F4F5;
+    background-color: var(--footer-bg);
+    color: var(--footer-text);
     display: flex;
     font-size: 1rem;
     font-family: 'Merriweather', serif;
@@ -144,11 +226,24 @@ footer {
 
 form {
     margin: 0 39%;
+    background-color: var(--tertiary);
+    color: var(--secondary-accent);
+}
+
+form button{
+    background-color: var(--button-bg);
+    color: var(--button-text);
+}
+
+form button:hover{
+    transform: scale(1.15);
+    transition: transform 0.3s ease-in-out;
 }
 
 label {
     margin-bottom: 0.3rem;
     margin-top: 0.8rem;
+    
 }
 
 .disclaimer {
@@ -173,16 +268,6 @@ label {
     margin-bottom: 3rem;
 }
 
-.about-sub {
-    margin-bottom: 30px;
-    text-align: center;
-}
-
-.about-sub h4 {
-    color: #b1c3bd;
-    margin-bottom: 30px;
-}
-
 /* -- team boxes -- */
 
 #team-description {
@@ -190,17 +275,6 @@ label {
     margin-bottom: 2rem;
 }
 
-.team-section {
-    margin-top: 2.5rem;
-}
-
-.team-section h3 {
-    color: #bac3cc;
-    margin-bottom: 1.6rem;
-    text-align: center;
-}
-
-/* 
 .team-box {
     display: flex;
     align-items: center;
@@ -216,36 +290,13 @@ label {
     object-fit: cover;
     border-radius: 0.5rem;
 }
-*/
-
-.team-box-container {
-    display: flex;
-    gap: 1.25rem;
-    overflow-x: auto;
-    padding: 1.25rem 0;
-    justify-content: center;
-}
-
-.team-box {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 0.62rem;
-    padding: 1.25rem;
-    border: 1px solid #ccc;
-    border-radius: 0.5rem;
-    background-color: #f9f9f9;
-    min-width: 11.25rem;
-    text-align: center;
-}
 
 .name-and-description {
     display: flex;
     flex-direction: column;
-    align-items: center;
+    align-items: flex-start;
 }
 
-/*
 .name-and-description h4 {
     font-size: 1.25rem;
 }
@@ -254,23 +305,7 @@ label {
     font-size: 1rem;
     opacity: 0.7;
 }
-*/
 
-.name-and-description h4,
-.name-and-description h5 {
-    margin: 0;
-}
-
-.name-and-description h4 {
-    color: #2c3e50;
-    font-size: 0.87rem;
-}
-
-.name-and-description h5 {
-    color: #7f8c8d;
-    font-weight: normal;
-    font-size: 0.75rem;
-}
 
 /* --- user profile --- */
 
@@ -304,6 +339,12 @@ label {
     margin-bottom: 1rem;
 }
 
+.user-info img {
+    height: 1rem;
+    width: auto;
+    margin-left: 0.5rem;
+}
+
 
 /* --- project details --- */
 
@@ -318,16 +359,17 @@ label {
 }
 
 .images-row {
-    display: flex;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
     gap: 1rem;
     width: 100%;
     margin-bottom: 2rem;
 }
 
 .images-row img {
-    width: calc((100% - 2rem) / 3);
+    width: calc((100% - 2rem));
     height: 20rem;
-    object-fit: cover;
+    object-fit: contain;
     display: block;
     border-radius: 0.5rem;
 }
@@ -341,8 +383,8 @@ label {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background-color: #788192;
-    color: black;
+    background-color: var(--button-bg);
+    color: var(--button-text);
     display: flex;
     font-size: 1.1rem;
     font-family: 'Merriweather', serif;
@@ -360,17 +402,26 @@ label {
     align-items: center;
 }
 
-.project-details-button-tag a {
-    color: black;
-}
-
-.likes-button {
+.project-actions {
     display: flex;
-    justify-content: flex-end;
-    margin-bottom: 1rem;
-    margin-right: 1rem;
+    justify-content: flex-end;   /* push everything to the right */
+    align-items: center;
+    gap: 1rem;                   /* space between buttons */
+    margin-bottom: 1.5rem;
 }
 
+.project-actions form {
+    margin: 0;                   /* remove default form spacing */
+}
+
+.project-actions .button {
+    margin: 0;
+}
+
+.no-projects {
+    text-align: center;
+    margin-top: 3rem;
+}
 
 /* -- all project ideas -- */
 
@@ -385,19 +436,19 @@ label {
     color: black;
 }
 
-.all-projects-row {
+.ideas-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: 1rem;
+    gap: 2rem;
 }
 
-.image-card img {
+.idea-card img {
     width: 100%;
     height: 20rem;
     object-fit: cover;
     border-radius: 0.5rem;
     display: block;
-    margin-bottom: 0.3rem;
+    margin-bottom: 0.5rem;
 }
 
 .caption {
@@ -420,6 +471,17 @@ label {
     padding-right: 1rem;
 }
 
+@media (max-width: 1000px) {
+    .ideas-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 600px) {
+    .ideas-grid {
+        grid-template-columns: 1fr;
+    }
+}
 
 /* -- project groups -- */
 
@@ -456,4 +518,120 @@ label {
 .name-and-comment h4 {
     font-size: 1rem;
     opacity: 0.7;
+}
+
+/*---- tags buttons - create project page -----
+
+/* Tags container */
+.tags-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin: 15px 0 25px 0;
+}
+
+/* Hide the checkbox */
+.tag-checkbox {
+    display: none;
+}
+
+/* Tag button - the entire tag is clickable */
+.tag-btn {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: var(--secondary);
+    color: var(--tertiary);
+    border-radius: 25px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    user-select: none;
+}
+
+/* Hover effect - when mouse is over */
+.tag-btn:hover {
+    background-color: #dee2e6;
+    transform: translateY(-2px);
+}
+
+/* Selected state - when clicked/toggled ON */
+.tag-checkbox:checked + .tag-btn {
+    background-color: #647D76;
+    color: #ffffff;
+}
+
+/* Selected hover - when hovering over a selected tag */
+.tag-checkbox:checked + .tag-btn:hover {
+    background-color: #647D76;
+}
+
+/* No tags message */
+.no-tags {
+    color: #6c757d;
+    font-style: italic;
+    margin: 0;
+}
+
+/* File input hint */
+.file-hint {
+    display: block;
+    color: #6c757d;
+    margin-top: 5px;
+    font-size: 0.9em;
+}
+/* ----- end tags buttons --------- 
+/* -- comments -- */
+
+.add-comment {
+    margin-bottom: 5rem;
+}
+
+.comment-box {
+    display: flex;
+    align-items: flex-start;
+    gap: 1.5rem;
+    margin-bottom: 4rem;
+    max-width: 100%;
+    margin: 0 auto 2rem auto;
+}
+
+.comment-box img {
+    width: 7rem;
+    height: 7rem;
+    object-fit: cover;
+    border-radius: 0.5rem;
+}
+
+.comment-actions {
+    display: flex;
+    margin-top: 0.5rem;
+}
+
+.comment-actions a,
+.comment-actions button {
+    margin: 0;
+    display: inline-flex;
+    align-items: center;
+    color: black;
+}
+
+.edit-comment-form a {
+    color: black;
+}
+
+li a {
+    color: #788192;
+}
+
+/*--- Image avialability ---*/
+
+#image-available {
+    width: 5%;
+    height: 5%;
+}
+
+#image-unavailable {
+    width: 5%;
+    height: 5%;
 }
