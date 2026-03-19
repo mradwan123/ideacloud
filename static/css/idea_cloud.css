@@ -35,18 +35,6 @@
     --tag: var(--primary);
     --tag-visited: var(--primary); 
     --tag-hover: var(--primary);
-
-
-
-
-
-
-    /* --header-bg: var(--tertiary);
-    --navbar-bg: var(--tertiary);
-    --navbar-text: #9DCBFB;
-    --body-bg: #9DCBFB;
-    --body-text: #0B225C;
-    --header-text: #9DCBFB; */
 }
 
 /* -- Base -- */
@@ -423,8 +411,6 @@ label {
     margin-top: 3rem;
 }
 
-/* -- all project ideas -- */
-
 .new-project-button {
     display: flex;
     justify-content: flex-end;
@@ -433,7 +419,7 @@ label {
 }
 
 .new-project-button a {
-    color: black;
+    color: var(--button-text);
 }
 
 .ideas-grid {
@@ -613,11 +599,11 @@ label {
     margin: 0;
     display: inline-flex;
     align-items: center;
-    color: black;
+    color: var(--button-text);
 }
 
 .edit-comment-form a {
-    color: black;
+    color: var(--button-text);
 }
 
 li a {
