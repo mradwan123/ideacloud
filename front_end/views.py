@@ -109,7 +109,7 @@ def register(request):
                 error_list.append(f"{key}: {value[0]}")
 
             messages.error(request, str(" ".join(error_list)))
-            
+ 
     registration_form = RegisterForm()
     return render(request, "register.html", {"form": registration_form})
 
@@ -119,7 +119,7 @@ def user_delete(request, user_id):
     if request.user.id != user_id:
         messages.error(request, "You can only delete your own account.")
         return redirect("front-end:home")
-    
+
     if request.method == 'POST':
         logout(request)
         user.delete()
@@ -127,8 +127,6 @@ def user_delete(request, user_id):
 
         return redirect("front-end:register")
     return redirect( "front-end:user-profile")
-
-   
 
 @login_required(login_url="front-end:login")
 def user_profile(request):
@@ -266,7 +264,7 @@ def public_user_profile(request, user_id):
             "user_profile": profile_user
         }
     )
-    
+
 @login_required(login_url="front-end:login")
 def user_availability(request, user_id):
     user  = get_object_or_404(User, pk=user_id)
@@ -310,14 +308,14 @@ def add_comment(request, pk):
 @login_required(login_url="front-end:login")
 def remove_comment(request, comment_id):
     comment = get_object_or_404(ProjectComment, pk=comment_id)
-    if request.user == comment.user or request.user.is_staff:
+    if request.user == comment.author or request.user.is_staff:
         comment.delete()
     return redirect("front-end:comments", pk=comment.project_idea.id)
 
 @login_required(login_url="front-end:login")
 def edit_comment(request, comment_id):
     comment = get_object_or_404(ProjectComment, pk=comment_id)
-    if request.user != comment.user and not request.user.is_staff:
+    if request.user != comment.author and not request.user.is_staff:
         return redirect("front-end:comments", pk=comment.project_idea.id)
     if request.method == "POST":
         new_content = request.POST.get("content", "").strip()
@@ -425,7 +423,7 @@ def group_details(request, group_id):
         project_group = ProjectGroup.objects.get(id=group_id)
     except ProjectGroup.DoesNotExist:
         return redirect("front-end:group-details", group_id=group_id)
-    
+
     return render(request, "project_group_details.html", context={"group": project_group})
 
 @login_required()
@@ -434,10 +432,10 @@ def join_group(request, group_id):
         project_group = ProjectGroup.objects.get(id=group_id)
     except ProjectGroup.DoesNotExist:
         return redirect("front-end:group-details", group_id=group_id)
-    
+
     if request.user in project_group.members.all():
         return redirect("front-end:group-details", group_id=group_id)
-    
+
     project_group.members.add(request.user)
 
     return redirect("front-end:group-details", group_id=group_id)
@@ -448,15 +446,15 @@ def leave_group(request, group_id):
         project_group = ProjectGroup.objects.get(id=group_id)
     except ProjectGroup.DoesNotExist:
         return redirect("front-end:group-details", group_id=group_id)
-    
+
     if request.user == project_group.owner:
         return redirect("front-end:group-details", group_id=group_id)
-    
+
     if request.user not in project_group.members.all():
         return redirect("front-end:group-details", group_id=group_id)
 
     project_group.members.remove(request.user)
-    
+
     return redirect("front-end:group-details", group_id=group_id)
 
 @login_required()
@@ -464,10 +462,10 @@ def search_projects(request):
     '''Search for project ideas in the project ideas page. Give fail/success messages.'''
     if request.method == 'POST':
         raw_query = request.POST.get("title", "").strip()
-        
+
         if raw_query:
             project_ideas = ProjectIdea.objects.filter(title__icontains=raw_query)
-            
+
             # same structure as project_ideas 
             idea_list = []
             for idea in project_ideas:
@@ -476,7 +474,7 @@ def search_projects(request):
                 if images:
                     idea_info["image"] = images[0]
                 idea_list.append(idea_info)
-            
+
             if project_ideas.exists():
                 messages.success(request, f'Success!! Found {project_ideas.count()} project(s) matching "{raw_query}"')
             else:
@@ -485,8 +483,8 @@ def search_projects(request):
             # Empty search
             idea_list = []
             messages.error(request, 'Please enter a search term')
-        
+
         return render(request, "search_results.html", {"ideas": idea_list,"search_term": raw_query})
-    
+
     # GET request - show empty search page
     return render(request, "search_results.html")

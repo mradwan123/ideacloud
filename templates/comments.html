@@ -54,7 +54,7 @@
                 <div class="comment-actions">
                 
                 <!-- Show edit and delete buttons only to comment author or admin -->
-                {% if request.user == comment.user or request.user.is_staff %}
+                {% if request.user == comment.author or request.user.is_staff %}
                     <div class="button"><a href="{% url 'front-end:edit-comment' comment.id %}">Edit</a></div>
                     <form action="{% url 'front-end:remove-comment' comment.id %}" method="POST">
                         {% csrf_token %}
