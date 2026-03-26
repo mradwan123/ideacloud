@@ -10,7 +10,7 @@ from rest_framework.permissions import IsAuthenticatedOrReadOnly, IsAuthenticate
 from rest_framework.decorators import api_view
 from rest_framework.authtoken.models import Token
 from django.shortcuts import get_object_or_404
-
+from django.core.cache import cache
 
 User = get_user_model()
 
@@ -43,8 +43,15 @@ class UserAPIView(APIView):
                 status=status.HTTP_401_UNAUTHORIZED
             )
 
+        # Check cache first
+        cached = cache.get("admin:all_users")
+        if cached:
+            return Response(cached, status=status.HTTP_200_OK)
+        
         users = User.objects.all()
         serializer = UserSerializer(users, many=True)
+        cache.set("admin:all_users", serializer.data, timeout=60 * 5)  # 5 min TTL
+
         return Response(serializer.data, status.HTTP_200_OK)
 
     def post(self, request):
@@ -119,7 +126,15 @@ class UserDetailView(APIView):
 
         user = self.get_user(user_id)
         self.check_object_permissions(request, user)
+
+        cache_key = f"user:{user_id}"
+        cached = cache.get(cache_key)
+        if cached:
+            return Response(cached, status=status.HTTP_200_OK)
+        
         serializer = UserSerializer(user)
+        cache.set(cache_key, serializer.data, timeout=60 * 10)  # 10 min TTL
+
         return Response(serializer.data, status.HTTP_200_OK)
 
     def patch(self, request, user_id):
@@ -134,6 +149,8 @@ class UserDetailView(APIView):
         serializer = UserSerializer(user, data=request.data, partial=True)
         if serializer.is_valid():
             serializer.save()
+            cache.delete(f"user:{user_id}")       # bust individual cache
+            cache.delete("admin:all_users")        # bust list cache
             return Response(serializer.data, status.HTTP_200_OK)
         return Response(serializer.errors, status.HTTP_400_BAD_REQUEST)
 
@@ -150,6 +167,8 @@ class UserDetailView(APIView):
         if serializer.is_valid():
 
             serializer.save()
+            cache.delete(f"user:{user_id}")
+            cache.delete("admin:all_users")
             return Response(serializer.data, status.HTTP_200_OK)
         return Response(serializer.errors, status.HTTP_400_BAD_REQUEST)
 
@@ -159,4 +178,6 @@ class UserDetailView(APIView):
         self.check_object_permissions(request, user)
 
         user.delete()
+        cache.delete(f"user:{user_id}")
+        cache.delete("admin:all_users")
         return Response({'detail': 'User deleted successfully'}, status.HTTP_204_NO_CONTENT)
