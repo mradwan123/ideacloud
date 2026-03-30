@@ -11,8 +11,21 @@ from rest_framework.decorators import api_view
 from rest_framework.authtoken.models import Token
 from django.shortcuts import get_object_or_404
 from django.core.cache import cache
+import redis
+import os
 
 User = get_user_model()
+
+redis_client = redis.from_url(os.getenv("REDIS_URL", "redis://127.0.0.1:6379/1"), decode_responses=True)
+
+def is_rate_limited(key: str, limit: int, window_seconds: int) -> bool:
+    try:
+        count = redis_client.incr(key)
+        if count == 1:
+            redis_client.expire(key, window_seconds)
+        return count > limit
+    except redis.RedisError:
+        return False  # Fail open — don't block users if Redis is down
 
 class UserAPIView(APIView):
     """
@@ -59,6 +72,10 @@ class UserAPIView(APIView):
 
         The image data has to be send as a jpg image in base64 byte format.
         '''
+        ip = request.META.get("REMOTE_ADDR", "unknown")
+        if is_rate_limited(f"rate:register:{ip}", limit=10, window_seconds=3600):
+            return Response({'error': 'Too many registration attempts. Try again later.'}, status=status.HTTP_429_TOO_MANY_REQUESTS)
+
         serializer = UserSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
@@ -73,6 +90,10 @@ class LoginView(APIView):
     - Token provided upon login, deletes old token if exists.
     """
     def post(self, request):
+        ip = request.META.get("REMOTE_ADDR", "unknown")
+        if is_rate_limited(f"rate:login:{ip}", limit=5, window_seconds=60):
+            return Response({'error': 'Too many login attempts. Try again in a minute.'}, status=status.HTTP_429_TOO_MANY_REQUESTS)
+
         username = request.data.get("username")
         password = request.data.get("password")
 
