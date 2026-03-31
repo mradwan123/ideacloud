@@ -113,6 +113,20 @@ a:hover {
     padding-top: 1%;
     text-align: center;
     padding-bottom: 2%;
+    position: relative;
+}
+
+.title-row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+
+.header-logo {
+    width: 3rem;
+    height: auto;
+    object-fit: cover;
 }
 
 .header h1 {
